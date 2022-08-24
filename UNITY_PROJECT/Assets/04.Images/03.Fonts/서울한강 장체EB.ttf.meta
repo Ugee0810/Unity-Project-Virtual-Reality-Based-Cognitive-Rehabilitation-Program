@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 3c740a7b9ff1b654a9f06b3b0f9d8e8d
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - SeoulHangangC
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 1457e07b30c4a66418d3ff8929920871, type: 3}
+  - {fileID: 12800000, guid: 44edbaecfef19c642a49a3dd117e73ef, type: 3}
+  - {fileID: 12800000, guid: e37854b5155d4ac47bf75900cbafb17b, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
