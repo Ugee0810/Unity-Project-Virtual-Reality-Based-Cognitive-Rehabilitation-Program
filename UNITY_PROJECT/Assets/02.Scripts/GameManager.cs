@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject scrollCustom;
     public GameObject customMusicElement;   // Custom Btn Prefab
     public GameObject scrollCustomContent;
-
+    
     //[SerializeField] Image musicAlbum;
     //[SerializeField] Text txtTitle;
     //[SerializeField] Text txtPlayTime;
