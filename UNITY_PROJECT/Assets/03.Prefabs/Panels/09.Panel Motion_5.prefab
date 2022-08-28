@@ -176,7 +176,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5766425008163790231}
   - component: {fileID: 4156502479002680327}
-  - component: {fileID: -1701837857904232280}
   m_Layer: 0
   m_Name: 09.Panel Motion_5
   m_TagString: Untagged
@@ -211,17 +210,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-1701837857904232280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6579095305457256237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1683165773d676489401052941a692e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
