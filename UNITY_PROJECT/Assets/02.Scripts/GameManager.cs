@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
         vizualizationObjects.SetActive(true); // VizualizationObj On
         inGameEnvironment.SetActive(true);    // 인게임 환경 요소 On
         isStart = true;
-        //_MusicManager.MusicPlay(); // 플레이 음악 재생
+        MusicPlay(); // 플레이 음악 재생
 
         // ＃Music Start UI(Kcal, Score 등)
         // ＃오리진 콘트롤러 변경
@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
     {
         uiMusicPaused.SetActive(true); // Music Paused UI
         isStop = true;
-        //_MusicManager.MusicPause(); // 플레이 중 노래 일시 정지
+        MusicPause(); // 플레이 중 노래 일시 정지
 
         // ＃패널 정지
     }
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
     public void InGameEnd()
     {
         inGameEnvironment.SetActive(false); // Ingame Env Obj Off
-        //_MusicManager.MusicStop(); // Played Song Reset
+        MusicStop(); // Played Song Reset
 
         // ＃결과 UI
     }
@@ -208,12 +208,12 @@ public class GameManager : MonoBehaviour
             originalMusicElements.transform.localScale = Vector3.one;
             originalMusicElements.transform.position = contentOriginal.transform.position;
 
+            originalMusicElements.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
             // AudioSource.clip ← Resources-Custom Musics.AudioClip
             originalMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
             // textTitle.text ← customMusicElements.AudioSource.text
             originalMusicElements.transform.GetChild(1).gameObject.GetComponent<Text>().text = originalMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
         }
-
         yield return new WaitForSeconds(1);
         StopCoroutine(OriginalListRenewal());
     }
@@ -236,31 +236,13 @@ public class GameManager : MonoBehaviour
             customMusicElements.transform.parent = contentCustom.transform;
             customMusicElements.transform.localScale = Vector3.one;
             customMusicElements.transform.position = contentCustom.transform.position;
-
+            customMusicElements.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
             // AudioSource.clip ← Resources-Custom Musics.AudioClip
             customMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)customMusics[i];
             // textTitle.text ← customMusicElements.AudioSource.text
             customMusicElements.transform.GetChild(1).gameObject.GetComponent<Text>().text = customMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
         }
-
         yield return new WaitForSeconds(1);
         StopCoroutine(CustomListRenewal());
     }
-
-
-
-    //public void Select()
-    //{
-    //    print("버튼 클릭");
-
-    //    GameObject selectObject = EventSystem.current.currentSelectedGameObject; // 방금 클릭한 게임 오브젝트를 가져와서 저장
-    //    print(selectObject.name); // 방금 클릭한 게임 오브젝트의 이름 출력
-
-    //    //if (selectObject.name == "")
-    //    //{
-    //    //    print(selectObject.GetComponent<AudioSource>().clip); // 방금 클릭한 게임 오브젝트의 Audio Clip 출력
-
-    //    //    selectObject.gameObject.GetComponent<AudioSource>().Play();
-    //    //}
-    //}
 }
