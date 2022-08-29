@@ -26,6 +26,8 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;   //싱글턴을 할당할 전역 변수
+
     [Header("[UI]")]
     public GameObject uiMusicSelect;      // Lobby UI
     public GameObject uiMusicStart;       // Ingame UI
@@ -70,6 +72,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+            instance = this;
+        else
+        {
+            Debug.LogWarning("씬에 두 개 이상의 게임 매니저가 존재합니다.");
+            Destroy(gameObject); // GameManager 삭제
+        }
+
         isOriginal = true;
     }
 
@@ -97,22 +107,32 @@ public class GameManager : MonoBehaviour
     // [Button] Original MusicList Selected
     public void BtnOriginalSelected()
     {
+        if (customMusicElementPrefab)
+        {
+
+        }
+
         if (!isOriginal && isCustom)
         {
             originalScrollView.SetActive(true);
             customScrollView.SetActive(false);
-            StartCoroutine(OriginalListRenewal());
+            OriginalListRenewal();
         }
     }
 
     // [Button] Custom MusicList Selected
     public void BtnCustomSelected()
     {
+        if (originalMusicElementPrefab)
+        {
+
+        }
+
         if (isOriginal && !isCustom)
         {
             originalScrollView.SetActive(false);
             customScrollView.SetActive(true);
-            StartCoroutine(CustomListRenewal());
+            CustomListRenewal();
         }
     }
 
@@ -144,6 +164,8 @@ public class GameManager : MonoBehaviour
         vizualizationObjects.SetActive(true); // VizualizationObj On
         inGameEnvironment.SetActive(true);    // 인게임 환경 요소 On
         isStart = true;
+
+        musicSelected.Stop(); // 로비에서 재생한 노래는 정지하기
         MusicPlay(); // 플레이 음악 재생
 
         // ＃Music Start UI(Kcal, Score 등)
@@ -189,7 +211,10 @@ public class GameManager : MonoBehaviour
     object[] originalMusics;
     object[] customMusics;
 
-    public IEnumerator OriginalListRenewal()
+    GameObject originalMusicElementPrefab = null;
+    GameObject customMusicElementPrefab   = null;
+
+    public void OriginalListRenewal()
     {
         isOriginal = true;
         isCustom = false;
@@ -199,26 +224,23 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < originalMusics.Length; i++)
         {
-            // AudioClip to GameObject
-            GameObject originalMusicElements = originalMusics[i] as GameObject;
+            originalMusicElementPrefab = originalMusics[i] as GameObject; // AudioClip to GameObject
+            originalMusicElementPrefab = Instantiate(musicElement);
+            originalMusicElementPrefab.name = $"Original Music Element_{i}";
+            originalMusicElementPrefab.transform.parent = contentOriginal.transform;
+            originalMusicElementPrefab.transform.localScale = Vector3.one;
+            originalMusicElementPrefab.transform.position = contentOriginal.transform.position;
 
-            originalMusicElements = Instantiate(musicElement);
-            originalMusicElements.name = "Original Music Element_" + i;
-            originalMusicElements.transform.parent = contentOriginal.transform;
-            originalMusicElements.transform.localScale = Vector3.one;
-            originalMusicElements.transform.position = contentOriginal.transform.position;
-
-            originalMusicElements.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
+            originalMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
             // AudioSource.clip ← Resources-Custom Musics.AudioClip
-            originalMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
+            originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
             // textTitle.text ← customMusicElements.AudioSource.text
-            originalMusicElements.transform.GetChild(1).gameObject.GetComponent<Text>().text = originalMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
+            originalMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text =
+                originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
         }
-        yield return new WaitForSeconds(1);
-        StopCoroutine(OriginalListRenewal());
     }
 
-    public IEnumerator CustomListRenewal()
+    public void CustomListRenewal()
     {
         isOriginal = false;
         isCustom = true;
@@ -228,21 +250,19 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < customMusics.Length; i++)
         {
-            // AudioClip to GameObject
-            GameObject customMusicElements = customMusics[i] as GameObject;
+            customMusicElementPrefab = customMusics[i] as GameObject; // AudioClip to GameObject
+            customMusicElementPrefab = Instantiate(musicElement);
+            customMusicElementPrefab.name = $"Custom Music Element_{i}";
+            customMusicElementPrefab.transform.parent = contentCustom.transform;
+            customMusicElementPrefab.transform.localScale = Vector3.one;
+            customMusicElementPrefab.transform.position = contentCustom.transform.position;
 
-            customMusicElements = Instantiate(musicElement);
-            customMusicElements.name = "Custom Music Element_" + i;
-            customMusicElements.transform.parent = contentCustom.transform;
-            customMusicElements.transform.localScale = Vector3.one;
-            customMusicElements.transform.position = contentCustom.transform.position;
-            customMusicElements.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
+            customMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
             // AudioSource.clip ← Resources-Custom Musics.AudioClip
-            customMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)customMusics[i];
+            customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)customMusics[i];
             // textTitle.text ← customMusicElements.AudioSource.text
-            customMusicElements.transform.GetChild(1).gameObject.GetComponent<Text>().text = customMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
+            customMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = 
+                customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
         }
-        yield return new WaitForSeconds(1);
-        StopCoroutine(CustomListRenewal());
     }
 }

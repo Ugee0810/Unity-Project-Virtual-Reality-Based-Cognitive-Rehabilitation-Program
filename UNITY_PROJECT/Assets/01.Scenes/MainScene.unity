@@ -1359,7 +1359,7 @@ GameObject:
   - component: {fileID: 243124975}
   - component: {fileID: 243124974}
   m_Layer: 0
-  m_Name: SFX Button Start
+  m_Name: Btn Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1473,8 +1473,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1738756015}
-  m_RootOrder: 6
+  m_Father: {fileID: 675946824}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &249357775
 GameObject:
@@ -4640,6 +4640,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 674109436}
   m_CullTransparentMesh: 1
+--- !u!1 &675946823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 675946824}
+  m_Layer: 0
+  m_Name: Click Sounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &675946824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675946823}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 712533847}
+  - {fileID: 243124975}
+  - {fileID: 865763498}
+  m_Father: {fileID: 1738756015}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &688539417
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4817,7 +4851,7 @@ GameObject:
   - component: {fileID: 712533847}
   - component: {fileID: 712533846}
   m_Layer: 0
-  m_Name: SFX Button Click
+  m_Name: Btn Click
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4931,8 +4965,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1738756015}
-  m_RootOrder: 5
+  m_Father: {fileID: 675946824}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &720005520
 GameObject:
@@ -6646,7 +6680,7 @@ GameObject:
   - component: {fileID: 865763498}
   - component: {fileID: 865763499}
   m_Layer: 0
-  m_Name: SFX Button Ping
+  m_Name: Btn Ping
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6664,8 +6698,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1738756015}
-  m_RootOrder: 7
+  m_Father: {fileID: 675946824}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &865763499
 AudioSource:
@@ -10159,9 +10193,7 @@ Transform:
   - {fileID: 1504925051}
   - {fileID: 720005521}
   - {fileID: 771603816}
-  - {fileID: 712533847}
-  - {fileID: 243124975}
-  - {fileID: 865763498}
+  - {fileID: 675946824}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

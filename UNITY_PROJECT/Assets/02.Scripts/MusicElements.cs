@@ -7,68 +7,28 @@ using UnityEngine.UI;
 
 public class MusicElements : MonoBehaviour
 {
-    [Header("[Scripts]")]
-    GameManager _GameManager;
-
     GameObject selectedElement;
 
     public void Select()
     {
-        GameObject currentSelectedGameObject = EventSystem.current.currentSelectedGameObject; // ¹æ±İ Å¬¸¯ÇÑ °ÔÀÓ ¿ÀºêÁ§Æ®¸¦ °¡Á®¿Í¼­ ÀúÀå
+        GameObject currentSelectedGameObject = EventSystem.current.currentSelectedGameObject; // ë°©ê¸ˆ í´ë¦­í•œ ê²Œì„ ì˜¤ë¸Œì íŠ¸ë¥¼ ê°€ì ¸ì™€ì„œ ì €ì¥
         selectedElement = currentSelectedGameObject;
-        print($"¼±ÅÃÇÑ ÇÁ¸®ÆÕ ÀÌ¸§ : {selectedElement.name}"); // ¹æ±İ Å¬¸¯ÇÑ °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ ÀÌ¸§ Ãâ·Â
-        print($"¾Ù¹ü ÀÌ¹ÌÁö : {selectedElement.transform.GetChild(0)}");
-        print($"Å¸ÀÌÆ² : {selectedElement.transform.GetChild(1)}");
-        print($"ÇÃ·¹ÀÌ Å¸ÀÓ : {selectedElement.transform.GetChild(2)}");
-        print($"³ë·¡ Á¦¸ñ :  {selectedElement.transform.GetChild(3)}");
-        print("¼³¸¶ µÇ³Ä?" + selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip); // ¹æ±İ Å¬¸¯ÇÑ °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ Audio Clip Ãâ·Â
-        print(_GameManager.musicSelected.GetComponent<AudioSource>().clip);
+
+            print($"ì„ íƒí•œ í”„ë¦¬íŒ¹ ì´ë¦„ : {selectedElement.name}"); // ë°©ê¸ˆ í´ë¦­í•œ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ì´ë¦„ ì¶œë ¥
+            print($"ì•¨ë²” ì´ë¯¸ì§€ : {selectedElement.transform.GetChild(0)}");
+            print($"íƒ€ì´í‹€ :      {selectedElement.transform.GetChild(1)}");
+            print($"í”Œë ˆì´ íƒ€ì„ : {selectedElement.transform.GetChild(2)}");
+            print($"ë…¸ë˜ ì œëª© :   {selectedElement.transform.GetChild(3)}");
+            print("ì„¤ë§ˆ ë˜ëƒ?" + selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip); // ë°©ê¸ˆ í´ë¦­í•œ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ Audio Clip ì¶œë ¥
+            print("ì´ê±´ ë˜ë‚˜?" + GameManager.instance.musicSelected.GetComponent<AudioSource>().clip);
 
 
-        //_GameManager.musicSelected.GetComponent<AudioSource>().clip = selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip;
-        //print("ÀÌ°Íµµ µÈ´Ù°í?" + _GameManager.musicSelected.GetComponent<AudioSource>().clip.name);
-        //_GameManager.musicSelected.Play();
+        GameManager.instance.musicSelected.GetComponent<AudioSource>().clip = 
+            selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip; // í”„ë¦¬íŒ¹ ì˜¤ë””ì˜¤ ì†ŒìŠ¤ í´ë¦½ -> musicSelectedì˜ í´ë¦½ê³¼ ëŒ€ì¹­í™”
+
+        GameManager.instance.musicPlayed.GetComponent<AudioSource>().clip = 
+            GameManager.instance.musicSelected.GetComponent<AudioSource>().clip; // í”Œë ˆì´ì— ì‚¬ìš© ë  ì˜¤ë””ì˜¤ ì†ŒìŠ¤ ëŒ€ì¹­í™”
+
+        GameManager.instance.musicSelected.Play();
     }
-
-    //public void SelectElement()
-    //{
-    //    //// ¹æ±İ ¼±ÅÃÇÑ ¹öÆ°ÀÇ Á¤º¸¸¦ ¹Ş¾Æ¿É´Ï´Ù.
-    //    //GameObject _selectedElement = EventSystem.current.currentSelectedGameObject;
-    //    selectedElement = _selectedElement;
-    //}
-
-    //public IEnumerator SelectElementInfo()
-    //{
-    //    selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().Stop(); // Off 'Play On Awake'
-    //    // OnclickÀÌº¥Æ®°¡ ¹ß»ıÇÑ ¿ÀºêÁ§Æ® ÇÏÀ§ÀÇ ¿Àµğ¿À ¼Ò½º Å¬¸³ÀÇ ÀÌ¸§°ú Å¸ÀÌÆ² ÀÌ¸§À» ´ëÄªÇÑ´Ù.
-    //    selectedElement.transform.GetChild(1).gameObject.GetComponent<Text>().text = selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip.name;
-
-    //    _GameManager.musicSelected.clip = selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip;
-    //    _GameManager.musicSelected.Play();
-    //    yield return null;
-    //}
-
-    //// [Button] Element Selected
-    //public void BtnElementSelected()
-    //{
-    //    // Original Element
-    //    if (isOriginal == true && isCustom == false)
-    //    {
-    //        for (int i = 0; i < originalElementPrefab.Length; i++)
-    //        {
-    //            musicSelected.clip = originalElementPrefab[i].transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip;
-    //            musicSelected.Play();
-    //        }
-    //    }
-    //    // Custom Element
-    //    else if (isOriginal == false && isCustom == true)
-    //    {
-    //        for (int i = 0; i < customElementPrefab.Length; i++)
-    //        {
-    //            musicSelected.clip = customElementPrefab[i].transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip;
-    //            musicSelected.Play();
-    //        }
-    //    }
-    //    return;
-    //}
 }
