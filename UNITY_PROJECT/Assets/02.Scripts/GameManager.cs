@@ -20,9 +20,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.XR;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using Unity.VisualScripting;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class GameManager : MonoBehaviour
 {
@@ -38,6 +40,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
+
+    public GameObject infoTitle; // Panel Music Info에서 Music Title
+
+    public GameObject btnPlay; // 노래 재생 버튼
 
     [Header("[환경 오브젝트]")]
     public GameObject inGameEnvironment;
@@ -72,6 +78,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        // Singleton
         if (instance == null)
             instance = this;
         else
@@ -79,8 +86,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("씬에 두 개 이상의 게임 매니저가 존재합니다.");
             Destroy(gameObject); // GameManager 삭제
         }
-
-        isOriginal = true;
+        isOriginal = true;  
     }
 
     private void FixedUpdate()
@@ -107,32 +113,28 @@ public class GameManager : MonoBehaviour
     // [Button] Original MusicList Selected
     public void BtnOriginalSelected()
     {
-        if (customMusicElementPrefab)
-        {
-
-        }
-
         if (!isOriginal && isCustom)
         {
             originalScrollView.SetActive(true);
             customScrollView.SetActive(false);
             OriginalListRenewal();
+
+            musicSelected.Stop();
+            musicBackGround.UnPause();
         }
     }
 
     // [Button] Custom MusicList Selected
     public void BtnCustomSelected()
     {
-        if (originalMusicElementPrefab)
-        {
-
-        }
-
         if (isOriginal && !isCustom)
         {
             originalScrollView.SetActive(false);
             customScrollView.SetActive(true);
             CustomListRenewal();
+
+            musicSelected.Stop();
+            musicBackGround.UnPause();
         }
     }
 
@@ -165,8 +167,9 @@ public class GameManager : MonoBehaviour
         inGameEnvironment.SetActive(true);    // 인게임 환경 요소 On
         isStart = true;
 
+        musicBackGround.Pause();
         musicSelected.Stop(); // 로비에서 재생한 노래는 정지하기
-        MusicPlay(); // 플레이 음악 재생
+        musicPlayed.Play();   // 플레이 음악 재생
 
         // ＃Music Start UI(Kcal, Score 등)
         // ＃오리진 콘트롤러 변경
@@ -175,36 +178,65 @@ public class GameManager : MonoBehaviour
     // [Button] Pause
     public void BtnInGamePause()
     {
-        uiMusicPaused.SetActive(true); // Music Paused UI
-        isStop = true;
-        MusicPause(); // 플레이 중 노래 일시 정지
+        if (isStart)
+        {
+            uiMusicPaused.SetActive(true); // Music Paused UI On
+            isStop = true;
 
-        // ＃패널 정지
+            Time.timeScale = 0;
+            musicPlayed.Pause(); // 플레이 중 노래 일시 정지
+        }
+    }
+
+    // [Button] UnPause
+    public void BtnInGameUnPause()
+    {
+        if (isStart && isStop)
+        {
+            isStop = false;
+            uiMusicPaused.SetActive(false); // Music Paused UI Off
+
+            Time.timeScale = 1;
+            musicPlayed.UnPause(); // 플레이 중 노래 일시 정지 해제
+        }
+    }
+
+    // [Button] Back to the Lobby
+    public void BtnBackLobby()
+    {
+        if (isStart && isStop)
+        {
+            isStart = false;
+            isStop = false;
+
+            uiMusicSelect.SetActive(true);         // Lobby UI On
+            uiMusicStart.SetActive(false);         // Ingame UI Off
+            uiMusicPaused.SetActive(false);        // MusicPaused UI Off
+            vizualizationObjects.SetActive(false); // VizualizationObj Off
+            inGameEnvironment.SetActive(false);    // Ingame Env Obj Off
+
+            Time.timeScale = 1;
+            musicBackGround.UnPause();
+            musicPlayed.Stop(); // 플레이 중 노래 정지
+        }
     }
 
     // End
     public void InGameEnd()
     {
-        inGameEnvironment.SetActive(false); // Ingame Env Obj Off
-        MusicStop(); // Played Song Reset
+        isStart = false;
+        isStop = false;
+
+        uiMusicSelect.SetActive(true);         // Lobby UI On
+        uiMusicStart.SetActive(false);         // Ingame UI Off
+        uiMusicPaused.SetActive(false);        // MusicPaused UI Off
+        vizualizationObjects.SetActive(false); // VizualizationObj Off
+        inGameEnvironment.SetActive(false);    // Ingame Env Obj Off
+
+        musicBackGround.UnPause();
+        musicPlayed.Stop(); // Played Song Reset
 
         // ＃결과 UI
-    }
-
-
-    public void MusicPlay()
-    {
-        musicPlayed.Play();
-    }
-
-    public void MusicPause()
-    {
-        musicPlayed.Pause();
-    }
-
-    public void MusicStop()
-    {
-        musicPlayed.Stop();
     }
 
 
@@ -228,12 +260,18 @@ public class GameManager : MonoBehaviour
             originalMusicElementPrefab = Instantiate(musicElement);
             originalMusicElementPrefab.name = $"Original Music Element_{i}";
             originalMusicElementPrefab.transform.parent = contentOriginal.transform;
-            originalMusicElementPrefab.transform.localScale = Vector3.one;
+            originalMusicElementPrefab.transform.localScale = Vector3.one; 
             originalMusicElementPrefab.transform.position = contentOriginal.transform.position;
 
-            originalMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
+            //originalMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
+
             // AudioSource.clip ← Resources-Custom Musics.AudioClip
             originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
+
+            // (float)MusicLength to (string)PlayTime
+            originalMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text =
+                TimeFormatter(originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
+
             // textTitle.text ← customMusicElements.AudioSource.text
             originalMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text =
                 originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
@@ -257,12 +295,35 @@ public class GameManager : MonoBehaviour
             customMusicElementPrefab.transform.localScale = Vector3.one;
             customMusicElementPrefab.transform.position = contentCustom.transform.position;
 
-            customMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
+            //customMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
+
             // AudioSource.clip ← Resources-Custom Musics.AudioClip
             customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)customMusics[i];
+
+            // (float)MusicLength to (string)PlayTime
+            customMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = 
+                TimeFormatter(customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
+
             // textTitle.text ← customMusicElements.AudioSource.text
             customMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = 
                 customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
         }
+    }
+
+    // 시간 변환 Method
+    public static string TimeFormatter(float seconds, bool forceHHMMSS = false)
+    {
+        float secondsRemainder = Mathf.Floor((seconds % 60) * 100) / 100.0f;
+        int minutes = ((int)(seconds / 60)) % 60;
+        int hours = (int)(seconds / 3600);
+
+        if (!forceHHMMSS)
+        {
+            if (hours == 0)
+            {
+                return System.String.Format("{0:00}:{1:00.00}", minutes, secondsRemainder);
+            }
+        }
+        return System.String.Format("{0}:{1:00}:{2:00}", hours, minutes, secondsRemainder);
     }
 }
