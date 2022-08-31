@@ -20,11 +20,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
-using Unity.VisualScripting;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
+using XRController = UnityEngine.XR.Interaction.Toolkit.XRController;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,12 +32,14 @@ public class GameManager : MonoBehaviour
     public GameObject uiMusicSelect;      // Lobby UI
     public GameObject uiMusicStart;       // Ingame UI
     public GameObject uiMusicPaused;      // Pause UI
+    public GameObject uiResult;           // Result UI
 
     public GameObject originalScrollView; // Original View UI
     public GameObject customScrollView;   // Custom View UI
 
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
+    public GameObject contentResult;      // 결과     리소스 프리팹 생성 위치(부모)
 
     public GameObject infoTitle; // Panel Music Info에서 Music Title
 
@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     [Header("[환경 오브젝트]")]
     public GameObject inGameEnvironment;
+    public GameObject baseGround;
 
     [Header("[SFX]")]
     public GameObject vizualizationObjects;
@@ -66,6 +67,8 @@ public class GameManager : MonoBehaviour
     /*[HideInInspector]*/ public bool isLevelNormal; // [Button] Level Normal Selected
     /*[HideInInspector]*/ public bool isLevelHard;   // [Button] Level Hard Selected
 
+    /*[HideInInspector]*/ public bool isHandChange;   // [Button] True : Hand Controller / False : Lay Controller
+
     [Header("[Prefabs]")]
     public GameObject musicElement; // Instantiate될 프리팹
 
@@ -75,6 +78,12 @@ public class GameManager : MonoBehaviour
     public AudioSource musicPlayed;     // 플레이 할 노래
     public float timer;                 // BPM 계산 타이머
     public float beat;                  // BPM
+
+    [Header("[Origin Controller]")]
+    public GameObject layControllerDeviceLeft;
+    public GameObject layControllerDeviceRight;
+    public GameObject handControllerDeviceLeft;
+    public GameObject handControllerDeviceRight;
 
     private void Awake()
     {
@@ -165,11 +174,15 @@ public class GameManager : MonoBehaviour
         uiMusicStart.SetActive(true);         // Ingame UI On
         vizualizationObjects.SetActive(true); // VizualizationObj On
         inGameEnvironment.SetActive(true);    // 인게임 환경 요소 On
+        baseGround.SetActive(false);
         isStart = true;
 
         musicBackGround.Pause();
         musicSelected.Stop(); // 로비에서 재생한 노래는 정지하기
         musicPlayed.Play();   // 플레이 음악 재생
+
+        isHandChange = true;
+        Change();
 
         // ＃Music Start UI(Kcal, Score 등)
         // ＃오리진 콘트롤러 변경
@@ -185,6 +198,9 @@ public class GameManager : MonoBehaviour
 
             Time.timeScale = 0;
             musicPlayed.Pause(); // 플레이 중 노래 일시 정지
+
+            isHandChange = false;
+            Change();
         }
     }
 
@@ -198,6 +214,9 @@ public class GameManager : MonoBehaviour
 
             Time.timeScale = 1;
             musicPlayed.UnPause(); // 플레이 중 노래 일시 정지 해제
+
+            isHandChange = true;
+            Change();
         }
     }
 
@@ -214,10 +233,14 @@ public class GameManager : MonoBehaviour
             uiMusicPaused.SetActive(false);        // MusicPaused UI Off
             vizualizationObjects.SetActive(false); // VizualizationObj Off
             inGameEnvironment.SetActive(false);    // Ingame Env Obj Off
+            baseGround.SetActive(true);
 
             Time.timeScale = 1;
             musicBackGround.UnPause();
             musicPlayed.Stop(); // 플레이 중 노래 정지
+
+            isHandChange = false;
+            Change();
         }
     }
 
@@ -232,9 +255,14 @@ public class GameManager : MonoBehaviour
         uiMusicPaused.SetActive(false);        // MusicPaused UI Off
         vizualizationObjects.SetActive(false); // VizualizationObj Off
         inGameEnvironment.SetActive(false);    // Ingame Env Obj Off
+        baseGround.SetActive(true);
 
         musicBackGround.UnPause();
         musicPlayed.Stop(); // Played Song Reset
+
+
+        isHandChange = false;
+        Change();
 
         // ＃결과 UI
     }
@@ -325,5 +353,31 @@ public class GameManager : MonoBehaviour
             }
         }
         return System.String.Format("{0}:{1:00}:{2:00}", hours, minutes, secondsRemainder);
+    }
+
+    public void Change()
+    {
+        if (isHandChange) // Hand Controller
+        {
+            layControllerDeviceLeft.SetActive(false);
+            layControllerDeviceRight.SetActive(false);
+
+            handControllerDeviceLeft.SetActive(true);
+            handControllerDeviceRight.SetActive(true);
+
+            isHandChange = false;
+            return;
+        }
+        else // Lay Controller
+        {
+            handControllerDeviceLeft.SetActive(false);
+            handControllerDeviceRight.SetActive(false);
+
+            layControllerDeviceLeft.SetActive(true);
+            layControllerDeviceRight.SetActive(true);
+
+            isHandChange = true;
+            return;
+        }
     }
 }

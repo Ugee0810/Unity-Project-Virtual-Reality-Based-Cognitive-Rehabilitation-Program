@@ -16,21 +16,27 @@ using UnityEngine;
 
 public class PanelCtrl : MonoBehaviour
 {
+
+    float timer = 0;
+
     private void Update()
     {
         Move();
+
+        timer += Time.deltaTime;
+
+        if (timer == 5)
+        {
+            Quiz();
+
+            timer -= 5;
+        }
     }
 
 
     void Move()
     {
         transform.position += Time.deltaTime * transform.forward * -2;
-    }
-
-
-    void Stop()
-    {
-
     }
 
     void Quiz()

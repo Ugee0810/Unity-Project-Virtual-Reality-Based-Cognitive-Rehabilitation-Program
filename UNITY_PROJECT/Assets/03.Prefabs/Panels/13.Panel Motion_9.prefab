@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3954591402054535837}
   - component: {fileID: 982546229049665756}
+  - component: {fileID: 6494111311423499180}
+  - component: {fileID: -4138001260476027838}
   m_Layer: 0
   m_Name: 13.Panel Motion_9
   m_TagString: Untagged
@@ -46,6 +48,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &6494111311423499180
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4443459919541571623}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Center: {x: -0.85, y: 1.55, z: 0}
+--- !u!135 &-4138001260476027838
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4443459919541571623}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Center: {x: 0.61, y: 1.32, z: 0}
 --- !u!1 &6137136546136615297
 GameObject:
   m_ObjectHideFlags: 0
