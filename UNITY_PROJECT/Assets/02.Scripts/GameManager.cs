@@ -52,10 +52,6 @@ public class GameManager : MonoBehaviour
     [Header("[SFX]")]
     public GameObject vizualizationObjects;
 
-    [Header("[패널 프리팹]")]
-    public Transform panelSpawnPoint; // 패널 생성 좌표
-    public GameObject[] Panels;       // 패널 프리팹 배열
-
     [Header("[플래그 변수]")]
     /*[HideInInspector]*/ public bool isStart;       // Music Start
     /*[HideInInspector]*/ public bool isStop;        // Music Pause
@@ -73,13 +69,10 @@ public class GameManager : MonoBehaviour
     public GameObject musicElement; // Instantiate될 프리팹
     public GameObject resultElement; // Instantiate될 프리팹
 
-
     [Header("[Music Info]")]
     public AudioSource musicBackGround; // BGM
     public AudioSource musicSelected;   // 선택된 노래
     public AudioSource musicPlayed;     // 플레이 할 노래
-    public float timer;                 // BPM 계산 타이머
-    public float beat;                  // BPM
 
     [Header("[Origin Controller]")]
     public GameObject layControllerDeviceLeft;
@@ -100,27 +93,6 @@ public class GameManager : MonoBehaviour
 
         OriginalListRenewal();
     }
-
-    private void FixedUpdate()
-    {
-        if (isStart)
-        {
-            PanelInstance();
-        }
-    }
-
-    public void PanelInstance()
-    {
-        if (timer > beat)
-        {
-            Instantiate(Panels[Random.Range(0, 16)], panelSpawnPoint);
-
-            timer -= beat; // Timer = Timer - Beat
-        }
-
-        timer += Time.deltaTime; // Timer
-    }
-
 
     // [Button] Original MusicList Selected
     public void BtnOriginalSelected()

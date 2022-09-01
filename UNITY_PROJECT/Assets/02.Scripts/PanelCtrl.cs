@@ -27,7 +27,7 @@ public class PanelCtrl : MonoBehaviour
 
         if (timer == 5)
         {
-            Quiz();
+            //Quiz();
 
             timer -= 5;
         }
@@ -44,10 +44,5 @@ public class PanelCtrl : MonoBehaviour
     void Move()
     {
         transform.position += Time.deltaTime * transform.forward * -2;
-    }
-
-    void Quiz()
-    {
-
     }
 }

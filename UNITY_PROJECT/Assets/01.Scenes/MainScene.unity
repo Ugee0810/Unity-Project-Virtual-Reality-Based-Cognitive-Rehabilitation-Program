@@ -167,24 +167,6 @@ MonoBehaviour:
   inGameEnvironment: {fileID: 708912650}
   baseGround: {fileID: 682854498}
   vizualizationObjects: {fileID: 720005520}
-  panelSpawnPoint: {fileID: 1845927132}
-  Panels:
-  - {fileID: 5302970632817858267, guid: f4bbcddc23fa716479fb89cdd182751e, type: 3}
-  - {fileID: 1539828143756839488, guid: a5896fc02d30cd246acf2b86a27383c0, type: 3}
-  - {fileID: 1020610426066342541, guid: ccca955453d1b6f44b11b13560df5ae1, type: 3}
-  - {fileID: 4821081350602985475, guid: be6da43b745c7804f8d32aceedfbe99a, type: 3}
-  - {fileID: 722148556229215842, guid: f562c3fc468447f408052e44f220b2a9, type: 3}
-  - {fileID: 2182226493125285127, guid: 33346409952977a4d881868f239b3fe8, type: 3}
-  - {fileID: 7158261777735331574, guid: 5564c063f87baf241895a61d57fddeb8, type: 3}
-  - {fileID: 253008520588418058, guid: 48a5dd9c4a36cac498113f92fa3bb005, type: 3}
-  - {fileID: 8315160128635439432, guid: 14a018719f88b5c479a25e0ba1df4f7c, type: 3}
-  - {fileID: 6579095305457256237, guid: d51c4020a73891644b6c9767f21da6b3, type: 3}
-  - {fileID: 4798388708482620758, guid: 5ad1ed13282c2e74b9c27cbb0f7a595d, type: 3}
-  - {fileID: 2720595478359537202, guid: cb8956a0e942d1e4aa1e7d49fc30778e, type: 3}
-  - {fileID: 1811733634039706096, guid: 27008f2c1e9d54143a6aad477db42a71, type: 3}
-  - {fileID: 4443459919541571623, guid: 4dae4bf1b8489bd4ebe33e806c0569c6, type: 3}
-  - {fileID: 2733853735872269117, guid: a202a939495125d4cafd29bf71c9b5f7, type: 3}
-  - {fileID: 4734787257514618999, guid: a1d623eefed62014f82820ed159ae105, type: 3}
   isStart: 0
   isStop: 0
   isOriginal: 0
@@ -200,8 +182,6 @@ MonoBehaviour:
   musicBackGround: {fileID: 1161132230}
   musicSelected: {fileID: 160552299}
   musicPlayed: {fileID: 1504925052}
-  timer: 0
-  beat: 2
   layControllerDeviceLeft: {fileID: 489118709}
   layControllerDeviceRight: {fileID: 1279742389}
   handControllerDeviceLeft: {fileID: 107516451}
@@ -2157,6 +2137,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 11017396}
+  - {fileID: 1873245974}
   - {fileID: 1828698143}
   - {fileID: 1845927132}
   - {fileID: 2140507748}
@@ -6136,7 +6117,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187027, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187027, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
@@ -9038,9 +9019,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f887f02ecfd5244184efe1d0ba89108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  txtScore: {fileID: 0}
-  increaseScore: 1000
-  weight: []
 --- !u!1 &902856722
 GameObject:
   m_ObjectHideFlags: 0
@@ -13560,7 +13538,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1603551420
 Transform:
   m_ObjectHideFlags: 0
@@ -14779,7 +14757,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1828698144
 MonoBehaviour:
@@ -15060,7 +15038,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1848744763
 GameObject:
@@ -15271,6 +15249,80 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d643c209905146428249ab2b60bb340, type: 3}
+--- !u!1 &1873245973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1873245974}
+  - component: {fileID: 1873245975}
+  m_Layer: 0
+  m_Name: PanelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1873245974
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873245973}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 258503846}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1873245975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873245973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a176facd3aa8f747a132b5f77e21c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelSpawnPoint: {fileID: 1845927132}
+  block:
+  - {fileID: 5302970632817858267, guid: f4bbcddc23fa716479fb89cdd182751e, type: 3}
+  - {fileID: 1539828143756839488, guid: a5896fc02d30cd246acf2b86a27383c0, type: 3}
+  - {fileID: 1020610426066342541, guid: ccca955453d1b6f44b11b13560df5ae1, type: 3}
+  quiz:
+  - {fileID: 4821081350602985475, guid: be6da43b745c7804f8d32aceedfbe99a, type: 3}
+  motion:
+  - {fileID: 722148556229215842, guid: f562c3fc468447f408052e44f220b2a9, type: 3}
+  - {fileID: 2182226493125285127, guid: 33346409952977a4d881868f239b3fe8, type: 3}
+  - {fileID: 7158261777735331574, guid: 5564c063f87baf241895a61d57fddeb8, type: 3}
+  - {fileID: 253008520588418058, guid: 48a5dd9c4a36cac498113f92fa3bb005, type: 3}
+  - {fileID: 8315160128635439432, guid: 14a018719f88b5c479a25e0ba1df4f7c, type: 3}
+  - {fileID: 6579095305457256237, guid: d51c4020a73891644b6c9767f21da6b3, type: 3}
+  - {fileID: 4798388708482620758, guid: 5ad1ed13282c2e74b9c27cbb0f7a595d, type: 3}
+  - {fileID: 2720595478359537202, guid: cb8956a0e942d1e4aa1e7d49fc30778e, type: 3}
+  - {fileID: 1811733634039706096, guid: 27008f2c1e9d54143a6aad477db42a71, type: 3}
+  - {fileID: 4443459919541571623, guid: 4dae4bf1b8489bd4ebe33e806c0569c6, type: 3}
+  - {fileID: 2733853735872269117, guid: a202a939495125d4cafd29bf71c9b5f7, type: 3}
+  - {fileID: 4734787257514618999, guid: a1d623eefed62014f82820ed159ae105, type: 3}
+  quizImageAnswer: {fileID: 4789775202080314663, guid: a594e5fbb8a37c64b99e5408ad6431c5,
+    type: 3}
+  quizImageQuestion: {fileID: 515237803455803775, guid: fd90f29fc104a4146b5d57208e499d07,
+    type: 3}
+  quizTextAnswer: {fileID: 515237803455803775, guid: ceaacc2732582ef41a485c0b8faa2b55,
+    type: 3}
+  quizTextQuestion: {fileID: 515237803455803775, guid: e887d923c0b2b674a8666d3798c8bea3,
+    type: 3}
+  timer: 0
+  beat: 2
 --- !u!1 &1892997499
 GameObject:
   m_ObjectHideFlags: 0
@@ -17463,7 +17515,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2145037783
 GameObject:
