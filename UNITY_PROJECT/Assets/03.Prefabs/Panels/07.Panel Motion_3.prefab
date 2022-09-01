@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -8912474805002171608}
   m_Layer: 0
   m_Name: 07.Panel Motion_3
-  m_TagString: Untagged
+  m_TagString: TRIGGER PANEL
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

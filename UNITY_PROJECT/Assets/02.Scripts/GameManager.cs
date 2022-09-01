@@ -71,6 +71,8 @@ public class GameManager : MonoBehaviour
 
     [Header("[Prefabs]")]
     public GameObject musicElement; // Instantiate될 프리팹
+    public GameObject resultElement; // Instantiate될 프리팹
+
 
     [Header("[Music Info]")]
     public AudioSource musicBackGround; // BGM
@@ -95,7 +97,8 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("씬에 두 개 이상의 게임 매니저가 존재합니다.");
             Destroy(gameObject); // GameManager 삭제
         }
-        isOriginal = true;  
+
+        OriginalListRenewal();
     }
 
     private void FixedUpdate()
@@ -220,6 +223,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // End
+    public void InGameEnd()
+    {
+        isStart = false;
+        isStop = false;
+
+        uiResult.SetActive(true);              // Result UI On
+
+        musicBackGround.UnPause();
+        musicPlayed.Stop(); // Played Song Reset
+
+
+        isHandChange = false;
+        Change();
+    }
+
     // [Button] Back to the Lobby
     public void BtnBackLobby()
     {
@@ -231,6 +250,7 @@ public class GameManager : MonoBehaviour
             uiMusicSelect.SetActive(true);         // Lobby UI On
             uiMusicStart.SetActive(false);         // Ingame UI Off
             uiMusicPaused.SetActive(false);        // MusicPaused UI Off
+            uiResult.SetActive(false);             // Result UI Off
             vizualizationObjects.SetActive(false); // VizualizationObj Off
             inGameEnvironment.SetActive(false);    // Ingame Env Obj Off
             baseGround.SetActive(true);
@@ -242,29 +262,6 @@ public class GameManager : MonoBehaviour
             isHandChange = false;
             Change();
         }
-    }
-
-    // End
-    public void InGameEnd()
-    {
-        isStart = false;
-        isStop = false;
-
-        uiMusicSelect.SetActive(true);         // Lobby UI On
-        uiMusicStart.SetActive(false);         // Ingame UI Off
-        uiMusicPaused.SetActive(false);        // MusicPaused UI Off
-        vizualizationObjects.SetActive(false); // VizualizationObj Off
-        inGameEnvironment.SetActive(false);    // Ingame Env Obj Off
-        baseGround.SetActive(true);
-
-        musicBackGround.UnPause();
-        musicPlayed.Stop(); // Played Song Reset
-
-
-        isHandChange = false;
-        Change();
-
-        // ＃결과 UI
     }
 
 

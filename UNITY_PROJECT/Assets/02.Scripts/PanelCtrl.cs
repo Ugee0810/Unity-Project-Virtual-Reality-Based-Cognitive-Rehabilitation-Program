@@ -13,10 +13,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PanelCtrl : MonoBehaviour
 {
-
     float timer = 0;
 
     private void Update()
@@ -33,6 +33,13 @@ public class PanelCtrl : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision c)
+    {
+        if (c.collider.tag == "HAND LEFT" && c.collider.tag == "HAND RIGHT")
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Move()
     {
