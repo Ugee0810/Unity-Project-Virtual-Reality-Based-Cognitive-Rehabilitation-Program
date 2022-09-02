@@ -6,20 +6,20 @@ using UnityEngine;
 
 public class PanelManager : MonoBehaviour
 {
-    [Header("[ÆĞ³Î ÇÁ¸®ÆÕ]")]
-    public Transform panelSpawnPoint; // ÆĞ³Î »ı¼º ÁÂÇ¥
-    public GameObject[] block;        // ÆĞ³Î ÇÁ¸®ÆÕ ¹è¿­
-    public GameObject[] quiz;         // ÆĞ³Î ÇÁ¸®ÆÕ ¹è¿­
-    public GameObject[] motion;       // ÆĞ³Î ÇÁ¸®ÆÕ ¹è¿­
+    [Header("[íŒ¨ë„ í”„ë¦¬íŒ¹]")]
+    public Transform panelSpawnPoint; // íŒ¨ë„ ìƒì„± ì¢Œí‘œ
+    public GameObject[] block;        // íŒ¨ë„ í”„ë¦¬íŒ¹ ë°°ì—´
+    public GameObject[] quiz;         // íŒ¨ë„ í”„ë¦¬íŒ¹ ë°°ì—´
+    public GameObject[] motion;       // íŒ¨ë„ í”„ë¦¬íŒ¹ ë°°ì—´
 
-    [Header("[UI Canvas ÇÁ¸®ÆÕ]")]
+    [Header("[UI Canvas í”„ë¦¬íŒ¹]")]
     public GameObject quizImageAnswer;
     public GameObject quizImageQuestion;
     public GameObject quizTextAnswer;
     public GameObject quizTextQuestion;
 
     [Header("[Music BPM]")]
-    public float timer;                 // BPM °è»ê Å¸ÀÌ¸Ó
+    public float timer;                 // BPM ê³„ì‚° íƒ€ì´ë¨¸
     public float beat;                  // BPM
 
 
@@ -67,19 +67,19 @@ public class PanelManager : MonoBehaviour
         timer += Time.deltaTime; // Timer
     }
 
-    // ÆĞ³Î ÇÁ¸®ÆÕÀÇ Canvas¸¦ ¹Ù²ãÁØ´Ù. (ÅØ½ºÆ®, ÀÌ¹ÌÁö)
+    // íŒ¨ë„ í”„ë¦¬íŒ¹ì˜ Canvasë¥¼ ë°”ê¿”ì¤€ë‹¤. (í…ìŠ¤íŠ¸, ì´ë¯¸ì§€)
     void QuizThemeChange() 
     {
 
     }
 
-    // ÅØ½ºÆ® Å×¸¶
+    // í…ìŠ¤íŠ¸ í…Œë§ˆ
     void TxtTheme()
     {
 
     }
 
-    // ÀÌ¹ÌÁö Å×¸¶
+    // ì´ë¯¸ì§€ í…Œë§ˆ
     void ImageTheme()
     {
 
