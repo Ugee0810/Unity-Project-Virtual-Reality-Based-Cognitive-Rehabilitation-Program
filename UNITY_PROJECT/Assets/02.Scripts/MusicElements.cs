@@ -35,7 +35,11 @@ public class MusicElements : MonoBehaviour
 
         // 플레이에 사용 될 오디오 소스 대칭화
         GameManager.instance.musicPlayed.GetComponent<AudioSource>().clip = 
-            GameManager.instance.musicSelected.GetComponent<AudioSource>().clip; 
+            GameManager.instance.musicSelected.GetComponent<AudioSource>().clip;
+
+        // 플레이에 사용 될 3D 오디오 소스 대칭화
+        GameManager.instance.music3DPlayed.GetComponent<AudioSource>().clip =
+           GameManager.instance.musicSelected.GetComponent<AudioSource>().clip;
 
         GameManager.instance.musicSelected.Play();
     }

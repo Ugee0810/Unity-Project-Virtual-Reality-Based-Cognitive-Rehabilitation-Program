@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 3907475967691516295}
   - component: {fileID: 3471687179149672229}
   - component: {fileID: 9149703007180459343}
+  - component: {fileID: 6188359903751502144}
   m_Layer: 0
   m_Name: Panel Motion_0.001
-  m_TagString: Untagged
+  m_TagString: PANEL LEFT
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,6 +84,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &6188359903751502144
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930673807722210333}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.015
+  m_Center: {x: -0.066, y: 0, z: 0.33}
 --- !u!1 &2969136049970219473
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,9 +108,10 @@ GameObject:
   - component: {fileID: 8371236704816827874}
   - component: {fileID: 507019653275156475}
   - component: {fileID: 5845306662510834025}
+  - component: {fileID: 3898156339595638443}
   m_Layer: 0
   m_Name: Panel Motion_1.003
-  m_TagString: Untagged
+  m_TagString: PANEL RIGHT
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +181,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &3898156339595638443
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969136049970219473}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.015
+  m_Center: {x: 0.057, y: 0, z: 0.33}
 --- !u!1 &4734787257514618999
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,8 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5403905312401140429}
   - component: {fileID: 7176615636690518255}
-  - component: {fileID: 1674797769406012823}
-  - component: {fileID: 2385680868083958130}
+  - component: {fileID: -7140443179398290748}
   m_Layer: 0
   m_Name: 15.Panel Motion_11
   m_TagString: TRIGGER PANEL
@@ -214,8 +241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &1674797769406012823
-SphereCollider:
+--- !u!65 &-7140443179398290748
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -225,18 +252,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
-  m_Center: {x: -0.33, y: 1, z: 0}
---- !u!135 &2385680868083958130
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4734787257514618999}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.05
-  m_Center: {x: 0.29, y: 1, z: 0}
+  m_Size: {x: 5, y: 3, z: 0.3}
+  m_Center: {x: 0, y: 1.6, z: 0}

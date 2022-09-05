@@ -1,9 +1,3 @@
-// 프리팹 하위 인스턴스 조회
-//customMusicElements.transform.GetChild(0).gameObject.GetComponent<Image>();
-//customMusicElements.transform.GetChild(1).gameObject.GetComponent<Text>();
-//customMusicElements.transform.GetChild(2).gameObject.GetComponent<Text>();
-//customMusicElements.transform.GetChild(3).gameObject.GetComponent<AudioSource>();
-
 /// <summary>
 /// GameManager.cs
 /// 
@@ -21,8 +15,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
-using XRController = UnityEngine.XR.Interaction.Toolkit.XRController;
 
 public class GameManager : MonoBehaviour
 {
@@ -63,7 +55,9 @@ public class GameManager : MonoBehaviour
     /*[HideInInspector]*/ public bool isLevelNormal; // [Button] Level Normal Selected
     /*[HideInInspector]*/ public bool isLevelHard;   // [Button] Level Hard Selected
 
-    /*[HideInInspector]*/ public bool isHandChange;   // [Button] True : Hand Controller / False : Lay Controller
+    /*[HideInInspector]*/ public bool isHandChange;  // [Button] True : Hand Controller / False : Lay Controller
+
+    /*[HideInInspector]*/ public bool isSensor;      // 구간 내 패널 프리팹 태그 감지 -> 패널 생성 유/무 판단
 
     [Header("[Prefabs]")]
     public GameObject musicElement; // Instantiate될 프리팹
@@ -73,6 +67,7 @@ public class GameManager : MonoBehaviour
     public AudioSource musicBackGround; // BGM
     public AudioSource musicSelected;   // 선택된 노래
     public AudioSource musicPlayed;     // 플레이 할 노래
+    public AudioSource music3DPlayed;   // 로직 전용 노래
 
     [Header("[Origin Controller]")]
     public GameObject layControllerDeviceLeft;
@@ -83,8 +78,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         // Singleton
-        if (instance == null)
-            instance = this;
+        if (instance == null) instance = this;
         else
         {
             Debug.LogWarning("씬에 두 개 이상의 게임 매니저가 존재합니다.");

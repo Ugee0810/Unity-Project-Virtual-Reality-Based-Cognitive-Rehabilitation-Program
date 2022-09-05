@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
 {
@@ -22,10 +23,6 @@ public class PanelManager : MonoBehaviour
     public float timer;                 // BPM 계산 타이머
     public float beat;                  // BPM
 
-
-    GameObject[] motionPanels;
-
-
     enum Motion
     {
         M0,
@@ -42,29 +39,22 @@ public class PanelManager : MonoBehaviour
         M11
     }
 
-    private void Awake()
-    {
-        
-    }
-
     private void FixedUpdate()
     {
         if (GameManager.instance.isStart)
         {
             PanelInstance();
         }
+
+        //Timing();
     }
 
     public void PanelInstance()
     {
-        if (timer > beat)
+        if (GameManager.instance.isSensor == false)
         {
-            //Instantiate(Panels[Random.Range(0, 16)], panelSpawnPoint);
-
-            timer -= beat; // Timer = Timer - Beat
+            Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
         }
-
-        timer += Time.deltaTime; // Timer
     }
 
     // 패널 프리팹의 Canvas를 바꿔준다. (텍스트, 이미지)
@@ -77,7 +67,7 @@ public class PanelManager : MonoBehaviour
     void TxtTheme()
     {
 
-    }
+    }   
 
     // 이미지 테마
     void ImageTheme()
@@ -116,4 +106,16 @@ public class PanelManager : MonoBehaviour
         //        break;
         //}
     }
+
+    //void Timing()
+    //{
+    //    if (PanelSensorHandLeft.panelLeft.leftscore == 1 && PanelSensorHandRight.panelRight.rightscore == 1)
+    //    {
+    //        Destroy(PanelSensorHandLeft.panelLeft.gameObject.tag)
+    //    }
+
+
+    //    PanelSensorHandLeft.panelLeft.leftscore = 0;
+    //    PanelSensorHandRight.panelRight.rightscore = 0;
+    //}
 }

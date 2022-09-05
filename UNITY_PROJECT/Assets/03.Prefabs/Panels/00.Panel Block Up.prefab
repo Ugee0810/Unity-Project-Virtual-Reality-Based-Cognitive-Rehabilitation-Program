@@ -176,9 +176,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4817795095935814753}
   - component: {fileID: 6876825348307330289}
+  - component: {fileID: 4550654739635343716}
   m_Layer: 0
   m_Name: 00.Panel Block Up
-  m_TagString: Untagged
+  m_TagString: TRIGGER PANEL
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -212,5 +213,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panels: []
-  panelSpawnPoint: {fileID: 0}
+--- !u!65 &4550654739635343716
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5302970632817858267}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 1.5, z: 0.3}
+  m_Center: {x: 0, y: 2.3, z: 0}
