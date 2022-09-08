@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
 {
+    public GameObject checkCollider;
+
     [Header("[패널 프리팹]")]
     public Transform panelSpawnPoint; // 패널 생성 좌표
     public GameObject[] block;        // 패널 프리팹 배열
@@ -44,17 +47,24 @@ public class PanelManager : MonoBehaviour
         if (GameManager.instance.isStart)
         {
             PanelInstance();
+            Check();
         }
-
-        //Timing();
     }
 
     public void PanelInstance()
     {
         if (GameManager.instance.isSensor == false)
         {
-            Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
+            Instantiate(motion[Random.Range(1, 2)], panelSpawnPoint);
         }
+    }
+
+    void Check()
+    {
+        if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
+            checkCollider.SetActive(true);
+        else if (GameManager.instance.isSensorLeft == false || GameManager.instance.isSensorRight == false)
+            checkCollider.SetActive(false);
     }
 
     // 패널 프리팹의 Canvas를 바꿔준다. (텍스트, 이미지)
@@ -106,16 +116,4 @@ public class PanelManager : MonoBehaviour
         //        break;
         //}
     }
-
-    //void Timing()
-    //{
-    //    if (PanelSensorHandLeft.panelLeft.leftscore == 1 && PanelSensorHandRight.panelRight.rightscore == 1)
-    //    {
-    //        Destroy(PanelSensorHandLeft.panelLeft.gameObject.tag)
-    //    }
-
-
-    //    PanelSensorHandLeft.panelLeft.leftscore = 0;
-    //    PanelSensorHandRight.panelRight.rightscore = 0;
-    //}
 }
