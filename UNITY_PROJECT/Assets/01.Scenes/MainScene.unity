@@ -170,7 +170,6 @@ MonoBehaviour:
   musicBackGround: {fileID: 1161132230}
   musicSelected: {fileID: 160552299}
   musicPlayed: {fileID: 1504925052}
-  music3DPlayed: {fileID: 0}
   musicElement: {fileID: 1001780630179371840, guid: a8edfaf69e22ad045b4deff8e1ae665d,
     type: 3}
   resultElement: {fileID: 4694132861935244557, guid: 51c1d066ffbfb654e8570b005ffec392,
@@ -6086,7 +6085,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &708912651
 Transform:
   m_ObjectHideFlags: 0
@@ -27439,7 +27438,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
