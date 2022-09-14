@@ -8,6 +8,8 @@ using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
 {
+    public static PanelManager instance;
+
     public GameObject checkCollider;
 
     [Header("[패널 프리팹]")]
@@ -26,20 +28,9 @@ public class PanelManager : MonoBehaviour
     public float timer;                 // BPM 계산 타이머
     public float beat;                  // BPM
 
-    enum Motion
+    private void Awake()
     {
-        M0,
-        M1,
-        M2,
-        M3,
-        M4,
-        M5,
-        M6,
-        M7,
-        M8,
-        M9,
-        M10,
-        M11
+        if (instance == null) instance = this;
     }
 
     private void FixedUpdate()
@@ -53,10 +44,15 @@ public class PanelManager : MonoBehaviour
 
     public void PanelInstance()
     {
-        if (GameManager.instance.isSensor == false)
+        timer += Time.deltaTime;
+
+        if (timer > beat)
         {
             Instantiate(motion[Random.Range(1, 2)], panelSpawnPoint);
+            timer -= beat;
         }
+        if (GameManager.instance.isStart == false)
+            timer = 0;
     }
 
     void Check()

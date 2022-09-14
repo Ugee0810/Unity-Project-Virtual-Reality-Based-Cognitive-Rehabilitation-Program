@@ -22,6 +22,12 @@ public class MusicElements : MonoBehaviour
         //print("설마 되냐?" + selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip); // 방금 클릭한 게임 오브젝트의 Audio Clip 출력
         //print("이건 되나?" + GameManager.instance.musicSelected.GetComponent<AudioSource>().clip);
 
+        int bpm = UniBpmAnalyzer.AnalyzeBpm(selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip);
+
+        float secPerBeat;
+        secPerBeat = 60f / bpm;
+        PanelManager.instance.beat = secPerBeat;
+
         // textTitle.text ← customMusicElements.AudioSource.text
         GameManager.instance.infoTitle.GetComponent<Text>().text =
             $"- {selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name}";

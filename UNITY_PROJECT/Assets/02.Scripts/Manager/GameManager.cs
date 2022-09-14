@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
 
         musicBackGround.Pause();              // BGM Pause
         musicSelected.Stop();                 // Selected Music OFF
-        musicPlayed.Play();                   // Played Music ON
+        musicPlayed.PlayDelayed(10);          // Played Music ON
 
         ControllerDeviceModeChange();         // Change Controller
     }

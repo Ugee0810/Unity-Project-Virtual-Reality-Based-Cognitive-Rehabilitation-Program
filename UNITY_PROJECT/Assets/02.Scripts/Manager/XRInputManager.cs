@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class XRInput : MonoBehaviour
+public class XRInputManager : MonoBehaviour
 {
     [SerializeField] XRController controller;
     [SerializeField] XRBinding[] bindings;

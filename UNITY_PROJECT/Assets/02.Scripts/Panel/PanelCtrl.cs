@@ -25,11 +25,11 @@ public class PanelCtrl : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        if (timer == 5)
+        if (timer == 3)
         {
             //Quiz();
 
-            timer -= 5;
+            timer -= 3;
         }
     }
 
