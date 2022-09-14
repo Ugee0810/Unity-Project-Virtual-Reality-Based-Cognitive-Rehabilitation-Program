@@ -11,26 +11,13 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PanelCtrl : MonoBehaviour
 {
-    float timer = 0;
-
     private void Update()
     {
         Move();
-
-        timer += Time.deltaTime;
-
-        if (timer == 3)
-        {
-            //Quiz();
-
-            timer -= 3;
-        }
     }
 
     void Move()

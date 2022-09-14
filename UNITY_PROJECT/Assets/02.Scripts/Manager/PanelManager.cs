@@ -10,7 +10,7 @@ public class PanelManager : MonoBehaviour
 {
     public static PanelManager instance;
 
-    public GameObject checkCollider;
+    public GameObject panelCheck;
 
     [Header("[패널 프리팹]")]
     public Transform panelSpawnPoint; // 패널 생성 좌표
@@ -33,7 +33,7 @@ public class PanelManager : MonoBehaviour
         if (instance == null) instance = this;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (GameManager.instance.isStart)
         {
@@ -51,16 +51,18 @@ public class PanelManager : MonoBehaviour
             Instantiate(motion[Random.Range(1, 2)], panelSpawnPoint);
             timer -= beat;
         }
-        if (GameManager.instance.isStart == false)
-            timer = 0;
+
+        if (GameManager.instance.isStart == false) timer = 0;
     }
 
     void Check()
     {
         if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
-            checkCollider.SetActive(true);
+        {
+            panelCheck.SetActive(true);
+        }
         else if (GameManager.instance.isSensorLeft == false || GameManager.instance.isSensorRight == false)
-            checkCollider.SetActive(false);
+            panelCheck.SetActive(false);
     }
 
     // 패널 프리팹의 Canvas를 바꿔준다. (텍스트, 이미지)
