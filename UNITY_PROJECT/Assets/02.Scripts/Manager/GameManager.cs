@@ -202,11 +202,14 @@ public class GameManager : MonoBehaviour
         isStop = false;
         isHandChange = false;
 
-        uiResult.SetActive(true);              // Result UI On
+        uiResult.SetActive(true); // Result UI On
 
         musicBackGround.UnPause();
         musicPlayed.Stop(); // Played Song Reset
 
+        PanelManager.instance.timer = 0;
+        PanelManager.instance.lastIndex = 0;
+        PanelManager.instance.safeQuiz = false;
 
         ControllerDeviceModeChange(); // Change Controller
     }

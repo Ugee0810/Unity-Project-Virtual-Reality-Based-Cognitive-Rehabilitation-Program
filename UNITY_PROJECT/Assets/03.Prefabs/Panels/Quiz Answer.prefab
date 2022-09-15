@@ -178,8 +178,8 @@ GameObject:
   - component: {fileID: -6616265568773966056}
   - component: {fileID: 5712862029998029074}
   m_Layer: 0
-  m_Name: 03.Panel Quiz Answer
-  m_TagString: TRIGGER PANEL
+  m_Name: Quiz Answer
+  m_TagString: QUIZ
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

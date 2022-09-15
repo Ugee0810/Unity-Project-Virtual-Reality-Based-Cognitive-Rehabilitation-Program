@@ -6,9 +6,12 @@ TagManager:
   tags:
   - HAND LEFT
   - HAND RIGHT
-  - TRIGGER PANEL
   - PANEL LEFT
   - PANEL RIGHT
+  - QUIZ
+  - BLOCK
+  - MOTION
+  - TRIGGER PANEL
   layers:
   - Default
   - TransparentFX
