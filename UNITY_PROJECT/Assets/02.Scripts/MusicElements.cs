@@ -9,24 +9,14 @@ public class MusicElements : MonoBehaviour
 {
     public void Select()
     {
-        GameManager.instance.btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
-        GameManager.instance.musicBackGround.Pause(); // BGM Pause
+        // BGM Pause
+        GameManager.instance.musicBackGround.Pause();
 
-        GameObject selectedElement = EventSystem.current.currentSelectedGameObject; // 방금 클릭한 게임 오브젝트를 가져와서 저장
+        // 방금 클릭한 게임 오브젝트를 가져와서 저장
+        GameObject selectedElement = EventSystem.current.currentSelectedGameObject;
 
-        //print($"선택한 프리팹 이름 : {selectedElement.name}"); // 방금 클릭한 게임 오브젝트의 이름 출력
-        //print($"앨범 이미지 : {selectedElement.transform.GetChild(0)}");
-        //print($"타이틀 :      {selectedElement.transform.GetChild(1)}");
-        //print($"플레이 타임 : {selectedElement.transform.GetChild(2)}");
-        //print($"노래 제목 :   {selectedElement.transform.GetChild(3)}");
-        //print("설마 되냐?" + selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip); // 방금 클릭한 게임 오브젝트의 Audio Clip 출력
-        //print("이건 되나?" + GameManager.instance.musicSelected.GetComponent<AudioSource>().clip);
-
-        int bpm = UniBpmAnalyzer.AnalyzeBpm(selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip);
-
-        float secPerBeat;
-        secPerBeat = 180f / bpm;
-        PanelManager.instance.beat = secPerBeat;
+        GameManager.instance.playTime = selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length;
+        GameManager.instance.bpm = UniBpmAnalyzer.AnalyzeBpm(selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip);
 
         // textTitle.text ← customMusicElements.AudioSource.text
         GameManager.instance.infoTitle.GetComponent<Text>().text =

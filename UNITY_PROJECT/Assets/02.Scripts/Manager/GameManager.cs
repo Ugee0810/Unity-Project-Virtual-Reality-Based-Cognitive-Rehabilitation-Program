@@ -13,38 +13,35 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;   //싱글턴을 할당할 전역 변수
-
     [Header("[UI]")]
-    public GameObject uiMusicSelect;      // Lobby UI
-    public GameObject uiMusicStart;       // Ingame UI
-    public GameObject uiMusicPaused;      // Pause UI
-    public GameObject uiResult;           // Result UI
+    public GameObject musicSelect;      // UI Lobby
+    public GameObject musicStart;       // UI Ingame
+    public GameObject musicPaused;      // UI Pause
+    public GameObject result;           // UI Result
 
-    public GameObject originalScrollView; // Original View UI
-    public GameObject customScrollView;   // Custom View UI
+    public GameObject originalScrollView; // UI Original View
+    public GameObject customScrollView;   // UI Custom View
 
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
     public GameObject contentResult;      // 결과     리소스 프리팹 생성 위치(부모)
 
-    public GameObject infoTitle;          // Panel Music Info에서 Music Title
+    public GameObject infoTitle;          // Panel Music Info - Music Title
 
-    public GameObject btnPlay;            // 노래 재생 버튼
+    public GameObject btnPlay;            // Game Start
 
-    [Header("[환경 오브젝트]")]
+    [Header("[Environment Objects]")]
     public GameObject inGameEnvironment;
     public GameObject baseGround;
-
-    [Header("[SFX]")]
     public GameObject vizualizationObjects;
 
-    [Header("[Music Info]")]
+    [Header("[Audio Source]")]
     public AudioSource musicBackGround; // BGM
     public AudioSource musicSelected;   // 선택된 노래
     public AudioSource musicPlayed;     // 플레이 할 노래
@@ -54,44 +51,82 @@ public class GameManager : MonoBehaviour
     public GameObject resultElement;
 
     [Header("[Origin Controller]")]
-    public GameObject layControllerActionLeft;
-    public GameObject layControllerActionRight;
-    public GameObject handControllerActionLeft;
-    public GameObject handControllerActionRight;
+    public GameObject layLeftController;
+    public GameObject layRightController;
+    public GameObject handLeftController;
+    public GameObject handRightController;
 
-    public GameObject layControllerDeviceLeft;
-    public GameObject layControllerDeviceRight;
-    public GameObject handControllerDeviceLeft;
-    public GameObject handControllerDeviceRight;
+    [Header("[Music Info]")]
+    Stopwatch stopwatch = new Stopwatch();
+    public float playTime;
+    public int bpm;
+    public float secPerBeat;
+    public float timer; // BPM 계산 타이머
 
-    [Header("[플래그 변수]")]
-    /*[HideInInspector]*/ public bool isOriginal;    // [Button] Original MusicList Selected
-    /*[HideInInspector]*/ public bool isCustom;      // [Button] Custom MusicList Selected
+    // [Header("[플래그 변수]")]
+    [HideInInspector] public bool isOriginal;    // [Button] Original MusicList Selected
+    [HideInInspector] public bool isCustom;      // [Button] Custom MusicList Selected
 
-    /*[HideInInspector]*/ public bool isLevelEasy;   // [Button] Level Easy Selected
-    /*[HideInInspector]*/ public bool isLevelNormal; // [Button] Level Normal Selected
-    /*[HideInInspector]*/ public bool isLevelHard;   // [Button] Level Hard Selected
+    [HideInInspector] public bool isLevelEasy;   // [Button] Level Easy Selected
+    [HideInInspector] public bool isLevelNormal; // [Button] Level Normal Selected
+    [HideInInspector] public bool isLevelHard;   // [Button] Level Hard Selected
 
-    /*[HideInInspector]*/ public bool isHandChange;  // True : Hand Controller / False : Lay Controller
+    [HideInInspector] public bool isHandChange;  // True : Hand Controller | False : Lay Controller
 
-    /*[HideInInspector]*/ public bool isStart;       // Music Start
-    /*[HideInInspector]*/ public bool isStop;        // Music Pause
+    [HideInInspector] public bool isStart;       // Game Start
+    [HideInInspector] public bool isPause;       // Game Pause
 
-    /*[HideInInspector]*/ public bool isSensor;      // 패널 생성 센서
-    /*[HideInInspector]*/ public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
-    /*[HideInInspector]*/ public bool isSensorRight; // 패널 접촉 유/무 오른쪽
-
+    [HideInInspector] public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
+    [HideInInspector] public bool isSensorRight; // 패널 접촉 유/무 오른쪽
+    
+    public static GameManager instance;
     private void Awake()
     {
-        // Singleton
-        if (instance == null) instance = this;
+        if (instance == null)
+            instance = this;
         else
-        {
-            Debug.LogWarning("씬에 두 개 이상의 게임 매니저가 존재합니다.");
-            Destroy(gameObject); // GameManager 삭제
-        }
+            Destroy(gameObject);
 
         OriginalListRenewal();
+    }
+
+    private void Update()
+    {
+        if (isStart && !isPause)
+        {
+            stopwatch.Start();
+            UnityEngine.Debug.Log(stopwatch.Elapsed);
+            if (playTime <= stopwatch.Elapsed.Seconds)
+            {
+                InGameEnd();
+                return;
+            }
+        }
+    }
+    // https://codingmania.tistory.com/205
+    // 노래 끝나면 종료 이벤트 코루틴 사용
+    IEnumerator Playing()
+    {
+        if (!musicPlayed.isPlaying)
+        {
+
+        }
+    }
+
+    public static string TimeFormatter(float seconds, bool forceHHMMSS = false) // 시간 변환 함수
+    {
+        float secondsRemainder = Mathf.Floor((seconds % 60) * 100) / 100.0f;
+        int minutes = ((int)(seconds / 60)) % 60;
+        int hours = (int)(seconds / 3600);
+
+        if (!forceHHMMSS)
+        {
+            if (hours == 0)
+            {
+                return System.String.Format("{0:00}:{1:00.00}", minutes, secondsRemainder);
+            }
+        }
+        return System.String.Format("{0}:{1:00}:{2:00}", hours, minutes, secondsRemainder);
     }
 
     // [Button] Original MusicList Selected
@@ -126,19 +161,22 @@ public class GameManager : MonoBehaviour
     // [Button] Easy
     public void BtnLvEasy()
     {
-
+        secPerBeat = 300f / bpm;
+        btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Normal
     public void BtnLvNormal()
     {
-
+        secPerBeat = 240f / bpm;
+        btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Hard
     public void BtnLvHard()
     {
-
+        secPerBeat = 180f / bpm;
+        btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
     }
 
 
@@ -148,17 +186,17 @@ public class GameManager : MonoBehaviour
         isStart = true;
         isHandChange = true;
 
-        uiMusicSelect.SetActive(false);       // Lobby UI OFF
+        musicSelect.SetActive(false); // Lobby UI OFF
+        musicStart.SetActive(true); // Ingame UI ON
         baseGround.SetActive(false);
-        uiMusicStart.SetActive(true);         // Ingame UI ON
         vizualizationObjects.SetActive(true); // VizualizationObj ON
-        inGameEnvironment.SetActive(true);    // 인게임 환경 요소 ON
+        inGameEnvironment.SetActive(true); // 인게임 환경 요소 ON
 
-        musicBackGround.Pause();              // BGM Pause
-        musicSelected.Stop();                 // Selected Music OFF
-        musicPlayed.PlayDelayed(10);          // Played Music ON
+        musicBackGround.Pause(); // BGM Pause
+        musicSelected.Stop(); // Selected Music OFF
+        musicPlayed.Play(); // Played Music ON
 
-        ControllerDeviceModeChange();         // Change Controller
+        ControllerModeChange();
     }
 
     // [Button] Pause
@@ -166,32 +204,32 @@ public class GameManager : MonoBehaviour
     {
         if (isStart)
         {
-            isStop = true;
+            isPause = true;
             isHandChange = false;
 
-            uiMusicPaused.SetActive(true); // Music Paused UI On
+            musicPaused.SetActive(true); // Music Paused UI On
 
             Time.timeScale = 0;
             musicPlayed.Pause(); // 플레이 중 노래 일시 정지
 
-            ControllerDeviceModeChange(); // Change Controller
+            ControllerModeChange();
         }
     }
 
     // [Button] UnPause
     public void BtnInGameUnPause()
     {
-        if (isStart && isStop)
+        if (isStart && isPause)
         {
-            isStop = false;
+            isPause = false;
             isHandChange = true;
 
-            uiMusicPaused.SetActive(false); // Music Paused UI Off
+            musicPaused.SetActive(false); // Music Paused UI Off
 
             Time.timeScale = 1;
             musicPlayed.UnPause(); // 플레이 중 노래 일시 정지 해제
 
-            ControllerDeviceModeChange(); // Change Controller
+            ControllerModeChange();
         }
     }
 
@@ -199,46 +237,67 @@ public class GameManager : MonoBehaviour
     public void InGameEnd()
     {
         isStart = false;
-        isStop = false;
+        isPause = false;
         isHandChange = false;
 
-        uiResult.SetActive(true); // Result UI On
+        result.SetActive(true); // Result UI On
 
         musicBackGround.UnPause();
         musicPlayed.Stop(); // Played Song Reset
 
-        PanelManager.instance.timer = 0;
+        timer = 0;
+        secPerBeat = 0;
+        btnPlay.GetComponent<Button>().interactable = false;
         PanelManager.instance.lastIndex = 0;
         PanelManager.instance.safeQuiz = false;
+        for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
+        {
+            Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
+        }
 
-        ControllerDeviceModeChange(); // Change Controller
+        ControllerModeChange();
     }
 
-    // [Button] Back to the Lobby
-    public void BtnBackLobby()
+    // [Button] Pause to Back to the Lobby
+    public void BtnPauseBackLobby()
     {
-        if (isStart && isStop)
+        if (isStart && isPause)
         {
             isStart = false;
-            isStop = false;
+            isPause = false;
             isHandChange = false;
 
-            uiMusicSelect.SetActive(true);         // Lobby UI On
-            uiMusicStart.SetActive(false);         // Ingame UI Off
-            uiMusicPaused.SetActive(false);        // MusicPaused UI Off
-            uiResult.SetActive(false);             // Result UI Off
-            vizualizationObjects.SetActive(false); // VizualizationObj Off
-            inGameEnvironment.SetActive(false);    // Ingame Env Obj Off
+            musicSelect.SetActive(true); // Lobby UI On
             baseGround.SetActive(true);
+            musicStart.SetActive(false); // Ingame UI Off
+            musicPaused.SetActive(false); // MusicPaused UI Off
+            result.SetActive(false); // Result UI Off
+            vizualizationObjects.SetActive(false); // VizualizationObj Off
+            inGameEnvironment.SetActive(false); // Ingame Env Obj Off
 
             Time.timeScale = 1;
             musicBackGround.UnPause();
             musicPlayed.Stop(); // 플레이 중 노래 정지
 
-            ControllerDeviceModeChange(); // Change Controller
+            timer = 0;
+            secPerBeat = 0;
+            btnPlay.GetComponent<Button>().interactable = false;
+            PanelManager.instance.lastIndex = 0;
+            PanelManager.instance.safeQuiz = false;
+            for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
+            {
+                Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
+            }
+
+            ControllerModeChange();
         }
     }
 
+    // [Button] End to Back to the Lobby
+    public void BtnEndBackLobby()
+    {
+
+    }
 
     object[] originalMusics;
     object[] customMusics;
@@ -310,60 +369,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 시간 변환 함수
-    public static string TimeFormatter(float seconds, bool forceHHMMSS = false)
-    {
-        float secondsRemainder = Mathf.Floor((seconds % 60) * 100) / 100.0f;
-        int minutes = ((int)(seconds / 60)) % 60;
-        int hours = (int)(seconds / 3600);
-
-        if (!forceHHMMSS)
-        {
-            if (hours == 0)
-            {
-                return System.String.Format("{0:00}:{1:00.00}", minutes, secondsRemainder);
-            }
-        }
-        return System.String.Format("{0}:{1:00}:{2:00}", hours, minutes, secondsRemainder);
-    }
-
-    public void ControllerDeviceModeChange()
+    void ControllerModeChange()
     {
         if /*Hand Controller*/ (isHandChange) 
         {
-            //layControllerActionLeft.SetActive(false);
-            //layControllerActionRight.SetActive(false);
+            layLeftController .SetActive(false);
+            layRightController.SetActive(false);
 
-            //handControllerActionLeft.SetActive(true);
-            //handControllerActionRight.SetActive(true);
-
-
-            layControllerDeviceLeft.SetActive(false);
-            layControllerDeviceRight.SetActive(false);
-
-            handControllerDeviceLeft.SetActive(true);
-            handControllerDeviceRight.SetActive(true);
+            handLeftController .SetActive(true);
+            handRightController.SetActive(true);
 
             isHandChange = false;
-            return;
         }
         else /*Lay Controller*/
         {
-            //handControllerActionLeft.SetActive(false);
-            //handControllerActionRight.SetActive(false);
+            handLeftController .SetActive(false);
+            handRightController.SetActive(false);
 
-            //layControllerActionLeft.SetActive(true);
-            //layControllerActionRight.SetActive(true);
-
-
-            handControllerDeviceLeft.SetActive(false);
-            handControllerDeviceRight.SetActive(false);
-
-            layControllerDeviceLeft.SetActive(true);
-            layControllerDeviceRight.SetActive(true);
+            layLeftController .SetActive(true);
+            layRightController.SetActive(true);
 
             isHandChange = true;
-            return;
         }
     }
 }

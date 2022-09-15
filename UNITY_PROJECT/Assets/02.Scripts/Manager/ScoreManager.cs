@@ -3,27 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoreSystem : MonoBehaviour
+public class ScoreManager : MonoBehaviour
 {
-    public static ScoreSystem instance;
+    public Text textScore;
+    public Text textKcal;
 
-
-    public GameObject scoreObj;
-    Text textScore;
     int score = 0;
-
-    public GameObject kcalObj;
-    Text textKcal;
     float kcal = 0;
 
-
+    public static ScoreManager instance;
     private void Awake()
     {
-        instance = this;
-
-
-        textScore = scoreObj.GetComponent<Text>();
-        textKcal  = kcalObj.GetComponent<Text>();
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
     }
 
     private void OnEnable()
@@ -41,11 +35,16 @@ public class ScoreSystem : MonoBehaviour
         }
     }
 
-
     public void IncreaseScore()
     {
         score += 1000;
         SetScore();
+    }
+
+    public void IncreaseKcal()
+    {
+        kcal += Random.Range(0.1f, 0.2f);
+        SetKcal();
     }
 
     public void SetScore()
@@ -53,15 +52,8 @@ public class ScoreSystem : MonoBehaviour
         textScore.text = score.ToString();
     }
 
-
-    public void IncreaseKcal()
-    {
-        kcal += 0.4f;
-        SetKcal();
-    }
-
     public void SetKcal()
     {
-        textKcal.text  = kcal.ToString("F1");
+        textKcal.text  = kcal.ToString("F2");
     }
 }

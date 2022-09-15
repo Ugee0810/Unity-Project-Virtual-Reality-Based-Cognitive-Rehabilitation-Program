@@ -2,17 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
 {
-    public static PanelManager instance;
-
-    public GameObject panelCheck;
-
     [Header("[패널 프리팹]")]
     public Transform panelSpawnPoint; // 패널 생성 좌표
+    public GameObject panelCheck;
     public GameObject[] quiz;         // 패널 프리팹 배열
     public GameObject[] block;        // 패널 프리팹 배열
     public GameObject[] motion;       // 패널 프리팹 배열
@@ -23,13 +19,14 @@ public class PanelManager : MonoBehaviour
     public GameObject quizTextAnswer;
     public GameObject quizTextQuestion;
 
-    [Header("[Music BPM]")]
-    public float timer;                 // BPM 계산 타이머
-    public float beat;                  // BPM
-
+    public static PanelManager instance;
     private void Awake()
     {
-        if (instance == null) instance = this;
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+
         lastIndex = -1;
     }
 
@@ -43,13 +40,13 @@ public class PanelManager : MonoBehaviour
     }
 
     public int lastIndex;
-    public bool safeQuiz = false;
+    public bool safeQuiz;
     public void PanelInstance()
     {
-        timer += Time.deltaTime;
+        GameManager.instance.timer += Time.deltaTime;
         
         int _PanelIndex = Random.Range(0, 10);
-        if (timer > beat)
+        if (GameManager.instance.timer > GameManager.instance.secPerBeat)
         {
             /* QUIZ 10% */ if (_PanelIndex == 0)
             {
@@ -61,7 +58,6 @@ public class PanelManager : MonoBehaviour
                     lastIndex++;
                     return;
                 }
-
                 if (safeQuiz)
                 {
                     if (panelSpawnPoint.transform.GetChild(lastIndex).transform.name == "MOTION")
@@ -101,14 +97,16 @@ public class PanelManager : MonoBehaviour
                 lastIndex++;
                 safeQuiz = true;
             }
-            timer -= beat;
+            GameManager.instance.timer -= GameManager.instance.secPerBeat;
         }
     }
 
     void PanelCheck()
     {
-        if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight) panelCheck.SetActive(true);
-        else if (GameManager.instance.isSensorLeft == false || GameManager.instance.isSensorRight == false) panelCheck.SetActive(false);
+        if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
+            panelCheck.SetActive(true);
+        else if (GameManager.instance.isSensorLeft == false || GameManager.instance.isSensorRight == false)
+            panelCheck.SetActive(false);
     }
 
     // 패널 프리팹의 Canvas를 바꿔준다. (텍스트, 이미지)
