@@ -3700,7 +3700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &489118710
 Transform:
   m_ObjectHideFlags: 0
@@ -4936,7 +4936,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &611845243
 Transform:
   m_ObjectHideFlags: 0
@@ -6022,7 +6022,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f5a24a380916d14db9775daab4fe333, type: 3}
@@ -13089,7 +13089,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b54c02569d2a8c4408e505636941b336, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -14967,6 +14967,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b874380980398154f96f05703590314b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _SFX:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 865763499}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!54 &1071906724
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15069,7 +15084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1096925472
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15429,6 +15444,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b874380980398154f96f05703590314b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _SFX:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 243124974}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!54 &1130156364
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20792,7 +20822,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1205326649
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21416,7 +21446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1279742390
 Transform:
   m_ObjectHideFlags: 0
@@ -22091,7 +22121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de4e056e57ebc54390d424db255fb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 489118714}
+  controller: {fileID: 1332571248}
   bindings:
   - button: 2
     pressType: 0
@@ -30627,6 +30657,7 @@ MonoBehaviour:
   timer: 0
   beat: 0
   lastIndex: 0
+  safeQuiz: 0
 --- !u!1 &1892997499
 GameObject:
   m_ObjectHideFlags: 0
@@ -42113,7 +42144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2092948486
 Transform:
   m_ObjectHideFlags: 0

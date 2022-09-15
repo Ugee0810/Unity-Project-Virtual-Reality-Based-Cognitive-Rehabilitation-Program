@@ -25,7 +25,7 @@ public class MusicElements : MonoBehaviour
         int bpm = UniBpmAnalyzer.AnalyzeBpm(selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip);
 
         float secPerBeat;
-        secPerBeat = 60f / bpm;
+        secPerBeat = 180f / bpm;
         PanelManager.instance.beat = secPerBeat;
 
         // textTitle.text ← customMusicElements.AudioSource.text

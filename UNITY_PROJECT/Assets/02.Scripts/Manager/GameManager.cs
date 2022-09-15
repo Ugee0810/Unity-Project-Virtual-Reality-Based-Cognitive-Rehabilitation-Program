@@ -331,36 +331,36 @@ public class GameManager : MonoBehaviour
     {
         if /*Hand Controller*/ (isHandChange) 
         {
-            layControllerActionLeft.SetActive(false);
-            layControllerActionRight.SetActive(false);
+            //layControllerActionLeft.SetActive(false);
+            //layControllerActionRight.SetActive(false);
 
-            handControllerActionLeft.SetActive(true);
-            handControllerActionRight.SetActive(true);
+            //handControllerActionLeft.SetActive(true);
+            //handControllerActionRight.SetActive(true);
 
 
-            //layControllerDeviceLeft.SetActive(false);
-            //layControllerDeviceRight.SetActive(false);
+            layControllerDeviceLeft.SetActive(false);
+            layControllerDeviceRight.SetActive(false);
 
-            //handControllerDeviceLeft.SetActive(true);
-            //handControllerDeviceRight.SetActive(true);
+            handControllerDeviceLeft.SetActive(true);
+            handControllerDeviceRight.SetActive(true);
 
             isHandChange = false;
             return;
         }
         else /*Lay Controller*/
         {
-            handControllerActionLeft.SetActive(false);
-            handControllerActionRight.SetActive(false);
+            //handControllerActionLeft.SetActive(false);
+            //handControllerActionRight.SetActive(false);
 
-            layControllerActionLeft.SetActive(true);
-            layControllerActionRight.SetActive(true);
+            //layControllerActionLeft.SetActive(true);
+            //layControllerActionRight.SetActive(true);
 
 
-            //handControllerDeviceLeft.SetActive(false);
-            //handControllerDeviceRight.SetActive(false);
+            handControllerDeviceLeft.SetActive(false);
+            handControllerDeviceRight.SetActive(false);
 
-            //layControllerDeviceLeft.SetActive(true);
-            //layControllerDeviceRight.SetActive(true);
+            layControllerDeviceLeft.SetActive(true);
+            layControllerDeviceRight.SetActive(true);
 
             isHandChange = true;
             return;
