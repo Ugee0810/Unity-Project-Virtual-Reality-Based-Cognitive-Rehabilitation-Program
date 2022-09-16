@@ -7,6 +7,6 @@ public class PanelScoreDecSensor : MonoBehaviour
     int dec = -100;
     public void OnHoverEnterd_ScoreDec()
     {
-        ScoreManager.instance.score -= dec;
+        GameManager.instance.score -= dec;
     }
 }

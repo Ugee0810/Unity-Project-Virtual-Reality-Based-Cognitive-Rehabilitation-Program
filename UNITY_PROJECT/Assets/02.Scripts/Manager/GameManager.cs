@@ -20,31 +20,21 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [Header("[UI]")]
-    public GameObject musicSelect;      // UI Lobby
-    public GameObject musicStart;       // UI Ingame
-    public GameObject musicPaused;      // UI Pause
-    public GameObject result;           // UI Result
-
+    public GameObject _UILobby;           // UI Lobby
+    public GameObject _UIIngame;          // UI Ingame
+    public GameObject _UIPause;           // UI Pause
+    public GameObject _UIResult;          // UI Result
     public GameObject originalScrollView; // UI Original View
     public GameObject customScrollView;   // UI Custom View
-
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
     public GameObject contentResult;      // 결과     리소스 프리팹 생성 위치(부모)
-
-    public GameObject infoTitle;          // Panel Music Info - Music Title
-
-    public GameObject btnPlay;            // Game Start
+    public Text infoTitle;                // Panel Music Info - Music Title
+    public Button btnPlay;                // Game Start
 
     [Header("[Environment Objects]")]
-    public GameObject vizualizationObjects;
-    public GameObject inGameEnvironment;
-    public GameObject baseGround;
-
-    [Header("[Audio Source]")]
-    public AudioSource musicBackGround; // BGM
-    public AudioSource musicSelected;   // 선택된 노래
-    public AudioSource musicPlayed;     // 플레이 할 노래
+    public GameObject baseGround;         // GO Lobby
+    public GameObject inGameEnvironment;  // GO Ingame
 
     [Header("[Prefabs]")]
     public GameObject musicElement;
@@ -58,10 +48,21 @@ public class GameManager : MonoBehaviour
 
     [Header("[Music Info]")]
     public float playTime;
-    public int bpm;
+    public float playTimeOffset; // 패널 젠 시간
+    public float offsetTimer;
+    public int   bpm;
     public float secPerBeat;
     public float timer; // BPM 계산 타이머
-    public float musicOffsetTime;
+    public int   panelLastIndex;
+
+    [Header("[Score & Kcal]")]
+    public int   score = 0;
+    public float kcal  = 0;
+
+    [Header("[Audio Source]")]
+    public AudioSource musicBackGround; // BGM
+    public AudioSource musicSelected;   // Lobby Music
+    public AudioSource musicPlayed;     // Ingame Music
 
     [Header("[InGame Data]")]
     public Text _IngameTextScore;
@@ -76,24 +77,15 @@ public class GameManager : MonoBehaviour
     // [Header("[플래그 변수]")]
     [HideInInspector] public bool isOriginal;    // [Button] Original MusicList Selected
     [HideInInspector] public bool isCustom;      // [Button] Custom MusicList Selected
-
-    [HideInInspector] public bool isLevelEasy;   // [Button] Level Easy Selected
-    [HideInInspector] public bool isLevelNormal; // [Button] Level Normal Selected
-    [HideInInspector] public bool isLevelHard;   // [Button] Level Hard Selected
-
+    [HideInInspector] public bool isEasy;        // [Button] Level Easy Selected
+    [HideInInspector] public bool isNormal;      // [Button] Level Normal Selected
+    [HideInInspector] public bool isHard;        // [Button] Level Hard Selected
     [HideInInspector] public bool isHandChange;  // True : Hand Controller | False : Lay Controller
-
     [HideInInspector] public bool isStart;       // Game Start
     [HideInInspector] public bool isPause;       // Game Pause
-
     [HideInInspector] public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
     [HideInInspector] public bool isSensorRight; // 패널 접촉 유/무 오른쪽
-
-    public bool isEasy;
-    public bool isNormal;
-    public bool isHard;
-    
-    public enum Level { Easy, Normal, Hard };
+    [HideInInspector] public bool isSafeQuiz;
 
     public static GameManager instance;
     private void Awake()
@@ -178,7 +170,7 @@ public class GameManager : MonoBehaviour
         isHard   = false;
 
         secPerBeat = 300f / bpm;
-        btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
+        btnPlay.interactable = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Normal
@@ -189,7 +181,7 @@ public class GameManager : MonoBehaviour
         isHard   = false;
 
         secPerBeat = 240f / bpm;
-        btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
+        btnPlay.interactable = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Hard
@@ -200,16 +192,15 @@ public class GameManager : MonoBehaviour
         isHard   = true;
 
         secPerBeat = 180f / bpm;
-        btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
+        btnPlay.interactable = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Play
     public void BtnPlay()
     {
-        musicSelect.SetActive(false);
+        _UILobby.SetActive(false);
         baseGround.SetActive(false);
-        musicStart.SetActive(true);
-        vizualizationObjects.SetActive(true);
+        _UIIngame.SetActive(true);
         inGameEnvironment.SetActive(true);
 
         isStart = true;
@@ -228,7 +219,7 @@ public class GameManager : MonoBehaviour
         if (isStart)
         {
             // Music Paused UI On
-            musicPaused.SetActive(true);
+            _UIPause.SetActive(true);
 
             // 플레이 중 노래 일시 정지
             Time.timeScale = 0;
@@ -246,7 +237,7 @@ public class GameManager : MonoBehaviour
         if (isStart && isPause)
         {
             // Music Paused UI Off
-            musicPaused.SetActive(false);
+            _UIPause.SetActive(false);
 
             // 플레이 중 노래 일시 정지 해제
             Time.timeScale = 1;
@@ -270,21 +261,26 @@ public class GameManager : MonoBehaviour
                     Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
 
             timer = 0;
+            offsetTimer = 0;
             secPerBeat = 0;
-            PanelManager.instance.lastIndex = -1;
-            PanelManager.instance.safeQuiz = false;
+            panelLastIndex = -1;
+            isSafeQuiz = false;
 
-            btnPlay.GetComponent<Button>().interactable = false;
+            btnPlay.interactable = false;
 
-            musicStart.SetActive(false);
-            musicPaused.SetActive(false);
-            vizualizationObjects.SetActive(false);
+            _UIIngame.SetActive(false);
+            _UIPause.SetActive(false);
             inGameEnvironment.SetActive(false);
             baseGround.SetActive(true);
 
             Time.timeScale = 1;
             musicBackGround.UnPause();
             musicPlayed.Stop();
+
+            score = 0;
+            kcal = 0;
+            ScoreManager.instance.SetScore();
+            ScoreManager.instance.SetKcal();
 
             isStart = false;
             isPause = false;
@@ -300,13 +296,18 @@ public class GameManager : MonoBehaviour
                 Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
 
         timer = 0;
+        offsetTimer = 0;
         secPerBeat = 0;
-        PanelManager.instance.lastIndex = -1;
-        PanelManager.instance.safeQuiz = false;
+        panelLastIndex = -1;
+        isSafeQuiz = false;
 
         musicBackGround.UnPause();
         ResultData();
-        result.SetActive(true);
+        _UIResult.SetActive(true);
+        score = 0;
+        kcal = 0;
+        ScoreManager.instance.SetScore();
+        ScoreManager.instance.SetKcal();
 
         isStart = false;
         isPause = false;
@@ -330,14 +331,13 @@ public class GameManager : MonoBehaviour
     // [Button] End to Back to the Lobby
     public void BtnEndBackLobby()
     {
-        musicStart.SetActive(false);
-        vizualizationObjects.SetActive(false);
+        _UIIngame.SetActive(false);
         inGameEnvironment.SetActive(false);
-        result.SetActive(false);
-        musicSelect.SetActive(true);
+        _UIResult.SetActive(false);
+        _UILobby.SetActive(true);
         baseGround.SetActive(true);
 
-        btnPlay.GetComponent<Button>().interactable = false;
+        btnPlay.interactable = false;
     }
 
     object[] originalMusics;

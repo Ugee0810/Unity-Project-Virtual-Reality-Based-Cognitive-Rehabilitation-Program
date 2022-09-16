@@ -12,20 +12,20 @@ public class PanelDestroy : MonoBehaviour
         if (c.gameObject.tag == "QUIZ")
         {
             Destroy(c.gameObject);
-            PanelManager.instance.lastIndex--;
+            GameManager.instance.panelLastIndex--;
             _SFX?.Invoke();
         }
 
         if (c.gameObject.tag == "BLOCK")
         {
             Destroy(c.gameObject);
-            PanelManager.instance.lastIndex--;
+            GameManager.instance.panelLastIndex--;
         }
 
         if (c.gameObject.tag == "MOTION")
         {
             Destroy(c.gameObject);
-            PanelManager.instance.lastIndex--;
+            GameManager.instance.panelLastIndex--;
             _SFX?.Invoke();
         }
     }

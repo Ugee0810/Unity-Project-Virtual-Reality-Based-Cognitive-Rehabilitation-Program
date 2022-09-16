@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
@@ -27,26 +28,23 @@ public class PanelManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        lastIndex = -1;
+        GameManager.instance.panelLastIndex = -1;
     }
 
-    float gameTime;
     private void Update()
     {
         if (GameManager.instance.isStart && GameManager.instance.musicPlayed.isPlaying)
         {
-            if (GameManager.instance.musicOffsetTime >= gameTime)
+            GameManager.instance.offsetTimer += Time.deltaTime;
+            Debug.Log("gameTime : " + GameManager.instance.offsetTimer);
+            if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
             {
                 PanelInstance();
                 PanelCheck();
-                gameTime += Time.deltaTime;
             }
-            gameTime = 0;
         }
     }
 
-    public int lastIndex;
-    public bool safeQuiz;
     public void PanelInstance()
     {
         GameManager.instance.timer += Time.deltaTime;
@@ -56,36 +54,36 @@ public class PanelManager : MonoBehaviour
         {
             /* QUIZ 10% */ if (_PanelIndex == 0)
             {
-                if (!safeQuiz)
+                if (!GameManager.instance.isSafeQuiz)
                 {
                     Debug.Log("최초에 퀴즈 패널이 안 나오도록 구현");
                     GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
                     _motion.name = "MOTION";
-                    lastIndex++;
+                    GameManager.instance.panelLastIndex++;
                     return;
                 }
-                if (safeQuiz)
+                if (GameManager.instance.isSafeQuiz)
                 {
-                    if (panelSpawnPoint.transform.GetChild(lastIndex).transform.name == "MOTION")
+                    if (panelSpawnPoint.transform.GetChild(GameManager.instance.panelLastIndex).transform.name == "MOTION")
                     {
                         Debug.Log("퀴즈 패널 생성");
                         GameObject _quiz = Instantiate(quiz[0], panelSpawnPoint);
                         _quiz.name = "QUIZ";
-                        lastIndex++;
+                        GameManager.instance.panelLastIndex++;
                     }
-                    else if (panelSpawnPoint.transform.GetChild(lastIndex).transform.name == "BLOCK")
+                    else if (panelSpawnPoint.transform.GetChild(GameManager.instance.panelLastIndex).transform.name == "BLOCK")
                     {
                         Debug.Log("블럭 패널이 나와서 퀴즈 패널 대신 모션 패널 생성");
                         GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
                         _motion.name = "MOTION";
-                        lastIndex++;
+                        GameManager.instance.panelLastIndex++;
                     }
-                    else if (panelSpawnPoint.transform.GetChild(lastIndex).transform.name == "QUIZ")
+                    else if (panelSpawnPoint.transform.GetChild(GameManager.instance.panelLastIndex).transform.name == "QUIZ")
                     {
                         Debug.Log("퀴즈 패널이 나와서 퀴즈 패널 대신 모션 패널 생성");
                         GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
                         _motion.name = "MOTION";
-                        lastIndex++;
+                        GameManager.instance.panelLastIndex++;
                     }
                 }
             }
@@ -93,26 +91,36 @@ public class PanelManager : MonoBehaviour
             {
                 GameObject _block = Instantiate(block[Random.Range(0, 3)], panelSpawnPoint);
                 _block.name = "BLOCK";
-                lastIndex++;
-                safeQuiz = true;
+                GameManager.instance.panelLastIndex++;
+                GameManager.instance.isSafeQuiz = true;
             }
             /* MOTION 80% */ else if (_PanelIndex > 1)
             {
                 GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
                 _motion.name = "MOTION";
-                lastIndex++;
-                safeQuiz = true;
+                GameManager.instance.panelLastIndex++;
+                GameManager.instance.isSafeQuiz = true;
             }
             GameManager.instance.timer -= GameManager.instance.secPerBeat;
         }
     }
 
+    
+
     void PanelCheck()
     {
         if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
+        {
+            //220917 / 삭제되는 센서(PanelDestroy.cs)랑 컨트롤러 스크립트 생성해서 분리하기
+            //생성한 스크립트에 아래의 구문을 트리거하기
+            //ScoreManager.instance.HoverEvent?.Invoke();
+
             panelCheck.SetActive(true);
-        else if (GameManager.instance.isSensorLeft == false || GameManager.instance.isSensorRight == false)
+        }
+        else if (!GameManager.instance.isSensorLeft || !GameManager.instance.isSensorRight)
+        {
             panelCheck.SetActive(false);
+        }
     }
 
     // 패널 프리팹의 Canvas를 바꿔준다. (텍스트, 이미지)

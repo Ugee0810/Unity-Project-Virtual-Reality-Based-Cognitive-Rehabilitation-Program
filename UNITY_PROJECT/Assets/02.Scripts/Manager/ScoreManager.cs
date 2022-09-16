@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
@@ -8,8 +9,7 @@ public class ScoreManager : MonoBehaviour
     public Text textScore;
     public Text textKcal;
 
-    public int score = 0;
-    float kcal = 0;
+    public UnityEvent HoverEvent;
 
     public static ScoreManager instance;
     private void Awake()
@@ -18,12 +18,6 @@ public class ScoreManager : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
-    }
-
-    private void OnEnable()
-    {
-        IncreaseScore();
-        IncreaseKcal();
     }
 
     private void Start()
@@ -35,25 +29,27 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+
     public void IncreaseScore()
     {
-        score += 1000;
+        GameManager.instance.score += 1000;
         SetScore();
     }
 
     public void IncreaseKcal()
     {
-        kcal += Random.Range(0.1f, 0.2f);
+        GameManager.instance.kcal += Random.Range(0.1f, 0.2f);
         SetKcal();
     }
 
+
     public void SetScore()
     {
-        textScore.text = score.ToString();
+        textScore.text = GameManager.instance.score.ToString();
     }
 
     public void SetKcal()
     {
-        textKcal.text  = kcal.ToString("F2");
+        textKcal.text  = GameManager.instance.kcal.ToString("F2");
     }
 }
