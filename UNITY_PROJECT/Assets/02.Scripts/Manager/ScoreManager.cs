@@ -8,7 +8,7 @@ public class ScoreManager : MonoBehaviour
     public Text textScore;
     public Text textKcal;
 
-    int score = 0;
+    public int score = 0;
     float kcal = 0;
 
     public static ScoreManager instance;
