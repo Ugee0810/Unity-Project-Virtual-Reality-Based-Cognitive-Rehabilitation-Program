@@ -30,12 +30,18 @@ public class PanelManager : MonoBehaviour
         lastIndex = -1;
     }
 
+    float gameTime;
     private void Update()
     {
-        if (GameManager.instance.isStart)
+        if (GameManager.instance.isStart && GameManager.instance.musicPlayed.isPlaying)
         {
-            PanelInstance();
-            PanelCheck();
+            if (GameManager.instance.musicOffsetTime >= gameTime)
+            {
+                PanelInstance();
+                PanelCheck();
+                gameTime += Time.deltaTime;
+            }
+            gameTime = 0;
         }
     }
 

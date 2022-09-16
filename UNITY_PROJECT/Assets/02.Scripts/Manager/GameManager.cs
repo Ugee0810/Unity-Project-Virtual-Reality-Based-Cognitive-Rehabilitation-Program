@@ -13,8 +13,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -37,9 +37,9 @@ public class GameManager : MonoBehaviour
     public GameObject btnPlay;            // Game Start
 
     [Header("[Environment Objects]")]
+    public GameObject vizualizationObjects;
     public GameObject inGameEnvironment;
     public GameObject baseGround;
-    public GameObject vizualizationObjects;
 
     [Header("[Audio Source]")]
     public AudioSource musicBackGround; // BGM
@@ -57,11 +57,11 @@ public class GameManager : MonoBehaviour
     public GameObject handRightController;
 
     [Header("[Music Info]")]
-    Stopwatch stopwatch = new Stopwatch();
     public float playTime;
     public int bpm;
     public float secPerBeat;
     public float timer; // BPM 계산 타이머
+    public float musicOffsetTime;
 
     // [Header("[플래그 변수]")]
     [HideInInspector] public bool isOriginal;    // [Button] Original MusicList Selected
@@ -90,30 +90,22 @@ public class GameManager : MonoBehaviour
         OriginalListRenewal();
     }
 
+    public UnityEvent endEvent;
     private void Update()
     {
-        if (isStart && !isPause)
+        if (isStart)
         {
-            stopwatch.Start();
-            UnityEngine.Debug.Log(stopwatch.Elapsed);
-            if (playTime <= stopwatch.Elapsed.Seconds)
+            if (isPause) return;
+
+            if (!musicPlayed.isPlaying && !isPause)
             {
-                InGameEnd();
-                return;
+                endEvent?.Invoke();
             }
         }
     }
-    // https://codingmania.tistory.com/205
-    // 노래 끝나면 종료 이벤트 코루틴 사용
-    IEnumerator Playing()
-    {
-        if (!musicPlayed.isPlaying)
-        {
 
-        }
-    }
-
-    public static string TimeFormatter(float seconds, bool forceHHMMSS = false) // 시간 변환 함수
+    // 시간 변환 함수
+    public static string TimeFormatter(float seconds, bool forceHHMMSS = false)
     {
         float secondsRemainder = Mathf.Floor((seconds % 60) * 100) / 100.0f;
         int minutes = ((int)(seconds / 60)) % 60;
@@ -157,7 +149,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     // [Button] Easy
     public void BtnLvEasy()
     {
@@ -179,23 +170,22 @@ public class GameManager : MonoBehaviour
         btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
     }
 
-
     // [Button] Play
-    public void BtnInGameStart()
+    public void BtnPlay()
     {
-        isStart = true;
-        isHandChange = true;
-
-        musicSelect.SetActive(false); // Lobby UI OFF
-        musicStart.SetActive(true); // Ingame UI ON
+        musicSelect.SetActive(false);
         baseGround.SetActive(false);
-        vizualizationObjects.SetActive(true); // VizualizationObj ON
-        inGameEnvironment.SetActive(true); // 인게임 환경 요소 ON
+        musicStart.SetActive(true);
+        vizualizationObjects.SetActive(true);
+        inGameEnvironment.SetActive(true);
 
-        musicBackGround.Pause(); // BGM Pause
-        musicSelected.Stop(); // Selected Music OFF
-        musicPlayed.Play(); // Played Music ON
+        isStart = true;
 
+        musicBackGround.Pause();
+        musicSelected.Stop();
+        musicPlayed.Play();
+
+        isHandChange = true;
         ControllerModeChange();
     }
 
@@ -204,14 +194,15 @@ public class GameManager : MonoBehaviour
     {
         if (isStart)
         {
+            // Music Paused UI On
+            musicPaused.SetActive(true);
+
+            // 플레이 중 노래 일시 정지
+            Time.timeScale = 0;
+            musicPlayed.Pause();
+
             isPause = true;
             isHandChange = false;
-
-            musicPaused.SetActive(true); // Music Paused UI On
-
-            Time.timeScale = 0;
-            musicPlayed.Pause(); // 플레이 중 노래 일시 정지
-
             ControllerModeChange();
         }
     }
@@ -221,41 +212,17 @@ public class GameManager : MonoBehaviour
     {
         if (isStart && isPause)
         {
+            // Music Paused UI Off
+            musicPaused.SetActive(false);
+
+            // 플레이 중 노래 일시 정지 해제
+            Time.timeScale = 1;
+            musicPlayed.UnPause();
+
             isPause = false;
             isHandChange = true;
-
-            musicPaused.SetActive(false); // Music Paused UI Off
-
-            Time.timeScale = 1;
-            musicPlayed.UnPause(); // 플레이 중 노래 일시 정지 해제
-
             ControllerModeChange();
         }
-    }
-
-    // End
-    public void InGameEnd()
-    {
-        isStart = false;
-        isPause = false;
-        isHandChange = false;
-
-        result.SetActive(true); // Result UI On
-
-        musicBackGround.UnPause();
-        musicPlayed.Stop(); // Played Song Reset
-
-        timer = 0;
-        secPerBeat = 0;
-        btnPlay.GetComponent<Button>().interactable = false;
-        PanelManager.instance.lastIndex = 0;
-        PanelManager.instance.safeQuiz = false;
-        for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
-        {
-            Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
-        }
-
-        ControllerModeChange();
     }
 
     // [Button] Pause to Back to the Lobby
@@ -263,40 +230,67 @@ public class GameManager : MonoBehaviour
     {
         if (isStart && isPause)
         {
-            isStart = false;
-            isPause = false;
-            isHandChange = false;
-
-            musicSelect.SetActive(true); // Lobby UI On
-            baseGround.SetActive(true);
-            musicStart.SetActive(false); // Ingame UI Off
-            musicPaused.SetActive(false); // MusicPaused UI Off
-            result.SetActive(false); // Result UI Off
-            vizualizationObjects.SetActive(false); // VizualizationObj Off
-            inGameEnvironment.SetActive(false); // Ingame Env Obj Off
-
-            Time.timeScale = 1;
-            musicBackGround.UnPause();
-            musicPlayed.Stop(); // 플레이 중 노래 정지
+            // 패널 생성 된 거 삭제
+            int numOfChild = PanelManager.instance.panelSpawnPoint.transform.childCount;
+            if (numOfChild != 0)
+                for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
+                    Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
 
             timer = 0;
             secPerBeat = 0;
-            btnPlay.GetComponent<Button>().interactable = false;
-            PanelManager.instance.lastIndex = 0;
+            PanelManager.instance.lastIndex = -1;
             PanelManager.instance.safeQuiz = false;
-            for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
-            {
-                Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
-            }
 
-            ControllerModeChange();
+            btnPlay.GetComponent<Button>().interactable = false;
+
+            musicStart.SetActive(false);
+            musicPaused.SetActive(false);
+            vizualizationObjects.SetActive(false);
+            inGameEnvironment.SetActive(false);
+            baseGround.SetActive(true);
+
+            Time.timeScale = 1;
+            musicBackGround.UnPause();
+            musicPlayed.Stop();
+
+            isStart = false;
+            isPause = false;
         }
+    }
+
+    public void EndEvent()
+    {
+        // 패널 생성 된 거 삭제
+        int numOfChild = PanelManager.instance.panelSpawnPoint.transform.childCount;
+        if (numOfChild != 0)
+            for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
+                Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
+
+        timer = 0;
+        secPerBeat = 0;
+        PanelManager.instance.lastIndex = -1;
+        PanelManager.instance.safeQuiz = false;
+
+        musicBackGround.UnPause();
+        result.SetActive(true);
+
+        isStart = false;
+        isPause = false;
+        isHandChange = false;
+        ControllerModeChange();
     }
 
     // [Button] End to Back to the Lobby
     public void BtnEndBackLobby()
     {
+        musicStart.SetActive(false);
+        vizualizationObjects.SetActive(false);
+        inGameEnvironment.SetActive(false);
+        result.SetActive(false);
+        musicSelect.SetActive(true);
+        baseGround.SetActive(true);
 
+        btnPlay.GetComponent<Button>().interactable = false;
     }
 
     object[] originalMusics;

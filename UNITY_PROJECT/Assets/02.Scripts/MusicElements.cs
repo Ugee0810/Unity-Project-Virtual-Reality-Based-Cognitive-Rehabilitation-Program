@@ -17,6 +17,7 @@ public class MusicElements : MonoBehaviour
 
         GameManager.instance.playTime = selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length;
         GameManager.instance.bpm = UniBpmAnalyzer.AnalyzeBpm(selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip);
+        GameManager.instance.musicOffsetTime = GameManager.instance.playTime - 10f;
 
         // textTitle.text ← customMusicElements.AudioSource.text
         GameManager.instance.infoTitle.GetComponent<Text>().text =
