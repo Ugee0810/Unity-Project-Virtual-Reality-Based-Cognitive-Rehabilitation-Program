@@ -63,6 +63,16 @@ public class GameManager : MonoBehaviour
     public float timer; // BPM 계산 타이머
     public float musicOffsetTime;
 
+    [Header("[InGame Data]")]
+    public Text _IngameTextScore;
+    public Text _IngameTextKacl;
+
+    [Header("[Key]")]
+    public Text _TextTitle;
+    public Text _TextLevel;
+    public Text _TextScore;
+    public Text _TextKcal;
+
     // [Header("[플래그 변수]")]
     [HideInInspector] public bool isOriginal;    // [Button] Original MusicList Selected
     [HideInInspector] public bool isCustom;      // [Button] Custom MusicList Selected
@@ -78,7 +88,13 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
     [HideInInspector] public bool isSensorRight; // 패널 접촉 유/무 오른쪽
+
+    public bool isEasy;
+    public bool isNormal;
+    public bool isHard;
     
+    public enum Level { Easy, Normal, Hard };
+
     public static GameManager instance;
     private void Awake()
     {
@@ -88,6 +104,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         OriginalListRenewal();
+
+        if (PlayerPrefs.HasKey("Title")) PlayerPrefs.SetString("Title", "-");
+        if (PlayerPrefs.HasKey("Level")) PlayerPrefs.SetString("Level", "-");
+        if (PlayerPrefs.HasKey("Score")) PlayerPrefs.SetInt("Score", 0);
+        if (PlayerPrefs.HasKey("Kcal"))  PlayerPrefs.SetInt("Kcal", 0);
     }
 
     public UnityEvent endEvent;
@@ -152,6 +173,10 @@ public class GameManager : MonoBehaviour
     // [Button] Easy
     public void BtnLvEasy()
     {
+        isEasy   = true;
+        isNormal = false;
+        isHard   = false;
+
         secPerBeat = 300f / bpm;
         btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
     }
@@ -159,6 +184,10 @@ public class GameManager : MonoBehaviour
     // [Button] Normal
     public void BtnLvNormal()
     {
+        isEasy   = false;
+        isNormal = true;
+        isHard   = false;
+
         secPerBeat = 240f / bpm;
         btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
     }
@@ -166,6 +195,10 @@ public class GameManager : MonoBehaviour
     // [Button] Hard
     public void BtnLvHard()
     {
+        isEasy   = false;
+        isNormal = false;
+        isHard   = true;
+
         secPerBeat = 180f / bpm;
         btnPlay.GetComponent<Button>().interactable = true; // 노래 재생(Play) 버튼 활성화
     }
@@ -272,12 +305,35 @@ public class GameManager : MonoBehaviour
         PanelManager.instance.safeQuiz = false;
 
         musicBackGround.UnPause();
+        ResultData();
         result.SetActive(true);
 
         isStart = false;
         isPause = false;
         isHandChange = false;
         ControllerModeChange();
+    }
+
+    public void ResultData()
+    {
+        _TextTitle.text = PlayerPrefs.GetString("Title", $"{musicPlayed.clip.name}");
+        if      (isEasy)
+            _TextLevel.text = PlayerPrefs.GetString("Level", "Easy");
+        else if (isNormal)
+            _TextLevel.text = PlayerPrefs.GetString("Level", "Normal");
+        else if (isHard)
+            _TextLevel.text = PlayerPrefs.GetString("Level", "Hard");
+        _TextScore.text = PlayerPrefs.GetString("Score", $"{_IngameTextScore.text}");
+        _TextKcal.text = PlayerPrefs.GetString("Kcal", $"{_IngameTextKacl.text}");
+    }
+
+    object[] resultDatas;
+    GameObject resultElementPrefab = null;
+
+    public void LobbyResultList()
+    {
+        resultElementPrefab = Instantiate(resultElement);
+        //resultElementPrefab.name = 
     }
 
     // [Button] End to Back to the Lobby
