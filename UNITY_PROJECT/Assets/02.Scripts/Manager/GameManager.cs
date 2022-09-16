@@ -327,15 +327,6 @@ public class GameManager : MonoBehaviour
         _TextKcal.text = PlayerPrefs.GetString("Kcal", $"{_IngameTextKacl.text}");
     }
 
-    object[] resultDatas;
-    GameObject resultElementPrefab = null;
-
-    public void LobbyResultList()
-    {
-        resultElementPrefab = Instantiate(resultElement);
-        //resultElementPrefab.name = 
-    }
-
     // [Button] End to Back to the Lobby
     public void BtnEndBackLobby()
     {
