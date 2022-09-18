@@ -1,6 +1,12 @@
+/// <summary>
+/// MusicElements.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// This software is released under the GPL-2.0 license
+/// 
+/// </summary>
+
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 8584142813241015619}
   - component: {fileID: 3172611534753646056}
   m_Layer: 0
-  m_Name: Cylinder.001
-  m_TagString: Untagged
+  m_Name: Right
+  m_TagString: PANEL RIGHT
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,8 +175,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5308683333214128825}
-  - component: {fileID: -6616265568773966056}
   - component: {fileID: 5712862029998029074}
+  - component: {fileID: -6616265568773966056}
   m_Layer: 0
   m_Name: Quiz Answer
   m_TagString: QUIZ
@@ -205,18 +205,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-6616265568773966056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4821081350602985475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &5712862029998029074
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -230,6 +218,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 3, z: 0.3}
   m_Center: {x: 0, y: 1.6, z: 0}
+--- !u!114 &-6616265568773966056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4821081350602985475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7123636682199836361
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,8 +325,8 @@ GameObject:
   - component: {fileID: 314952578050086167}
   - component: {fileID: 3302574053140667277}
   m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
+  m_Name: Left
+  m_TagString: PANEL LEFT
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

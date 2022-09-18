@@ -1,3 +1,10 @@
+/// <summary>
+/// ScoreManager.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// This software is released under the GPL-2.0 license
+/// 
+/// </summary>
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +15,6 @@ public class ScoreManager : MonoBehaviour
 {
     public Text textScore;
     public Text textKcal;
-
-    public UnityEvent HoverEvent;
 
     public static ScoreManager instance;
     private void Awake()
@@ -29,18 +34,28 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-
-    public void IncreaseScore()
+    IEnumerator Increase()
     {
         GameManager.instance.score += 1000;
         SetScore();
-    }
 
-    public void IncreaseKcal()
-    {
         GameManager.instance.kcal += Random.Range(0.1f, 0.2f);
         SetKcal();
+
+        yield return null;
     }
+
+    //public void IncreaseScore()
+    //{
+    //    GameManager.instance.score += 1000;
+    //    SetScore();
+    //}
+
+    //public void IncreaseKcal()
+    //{
+    //    GameManager.instance.kcal += Random.Range(0.1f, 0.2f);
+    //    SetKcal();
+    //}
 
 
     public void SetScore()

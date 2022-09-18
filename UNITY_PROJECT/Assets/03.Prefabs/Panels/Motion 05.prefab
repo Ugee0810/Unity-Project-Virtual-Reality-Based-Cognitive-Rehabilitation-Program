@@ -175,8 +175,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7502031082890196044}
-  - component: {fileID: 6220684533889270531}
   - component: {fileID: 6218542155690029761}
+  - component: {fileID: 6220684533889270531}
   m_Layer: 0
   m_Name: Motion 05
   m_TagString: MOTION
@@ -203,18 +203,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6220684533889270531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7158261777735331574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &6218542155690029761
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -228,6 +216,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 3, z: 0.3}
   m_Center: {x: 0, y: 1.6, z: 0}
+--- !u!114 &6220684533889270531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7158261777735331574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8345634679046758044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -310,6 +310,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panel Left
       objectReference: {fileID: 0}
+    - target: {fileID: 1184654671090429527, guid: e1b2b3255ebd2a74f9df8927e9c1c6e9,
+        type: 3}
+      propertyPath: m_TagString
+      value: PANEL LEFT
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1b2b3255ebd2a74f9df8927e9c1c6e9, type: 3}
 --- !u!4 &7179049670417150157 stripped
@@ -329,6 +334,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Panel Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 175314318875528328, guid: 648e6a68a5f6503419eb4a7c2f463b88,
+        type: 3}
+      propertyPath: m_TagString
+      value: PANEL RIGHT
       objectReference: {fileID: 0}
     - target: {fileID: 175314318875528332, guid: 648e6a68a5f6503419eb4a7c2f463b88,
         type: 3}

@@ -1,12 +1,8 @@
 /// <summary>
 /// PanelCtrl.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// This software is released under the GPL-2.0 license
 /// 
-/// ＃역할
-/// 패널 프리팹들에게 적용받고 각 이벤트 별 동작을 제어합니다.
-/// 
-/// ＃스크립팅 기술
-/// 코루틴
-/// 오브젝트 풀링
 /// </summary>
 
 using System;
@@ -15,13 +11,15 @@ using UnityEngine;
 
 public class PanelCtrl : MonoBehaviour
 {
-    private void Update()
+    float moveSpeed = 2.0f;
+
+    private void FixedUpdate()
     {
         Move();
     }
 
     void Move()
     {
-        transform.position += Time.deltaTime * transform.forward * -2;
+        transform.position += transform.forward * -moveSpeed * Time.deltaTime;
     }
 }

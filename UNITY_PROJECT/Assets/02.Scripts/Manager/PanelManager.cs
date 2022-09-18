@@ -1,8 +1,14 @@
+/// <summary>
+/// PanelManager.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// This software is released under the GPL-2.0 license
+/// 
+/// </summary>
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
@@ -31,12 +37,12 @@ public class PanelManager : MonoBehaviour
         GameManager.instance.panelLastIndex = -1;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (GameManager.instance.isStart && GameManager.instance.musicPlayed.isPlaying)
         {
             GameManager.instance.offsetTimer += Time.deltaTime;
-            Debug.Log("gameTime : " + GameManager.instance.offsetTimer);
+
             if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
             {
                 PanelInstance();
@@ -105,16 +111,10 @@ public class PanelManager : MonoBehaviour
         }
     }
 
-    
-
     void PanelCheck()
     {
         if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
         {
-            //220917 / 삭제되는 센서(PanelDestroy.cs)랑 컨트롤러 스크립트 생성해서 분리하기
-            //생성한 스크립트에 아래의 구문을 트리거하기
-            //ScoreManager.instance.HoverEvent?.Invoke();
-
             panelCheck.SetActive(true);
         }
         else if (!GameManager.instance.isSensorLeft || !GameManager.instance.isSensorRight)

@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3353685840102894728}
-  - component: {fileID: -340309412385301432}
   - component: {fileID: -6139323789419372752}
+  - component: {fileID: -340309412385301432}
   m_Layer: 0
   m_Name: Motion 04
   m_TagString: MOTION
@@ -37,18 +37,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-340309412385301432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2720595478359537202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &-6139323789419372752
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -62,6 +50,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 3, z: 0.3}
   m_Center: {x: 0, y: 1.6, z: 0}
+--- !u!114 &-340309412385301432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2720595478359537202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388dfb8c3e6ab149a0ae597ee7dbfae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5566542879211065236
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +310,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panel Left
       objectReference: {fileID: 0}
+    - target: {fileID: 1184654671090429527, guid: e1b2b3255ebd2a74f9df8927e9c1c6e9,
+        type: 3}
+      propertyPath: m_TagString
+      value: PANEL LEFT
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1b2b3255ebd2a74f9df8927e9c1c6e9, type: 3}
 --- !u!4 &1710050952808907812 stripped
@@ -329,6 +334,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Panel Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 175314318875528328, guid: 648e6a68a5f6503419eb4a7c2f463b88,
+        type: 3}
+      propertyPath: m_TagString
+      value: PANEL RIGHT
       objectReference: {fileID: 0}
     - target: {fileID: 175314318875528332, guid: 648e6a68a5f6503419eb4a7c2f463b88,
         type: 3}

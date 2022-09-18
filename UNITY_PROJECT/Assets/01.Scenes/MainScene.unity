@@ -5171,7 +5171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &708912651
 Transform:
   m_ObjectHideFlags: 0
@@ -6846,33 +6846,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textScore: {fileID: 1585804227}
   textKcal: {fileID: 1941148715}
-  HoverEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 786298820}
-        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
-        m_MethodName: IncreaseScore
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 786298820}
-        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
-        m_MethodName: IncreaseKcal
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &811912975
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20958,6 +20931,7 @@ GameObject:
   - component: {fileID: 1332571248}
   - component: {fileID: 1332571247}
   - component: {fileID: 1332571249}
+  - component: {fileID: 1332571250}
   m_Layer: 0
   m_Name: Hand Right Controller(Device)
   m_TagString: HAND RIGHT
@@ -21135,6 +21109,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1332571250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332571244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f39f6ecb3ea4a408bf9ea1dcb16ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1341637998
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29816,6 +29802,7 @@ GameObject:
   - component: {fileID: 1924551898}
   - component: {fileID: 1924551896}
   - component: {fileID: 1924551899}
+  - component: {fileID: 1924551900}
   m_Layer: 0
   m_Name: Hand Left Controller(Device)
   m_TagString: HAND LEFT
@@ -29993,6 +29980,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1924551900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924551894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f39f6ecb3ea4a408bf9ea1dcb16ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1939923269
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,13 +1,11 @@
 /// <summary>
 /// GameManager.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// This software is released under the GPL-2.0 license
 /// 
-/// ＃역할
 /// 게임에서 발생하는 이벤트(버튼, 플래그)를 처리 합니다.
 /// PanelManager에게 해당된 레벨에 따른 패턴을 지시합니다.
 /// 오리지널 또는 커스텀 노래 조회 버튼을 눌렀을 때 라이브러리 내 음악을 조회 후 각 정보들을 Element들에게 전달합니다.
-/// 
-/// ＃스크립팅 기술
-/// 
 /// </summary>
 
 using System;
