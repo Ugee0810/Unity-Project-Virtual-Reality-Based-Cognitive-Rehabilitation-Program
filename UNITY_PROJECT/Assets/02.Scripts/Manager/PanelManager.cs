@@ -116,6 +116,7 @@ public class PanelManager : MonoBehaviour
         if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
         {
             panelCheck.SetActive(true);
+            if (panelCheck.activeSelf) StartCoroutine(ScoreManager.instance.Increase());
         }
         else if (!GameManager.instance.isSensorLeft || !GameManager.instance.isSensorRight)
         {
@@ -124,7 +125,7 @@ public class PanelManager : MonoBehaviour
     }
 
     // 패널 프리팹의 Canvas를 바꿔준다. (텍스트, 이미지)
-    void QuizThemeChange() 
+    void QuizThemeChange()
     {
 
     }

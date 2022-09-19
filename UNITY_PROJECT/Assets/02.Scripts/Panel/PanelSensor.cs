@@ -27,10 +27,11 @@ public class PanelSensor : MonoBehaviour
     {
         if (c.gameObject.tag == "BLOCK")
         {
-            if (GameManager.instance.score >= 0)
+            if (GameManager.instance.score > 0)
+            {
                 GameManager.instance.score -= 10;
-            else
-                GameManager.instance.score = 0;
+                ScoreManager.instance.SetScore();
+            }
         }
     }
 }

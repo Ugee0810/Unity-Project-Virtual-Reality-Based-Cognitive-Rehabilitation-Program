@@ -28,7 +28,13 @@ public class GameManager : MonoBehaviour
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
     public GameObject contentResult;      // 결과     리소스 프리팹 생성 위치(부모)
     public Text infoTitle;                // Panel Music Info - Music Title
+    public Button btnOriginal;            // Original List
+    public Button btnCustom;              // Custom List
+    public Button btnEasy;               
+    public Button btnNormal;             
+    public Button btnHard;      
     public Button btnPlay;                // Game Start
+    public Button btnReset;
 
     [Header("[Environment Objects]")]
     public GameObject baseGround;         // GO Lobby
@@ -73,14 +79,9 @@ public class GameManager : MonoBehaviour
     public Text _TextKcal;
 
     // [Header("[플래그 변수]")]
-    [HideInInspector] public bool isOriginal;    // [Button] Original MusicList Selected
-    [HideInInspector] public bool isCustom;      // [Button] Custom MusicList Selected
-    [HideInInspector] public bool isEasy;        // [Button] Level Easy Selected
-    [HideInInspector] public bool isNormal;      // [Button] Level Normal Selected
-    [HideInInspector] public bool isHard;        // [Button] Level Hard Selected
-    [HideInInspector] public bool isHandChange;  // True : Hand Controller | False : Lay Controller
     [HideInInspector] public bool isStart;       // Game Start
     [HideInInspector] public bool isPause;       // Game Pause
+    [HideInInspector] public bool isHandChange;  // True : Hand Controller | False : Lay Controller
     [HideInInspector] public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
     [HideInInspector] public bool isSensorRight; // 패널 접촉 유/무 오른쪽
     [HideInInspector] public bool isSafeQuiz;
@@ -92,8 +93,6 @@ public class GameManager : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
-
-        OriginalListRenewal();
 
         if (PlayerPrefs.HasKey("Title")) PlayerPrefs.SetString("Title", "-");
         if (PlayerPrefs.HasKey("Level")) PlayerPrefs.SetString("Level", "-");
@@ -135,62 +134,62 @@ public class GameManager : MonoBehaviour
     // [Button] Original MusicList Selected
     public void BtnOriginalSelected()
     {
-        if (!isOriginal && isCustom)
-        {
-            originalScrollView.SetActive(true);
-            customScrollView.SetActive(false);
-            OriginalListRenewal();
+        originalScrollView.SetActive(true);
+        customScrollView.SetActive(false);
+        OriginalListRenewal();
 
-            musicSelected.Stop();
-            musicBackGround.UnPause();
-        }
+        btnOriginal.interactable = false;
+        btnCustom.interactable = true;
+
+        musicSelected.Stop();
+        musicBackGround.UnPause();
     }
 
     // [Button] Custom MusicList Selected
     public void BtnCustomSelected()
     {
-        if (isOriginal && !isCustom)
-        {
-            originalScrollView.SetActive(false);
-            customScrollView.SetActive(true);
-            CustomListRenewal();
+        originalScrollView.SetActive(false);
+        customScrollView.SetActive(true);
+        CustomListRenewal();
 
-            musicSelected.Stop();
-            musicBackGround.UnPause();
-        }
+        btnOriginal.interactable = true;
+        btnCustom.interactable = false;
+
+        musicSelected.Stop();
+        musicBackGround.UnPause();
     }
 
     // [Button] Easy
     public void BtnLvEasy()
     {
-        isEasy   = true;
-        isNormal = false;
-        isHard   = false;
+        secPerBeat = 360f / bpm;
 
-        secPerBeat = 300f / bpm;
-        btnPlay.interactable = true; // 노래 재생(Play) 버튼 활성화
+        btnEasy.interactable   = false;
+        btnNormal.interactable = true;
+        btnHard.interactable   = true;
+        btnPlay.interactable   = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Normal
     public void BtnLvNormal()
     {
-        isEasy   = false;
-        isNormal = true;
-        isHard   = false;
+        secPerBeat = 300f / bpm;
 
-        secPerBeat = 240f / bpm;
-        btnPlay.interactable = true; // 노래 재생(Play) 버튼 활성화
+        btnEasy.interactable   = true;
+        btnNormal.interactable = false;
+        btnHard.interactable   = true;
+        btnPlay.interactable   = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Hard
     public void BtnLvHard()
     {
-        isEasy   = false;
-        isNormal = false;
-        isHard   = true;
+        secPerBeat = 240f / bpm;
 
-        secPerBeat = 180f / bpm;
-        btnPlay.interactable = true; // 노래 재생(Play) 버튼 활성화
+        btnEasy.interactable   = true;
+        btnNormal.interactable = true;
+        btnHard.interactable   = false;
+        btnPlay.interactable   = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Play
@@ -313,22 +312,11 @@ public class GameManager : MonoBehaviour
         ControllerModeChange();
     }
 
-    public void ResultData()
-    {
-        _TextTitle.text = PlayerPrefs.GetString("Title", $"{musicPlayed.clip.name}");
-        if      (isEasy)
-            _TextLevel.text = PlayerPrefs.GetString("Level", "Easy");
-        else if (isNormal)
-            _TextLevel.text = PlayerPrefs.GetString("Level", "Normal");
-        else if (isHard)
-            _TextLevel.text = PlayerPrefs.GetString("Level", "Hard");
-        _TextScore.text = PlayerPrefs.GetString("Score", $"{_IngameTextScore.text}");
-        _TextKcal.text = PlayerPrefs.GetString("Kcal", $"{_IngameTextKacl.text}");
-    }
-
     // [Button] End to Back to the Lobby
     public void BtnEndBackLobby()
     {
+        AddReusltList();
+
         _UIIngame.SetActive(false);
         inGameEnvironment.SetActive(false);
         _UIResult.SetActive(false);
@@ -338,97 +326,107 @@ public class GameManager : MonoBehaviour
         btnPlay.interactable = false;
     }
 
-    object[] originalMusics;
-    object[] customMusics;
-
-    GameObject originalMusicElementPrefab = null;
-    GameObject customMusicElementPrefab   = null;
-
-    public void OriginalListRenewal()
-    {
-        isOriginal = true;
-        isCustom = false;
-
-        // Custom Music 폴더의 AudioClip 속성 파일 조회
-        originalMusics = Resources.LoadAll<AudioClip>("Original Music");
-
-        for (int i = 0; i < originalMusics.Length; i++)
-        {
-            originalMusicElementPrefab = originalMusics[i] as GameObject; // AudioClip to GameObject
-            originalMusicElementPrefab = Instantiate(musicElement);
-            originalMusicElementPrefab.name = $"Original Music Element_{i}";
-            originalMusicElementPrefab.transform.parent = contentOriginal.transform;
-            originalMusicElementPrefab.transform.localScale = Vector3.one; 
-            originalMusicElementPrefab.transform.position = contentOriginal.transform.position;
-
-            //originalMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
-
-            // AudioSource.clip ← Resources-Custom Musics.AudioClip
-            originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
-
-            // (float)MusicLength to (string)PlayTime
-            originalMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text =
-                TimeFormatter(originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
-
-            // textTitle.text ← customMusicElements.AudioSource.text
-            originalMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text =
-                originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
-        }
-    }
-
-    public void CustomListRenewal()
-    {
-        isOriginal = false;
-        isCustom = true;
-
-        // Custom Music 폴더의 AudioClip 속성 파일 조회
-        customMusics = Resources.LoadAll<AudioClip>("Custom Music");
-
-        for (int i = 0; i < customMusics.Length; i++)
-        {
-            customMusicElementPrefab = customMusics[i] as GameObject; // AudioClip to GameObject
-            customMusicElementPrefab = Instantiate(musicElement);
-            customMusicElementPrefab.name = $"Custom Music Element_{i}";
-            customMusicElementPrefab.transform.parent = contentCustom.transform;
-            customMusicElementPrefab.transform.localScale = Vector3.one;
-            customMusicElementPrefab.transform.position = contentCustom.transform.position;
-
-            //customMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().playOnAwake = false; // Off 'Play On Awake'
-
-            // AudioSource.clip ← Resources-Custom Musics.AudioClip
-            customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)customMusics[i];
-
-            // (float)MusicLength to (string)PlayTime
-            customMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = 
-                TimeFormatter(customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
-
-            // textTitle.text ← customMusicElements.AudioSource.text
-            customMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = 
-                customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
-        }
-    }
-
     void ControllerModeChange()
     {
-        if /*Hand Controller*/ (isHandChange) 
+        if /*Hand Controller*/ (isHandChange)
         {
-            layLeftController .SetActive(false);
+            layLeftController.SetActive(false);
             layRightController.SetActive(false);
 
-            handLeftController .SetActive(true);
+            handLeftController.SetActive(true);
             handRightController.SetActive(true);
 
             isHandChange = false;
         }
         else /*Lay Controller*/
         {
-            handLeftController .SetActive(false);
+            handLeftController.SetActive(false);
             handRightController.SetActive(false);
 
-            layLeftController .SetActive(true);
+            layLeftController.SetActive(true);
             layRightController.SetActive(true);
 
             isHandChange = true;
         }
+    }
+
+    public void ResultData()
+    {
+        _TextTitle.text = PlayerPrefs.GetString("Title", $"{musicPlayed.clip.name}");
+        if      (!btnEasy.interactable)
+            _TextLevel.text = PlayerPrefs.GetString("Level", "Easy");
+        else if (!btnNormal.interactable)
+            _TextLevel.text = PlayerPrefs.GetString("Level", "Normal");
+        else if (!btnHard.interactable)
+            _TextLevel.text = PlayerPrefs.GetString("Level", "Hard");
+        _TextScore.text = PlayerPrefs.GetString("Score", $"{_IngameTextScore.text}");
+        _TextKcal.text = PlayerPrefs.GetString("Kcal", $"{_IngameTextKacl.text}");
+    }
+
+    void OriginalListRenewal()
+    {
+        foreach (Transform item in contentOriginal.transform) Destroy(item.gameObject);
+
+        // Custom Music 폴더의 AudioClip 속성 파일 조회
+        object[] originalMusics = Resources.LoadAll<AudioClip>("Original Music");
+
+        for (int i = 0; i < originalMusics.Length; i++)
+        {
+            // AudioClip to GameObject
+            GameObject originalMusicElementPrefab = originalMusics[i] as GameObject;
+            originalMusicElementPrefab = Instantiate(musicElement, contentOriginal.transform.position, contentOriginal.transform.rotation);
+            originalMusicElementPrefab.name = $"Original Music Element_{i}";
+            originalMusicElementPrefab.transform.parent = contentOriginal.transform;
+            originalMusicElementPrefab.transform.localScale = Vector3.one;
+
+            // AudioSource.clip ← Resources-Custom Musics.AudioClip
+            originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
+            // (float)MusicLength to (string)PlayTime
+            originalMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = TimeFormatter(originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
+            // textTitle.text ← customMusicElements.AudioSource.text
+            originalMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
+        }
+    }
+
+    void CustomListRenewal()
+    {
+        foreach (Transform item in contentCustom.transform) Destroy(item.gameObject);
+
+        // Custom Music 폴더의 AudioClip 속성 파일 조회
+        object[] customMusics = Resources.LoadAll<AudioClip>("Custom Music");
+
+        for (int i = 0; i < customMusics.Length; i++)
+        {
+            // AudioClip to GameObject
+            GameObject customMusicElementPrefab = customMusics[i] as GameObject;
+            customMusicElementPrefab = Instantiate(musicElement, contentCustom.transform.position, contentCustom.transform.rotation);
+            customMusicElementPrefab.name = $"Custom Music Element_{i}";
+            customMusicElementPrefab.transform.parent = contentCustom.transform;
+            customMusicElementPrefab.transform.localScale = Vector3.one;
+
+            // AudioSource.clip ← Resources-Custom Musics.AudioClip
+            customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)customMusics[i];
+            // (float)MusicLength to (string)PlayTime
+            customMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = TimeFormatter(customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
+            // textTitle.text ← customMusicElements.AudioSource.text
+            customMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
+        }
+    }
+
+    void AddReusltList()
+    {
+        GameObject resultElementPrefab = Instantiate(resultElement, contentResult.transform.position, contentResult.transform.rotation);
+        resultElementPrefab.transform.parent = contentResult.transform;
+        resultElementPrefab.transform.localScale = Vector3.one;
+
+        btnReset.interactable = true;
+    }
+
+    // [Button] 결과 리스트 초기화
+    public void ResultListReset()
+    {
+        foreach (Transform item in contentResult.transform) Destroy(item.gameObject);
+
+        btnReset.interactable = false;
     }
 }

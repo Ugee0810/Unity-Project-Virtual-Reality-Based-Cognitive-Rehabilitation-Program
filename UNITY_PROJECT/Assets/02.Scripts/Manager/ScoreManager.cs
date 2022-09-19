@@ -8,7 +8,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
@@ -34,29 +33,18 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    IEnumerator Increase()
+    public IEnumerator Increase()
     {
+        yield return null;
+
         GameManager.instance.score += 1000;
         SetScore();
 
         GameManager.instance.kcal += Random.Range(0.1f, 0.2f);
         SetKcal();
 
-        yield return null;
+        yield break;
     }
-
-    //public void IncreaseScore()
-    //{
-    //    GameManager.instance.score += 1000;
-    //    SetScore();
-    //}
-
-    //public void IncreaseKcal()
-    //{
-    //    GameManager.instance.kcal += Random.Range(0.1f, 0.2f);
-    //    SetKcal();
-    //}
-
 
     public void SetScore()
     {
