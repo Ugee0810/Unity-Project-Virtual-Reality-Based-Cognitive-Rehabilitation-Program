@@ -136,8 +136,8 @@ public class PanelManager : MonoBehaviour
 
     }   
 
-    // 이미지 테마
-    void ImageTheme()
+    // 컬러 테마
+    void ColorTheme()
     {
 
     }

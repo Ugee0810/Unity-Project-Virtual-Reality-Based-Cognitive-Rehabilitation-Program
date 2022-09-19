@@ -8,9 +8,6 @@
 /// 오리지널 또는 커스텀 노래 조회 버튼을 눌렀을 때 라이브러리 내 음악을 조회 후 각 정보들을 Element들에게 전달합니다.
 /// </summary>
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -162,7 +159,7 @@ public class GameManager : MonoBehaviour
     // [Button] Easy
     public void BtnLvEasy()
     {
-        secPerBeat = 360f / bpm;
+        secPerBeat = 420f / bpm;
 
         btnEasy.interactable   = false;
         btnNormal.interactable = true;
@@ -173,7 +170,7 @@ public class GameManager : MonoBehaviour
     // [Button] Normal
     public void BtnLvNormal()
     {
-        secPerBeat = 300f / bpm;
+        secPerBeat = 360f / bpm;
 
         btnEasy.interactable   = true;
         btnNormal.interactable = false;
@@ -184,7 +181,7 @@ public class GameManager : MonoBehaviour
     // [Button] Hard
     public void BtnLvHard()
     {
-        secPerBeat = 240f / bpm;
+        secPerBeat = 300f / bpm;
 
         btnEasy.interactable   = true;
         btnNormal.interactable = true;
