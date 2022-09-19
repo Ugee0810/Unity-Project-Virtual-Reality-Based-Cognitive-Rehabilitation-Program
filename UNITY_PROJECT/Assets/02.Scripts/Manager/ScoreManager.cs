@@ -37,6 +37,8 @@ public class ScoreManager : MonoBehaviour
     {
         yield return null;
 
+        ComboManager.instance.IncreaseCombo();
+
         GameManager.instance.score += 1000;
         SetScore();
 

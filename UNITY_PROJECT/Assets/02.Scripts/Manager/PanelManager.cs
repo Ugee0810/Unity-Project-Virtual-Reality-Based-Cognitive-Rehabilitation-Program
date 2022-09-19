@@ -5,9 +5,6 @@
 /// 
 /// </summary>
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -63,7 +60,7 @@ public class PanelManager : MonoBehaviour
                 if (!GameManager.instance.isSafeQuiz)
                 {
                     Debug.Log("최초에 퀴즈 패널이 안 나오도록 구현");
-                    GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
+                    GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
                     _motion.name = "MOTION";
                     GameManager.instance.panelLastIndex++;
                     return;
@@ -80,14 +77,14 @@ public class PanelManager : MonoBehaviour
                     else if (panelSpawnPoint.transform.GetChild(GameManager.instance.panelLastIndex).transform.name == "BLOCK")
                     {
                         Debug.Log("블럭 패널이 나와서 퀴즈 패널 대신 모션 패널 생성");
-                        GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
+                        GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
                         _motion.name = "MOTION";
                         GameManager.instance.panelLastIndex++;
                     }
                     else if (panelSpawnPoint.transform.GetChild(GameManager.instance.panelLastIndex).transform.name == "QUIZ")
                     {
                         Debug.Log("퀴즈 패널이 나와서 퀴즈 패널 대신 모션 패널 생성");
-                        GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
+                        GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
                         _motion.name = "MOTION";
                         GameManager.instance.panelLastIndex++;
                     }
@@ -102,7 +99,7 @@ public class PanelManager : MonoBehaviour
             }
             /* MOTION 80% */ else if (_PanelIndex > 1)
             {
-                GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
+                GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
                 _motion.name = "MOTION";
                 GameManager.instance.panelLastIndex++;
                 GameManager.instance.isSafeQuiz = true;

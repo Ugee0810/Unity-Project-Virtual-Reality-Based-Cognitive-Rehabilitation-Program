@@ -1,5 +1,5 @@
 /// <summary>
-/// PanelDestroy.cs
+/// PanelEndLineDestroy.cs
 /// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
 /// This software is released under the GPL-2.0 license
 /// 
@@ -11,9 +11,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using UnityEngine.Events;
 
-public class PanelDestroy : MonoBehaviour
+public class PanelEndLineDestroy : MonoBehaviour
 {
     public UnityEvent _SFX;
 
@@ -24,6 +25,7 @@ public class PanelDestroy : MonoBehaviour
             Destroy(c.gameObject);
             GameManager.instance.panelLastIndex--;
             _SFX?.Invoke();
+            ComboManager.instance.Clear();
         }
 
         if (c.gameObject.tag == "BLOCK")
@@ -37,6 +39,7 @@ public class PanelDestroy : MonoBehaviour
             Destroy(c.gameObject);
             GameManager.instance.panelLastIndex--;
             _SFX?.Invoke();
+            ComboManager.instance.Clear();
         }
     }
 }
