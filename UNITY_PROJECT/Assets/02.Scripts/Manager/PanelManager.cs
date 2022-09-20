@@ -56,7 +56,9 @@ public class PanelManager : MonoBehaviour
             GameManager.instance.timer -= GameManager.instance.secPerBeat;
 
             int panelIndex = Random.Range(0, 10); // <--- 전체 패널 확률
-            int quizCool = Random.Range(5, 20); // <--- 퀴즈 쿨타임
+            int quizCool = Random.Range(5, 25); // <--- 퀴즈 쿨타임
+
+            Debug.Log(quizCool);
 
             /* QUIZ 10% */
             if (panelIndex == 0)
@@ -70,10 +72,10 @@ public class PanelManager : MonoBehaviour
                     panelSpawnCount++;
                     panelLastIndex++;
 
-                    if (panelSpawnCount == quizCool)
+                    if (panelSpawnCount == quizCool && !isQuiz)
                     {
                         _motion.transform.GetChild(4).gameObject.SetActive(true);
-                        panelSpawnCount -= quizCool;
+                        panelSpawnCount -= quizCool + 5;
                     }
                 }
                 else if (isQuiz)
@@ -108,10 +110,10 @@ public class PanelManager : MonoBehaviour
                 panelSpawnCount++;
                 panelLastIndex++;
 
-                if (panelSpawnCount == quizCool) // 2회차 퀴즈 나오는지 내일(21일) 체크하기
+                if (panelSpawnCount >= quizCool && !isQuiz)
                 {
                     _motion.transform.GetChild(4).gameObject.SetActive(true);
-                    panelSpawnCount -= quizCool;
+                    panelSpawnCount -= quizCool + 5; // 이 구문의 숫자가 높을 수록 다음 퀴즈 생성 빈도 조절 가능
                 }
             }
         }
