@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
     public int   bpm;
     public float secPerBeat;
     public float timer; // BPM 계산 타이머
-    public int   panelLastIndex;
 
     [Header("[Score & Kcal]")]
     public int   score = 0;
@@ -257,7 +256,8 @@ public class GameManager : MonoBehaviour
             timer = 0;
             offsetTimer = 0;
             secPerBeat = 0;
-            panelLastIndex = -1;
+            PanelManager.instance.panelSpawnCount = -1;
+            PanelManager.instance.panelLastIndex  = -1;
             isSafeQuiz = false;
 
             btnPlay.interactable = false;
@@ -292,7 +292,8 @@ public class GameManager : MonoBehaviour
         timer = 0;
         offsetTimer = 0;
         secPerBeat = 0;
-        panelLastIndex = -1;
+        PanelManager.instance.panelSpawnCount = -1;
+        PanelManager.instance.panelLastIndex  = -1;
         isSafeQuiz = false;
 
         musicBackGround.UnPause();

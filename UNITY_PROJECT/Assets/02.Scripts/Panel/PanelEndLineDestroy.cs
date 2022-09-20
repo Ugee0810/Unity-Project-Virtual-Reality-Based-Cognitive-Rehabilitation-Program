@@ -23,7 +23,7 @@ public class PanelEndLineDestroy : MonoBehaviour
         if (c.gameObject.tag == "QUIZ")
         {
             Destroy(c.gameObject);
-            GameManager.instance.panelLastIndex--;
+            PanelManager.instance.panelLastIndex--;
             _SFX?.Invoke();
             ComboManager.instance.Clear();
         }
@@ -31,13 +31,13 @@ public class PanelEndLineDestroy : MonoBehaviour
         if (c.gameObject.tag == "BLOCK")
         {
             Destroy(c.gameObject);
-            GameManager.instance.panelLastIndex--;
+            PanelManager.instance.panelLastIndex--;
         }
 
         if (c.gameObject.tag == "MOTION")
         {
             Destroy(c.gameObject);
-            GameManager.instance.panelLastIndex--;
+            PanelManager.instance.panelLastIndex--;
             _SFX?.Invoke();
             ComboManager.instance.Clear();
         }

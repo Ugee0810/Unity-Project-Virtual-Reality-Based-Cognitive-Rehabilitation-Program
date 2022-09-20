@@ -232,7 +232,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &12779824
 PrefabInstance:
@@ -2016,15 +2016,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 704643013}
-  - {fileID: 2140507748}
   - {fileID: 11017396}
   - {fileID: 1873245974}
-  - {fileID: 955901270}
   - {fileID: 786298819}
-  - {fileID: 1233514180}
   - {fileID: 1769986484}
   - {fileID: 1845927132}
+  - {fileID: 2140507748}
+  - {fileID: 704643013}
   - {fileID: 1741521508}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -5291,7 +5289,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &704643014
 MonoBehaviour:
@@ -6979,7 +6977,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &786298820
 MonoBehaviour:
@@ -13422,109 +13420,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 940554583}
   m_CullTransparentMesh: 1
---- !u!1 &955901269
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 955901270}
-  - component: {fileID: 955901271}
-  m_Layer: 0
-  m_Name: Quiz Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &955901270
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955901269}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 258503846}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &955901271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955901269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece78b8ce545077419405d69e9332af3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  quizPanel: {fileID: 0}
-  lightArray:
-  - {fileID: 1590048481017797926, guid: 16f465398318b32428edf2bdf8ec137d, type: 3}
-  - {fileID: 7897953893524665537, guid: 2a3f642291eea854aaa1d20f1fc42148, type: 3}
-  - {fileID: 457903792804306977, guid: 3e00db9908b867c49a77e8181148b7b9, type: 3}
-  - {fileID: 1266177875103963441, guid: 4f3e7a59731bade42b237ffca59cdd74, type: 3}
-  - {fileID: 2124179683756235942, guid: cdec037ae8b824a47891d72c5a88aee4, type: 3}
-  - {fileID: 4318784651365586069, guid: 7bcdb094f8f56214db6e9154a3a5106e, type: 3}
-  - {fileID: 3325716421738597650, guid: e6bce2bf39b69ee4db00c38a87417bbe, type: 3}
-  letterArray:
-  - "\uC9D1\uC911"
-  - "\uD3C9\uD654"
-  - "\uC6A9\uC11C"
-  - "\uAC10\uC0AC"
-  - "\uCE68\uCC29"
-  - "\uC815\uC758"
-  - "\uC870\uD654"
-  - "\uC790\uC720"
-  - "\uC815\uC9C1"
-  - "\uC9C0\uD61C"
-  - "\uCE5C\uC808"
-  - "\uC774\uD574"
-  - "\uD65C\uB825"
-  - "\uC601\uAC10"
-  - "\uACF5\uAC10"
-  - "\uACB8\uC190"
-  - "\uD798"
-  - "\uC9C0\uC131"
-  - "\uACE0\uC694"
-  - "\uACB0\uB2E8"
-  - "\uC0AC\uB791"
-  - "\uAD00\uC6A9"
-  - "\uC790\uBE44"
-  - "\uBD80\uB4DC\uB7EC\uC6C0"
-  - "\uCD95\uBCF5"
-  - "\uC0DD\uBA85"
-  - "\uBBFF\uC74C"
-  - "\uC80A\uC74C"
-  - "\uC790\uC2E0\uAC10"
-  - "\uB355\uC131"
-  - "\uD589\uBCF5"
-  - "\uC601\uD63C"
-  - "\uBBFC\uCCA9\uC131"
-  - "\uAC74\uAC15"
-  - "\uCDA9\uB9CC"
-  - "\uC77C\uAD00\uC131"
-  - "\uB048\uAE30"
-  - "\uBAA9\uC801"
-  - "\uC131\uCDE8"
-  - "\uD48D\uC694"
-  - "\uC131\uACF5"
-  - "\uC219\uB2EC"
-  - "\uB2A5\uB825"
-  - "\uC5D0\uB108\uC9C0"
-  - "\uC18C\uBA85"
-  - "\uCE68\uBB35"
-  - "\uC9C1\uAD00"
-  - "\uC7AC\uC0DD"
-  - "\uC18C\uC0DD"
 --- !u!1001 &957292983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14228,7 +14123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1096925472
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20457,37 +20352,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1229533254}
   m_CullTransparentMesh: 1
---- !u!1 &1233514179
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1233514180}
-  m_Layer: 0
-  m_Name: Pool Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1233514180
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233514179}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 258503846}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1243783237
 GameObject:
   m_ObjectHideFlags: 0
@@ -28679,7 +28543,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187027, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187027, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
@@ -28739,7 +28603,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f5a24a380916d14db9775daab4fe333, type: 3}
@@ -28917,7 +28781,7 @@ GameObject:
   - component: {fileID: 1769986484}
   - component: {fileID: 1769986485}
   m_Layer: 0
-  m_Name: ComboSystem
+  m_Name: Combo Manager
   m_TagString: Untagged
   m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -28936,7 +28800,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 7
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1769986485
 MonoBehaviour:
@@ -28950,7 +28814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dfd7e11c834cd43ae105c5cddffd64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comboWord: Combo
+  comboWord: ' Combo'
   comboObj: {fileID: 1205326648}
   scaleCurve:
     serializedVersion: 2
@@ -28983,6 +28847,8 @@ MonoBehaviour:
   scaleIncrement: 0.6
   maxScale: 5
   basicScaleIncrement: 0.09
+  combo: 0
+  timer: 0
 --- !u!1 &1771105892
 GameObject:
   m_ObjectHideFlags: 0
@@ -29761,7 +29627,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 8
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1848744763
 GameObject:
@@ -30002,7 +29868,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1873245975
 MonoBehaviour:
@@ -30019,7 +29885,7 @@ MonoBehaviour:
   panelSpawnPoint: {fileID: 1845927132}
   panelCheck: {fileID: 1130156361}
   quiz:
-  - {fileID: 4821081350602985475, guid: be6da43b745c7804f8d32aceedfbe99a, type: 3}
+  - {fileID: 3896500684323076715, guid: be6da43b745c7804f8d32aceedfbe99a, type: 3}
   block:
   - {fileID: 5302970632817858267, guid: f4bbcddc23fa716479fb89cdd182751e, type: 3}
   - {fileID: 1020610426066342541, guid: ccca955453d1b6f44b11b13560df5ae1, type: 3}
@@ -30037,14 +29903,6 @@ MonoBehaviour:
   - {fileID: 2733853735872269117, guid: a202a939495125d4cafd29bf71c9b5f7, type: 3}
   - {fileID: 4443459919541571623, guid: 4dae4bf1b8489bd4ebe33e806c0569c6, type: 3}
   - {fileID: 1811733634039706096, guid: 27008f2c1e9d54143a6aad477db42a71, type: 3}
-  quizImageAnswer: {fileID: 4789775202080314663, guid: a594e5fbb8a37c64b99e5408ad6431c5,
-    type: 3}
-  quizImageQuestion: {fileID: 515237803455803775, guid: fd90f29fc104a4146b5d57208e499d07,
-    type: 3}
-  quizTextAnswer: {fileID: 515237803455803775, guid: ceaacc2732582ef41a485c0b8faa2b55,
-    type: 3}
-  quizTextQuestion: {fileID: 515237803455803775, guid: e887d923c0b2b674a8666d3798c8bea3,
-    type: 3}
 --- !u!1 &1892997499
 GameObject:
   m_ObjectHideFlags: 0
@@ -41589,7 +41447,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 258503846}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2145037783
 GameObject:

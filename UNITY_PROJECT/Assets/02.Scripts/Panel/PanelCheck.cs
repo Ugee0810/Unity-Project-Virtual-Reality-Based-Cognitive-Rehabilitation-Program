@@ -19,14 +19,14 @@ public class PanelCheck : MonoBehaviour
         if (c.gameObject.tag == "QUIZ")
         {
             Destroy(c.gameObject);
-            GameManager.instance.panelLastIndex--;
+            PanelManager.instance.panelLastIndex--;
             _SFX?.Invoke();
         }
 
         if (c.gameObject.tag == "MOTION")
         {
             Destroy(c.gameObject);
-            GameManager.instance.panelLastIndex--;
+            PanelManager.instance.panelLastIndex--;
             _SFX?.Invoke();
         }
     }
