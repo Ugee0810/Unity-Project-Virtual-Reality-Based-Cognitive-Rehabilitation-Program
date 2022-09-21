@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool isHandChange;  // True : Hand Controller | False : Lay Controller
     [HideInInspector] public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
     [HideInInspector] public bool isSensorRight; // 패널 접촉 유/무 오른쪽
-    [HideInInspector] public bool isSafeQuiz;
 
     public static GameManager instance;
     private void Awake()
@@ -160,6 +159,7 @@ public class GameManager : MonoBehaviour
     {
         secPerBeat = 420f / bpm;
 
+        PanelManager.instance.quizCool = 15;
         btnEasy.interactable   = false;
         btnNormal.interactable = true;
         btnHard.interactable   = true;
@@ -171,6 +171,7 @@ public class GameManager : MonoBehaviour
     {
         secPerBeat = 360f / bpm;
 
+        PanelManager.instance.quizCool = 10;
         btnEasy.interactable   = true;
         btnNormal.interactable = false;
         btnHard.interactable   = true;
@@ -182,6 +183,7 @@ public class GameManager : MonoBehaviour
     {
         secPerBeat = 300f / bpm;
 
+        PanelManager.instance.quizCool = 5;
         btnEasy.interactable   = true;
         btnNormal.interactable = true;
         btnHard.interactable   = false;
@@ -258,7 +260,9 @@ public class GameManager : MonoBehaviour
             secPerBeat = 0;
             PanelManager.instance.panelSpawnCount = -1;
             PanelManager.instance.panelLastIndex  = -1;
-            isSafeQuiz = false;
+            PanelManager.instance.isQuiz = false;
+            PanelManager.instance.isCurLeft = false;
+            PanelManager.instance.isCurRight = false;
 
             btnPlay.interactable = false;
 
@@ -294,7 +298,9 @@ public class GameManager : MonoBehaviour
         secPerBeat = 0;
         PanelManager.instance.panelSpawnCount = -1;
         PanelManager.instance.panelLastIndex  = -1;
-        isSafeQuiz = false;
+        PanelManager.instance.isQuiz = false;
+        PanelManager.instance.isCurLeft = false;
+        PanelManager.instance.isCurRight = false;
 
         musicBackGround.UnPause();
         ResultData();

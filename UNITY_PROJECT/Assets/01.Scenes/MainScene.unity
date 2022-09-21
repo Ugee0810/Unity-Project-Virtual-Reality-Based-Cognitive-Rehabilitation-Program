@@ -186,7 +186,6 @@ MonoBehaviour:
   bpm: 0
   secPerBeat: 0
   timer: 0
-  panelLastIndex: 0
   score: 0
   kcal: 0
   musicBackGround: {fileID: 1161132230}
@@ -203,7 +202,6 @@ MonoBehaviour:
   isHandChange: 0
   isSensorLeft: 0
   isSensorRight: 0
-  isSafeQuiz: 0
   endEvent:
     m_PersistentCalls:
       m_Calls:
@@ -29903,6 +29901,21 @@ MonoBehaviour:
   - {fileID: 2733853735872269117, guid: a202a939495125d4cafd29bf71c9b5f7, type: 3}
   - {fileID: 4443459919541571623, guid: 4dae4bf1b8489bd4ebe33e806c0569c6, type: 3}
   - {fileID: 1811733634039706096, guid: 27008f2c1e9d54143a6aad477db42a71, type: 3}
+  ballList:
+  - {fileID: 8799547550474604, guid: 92aa51113897cdb4299f13b637d19974, type: 3}
+  - {fileID: 730125900514553691, guid: 2ea5c5841c1e19c40aab7d40c63f0246, type: 3}
+  - {fileID: 455278211648546481, guid: 9f6e77f87e1762f45840f89afd036ad3, type: 3}
+  - {fileID: 6820834567152418720, guid: 63f26089ed2e968488771c9fb148a32a, type: 3}
+  - {fileID: 7623963478836202168, guid: 2001caa0c61fcf84dbed2847aa56b2db, type: 3}
+  - {fileID: 7626006952835226265, guid: 505e0750135b3794e89984bdba5c349e, type: 3}
+  - {fileID: 2265615819882961683, guid: 52398867f47d2cc4a882801f07e2b1f1, type: 3}
+  _LetterList: []
+  _CurLetterList: []
+  panelSpawnCount: 0
+  panelLastIndex: 0
+  isQuiz: 0
+  curColor: 
+  curLetter: 
 --- !u!1 &1892997499
 GameObject:
   m_ObjectHideFlags: 0

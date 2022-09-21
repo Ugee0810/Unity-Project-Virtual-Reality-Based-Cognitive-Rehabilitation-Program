@@ -1,5 +1,5 @@
 /// <summary>
-/// PanelCheck.cs
+/// MotionPanelCheck.cs
 /// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
 /// This software is released under the GPL-2.0 license
 /// 
@@ -13,21 +13,13 @@ using UnityEngine.Events;
 public class PanelCheck : MonoBehaviour
 {
     public UnityEvent _SFX;
-
     private void OnTriggerEnter(Collider c)
     {
-        if (c.gameObject.tag == "QUIZ")
-        {
-            Destroy(c.gameObject);
-            PanelManager.instance.panelLastIndex--;
-            _SFX?.Invoke();
-        }
-
         if (c.gameObject.tag == "MOTION")
         {
-            Destroy(c.gameObject);
-            PanelManager.instance.panelLastIndex--;
             _SFX?.Invoke();
+            PanelManager.instance.panelLastIndex--;
+            Destroy(c.gameObject);
         }
     }
 }

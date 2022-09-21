@@ -13,13 +13,45 @@ public class PanelSensor : MonoBehaviour
 {
     private void OnTriggerEnter(Collider c)
     {
-        if (c.gameObject.tag == "QUIZ LEFT")
+        if (PanelManager.instance.isCurLeft)
         {
-
+            if (c.gameObject.tag == "QUIZ LEFT")
+            {
+                PanelManager.instance.isCurLeft = false;
+                ComboManager.instance.IncreaseCombo();
+                PanelManager.instance.panelLastIndex--;
+                Destroy(c.gameObject.transform.parent.gameObject);
+            }
+            else if (c.gameObject.tag == "QUIZ RIGHT")
+            {
+                if (GameManager.instance.score > 0)
+                {
+                    GameManager.instance.score -= 10000;
+                    ScoreManager.instance.SetScore();
+                }
+                PanelManager.instance.isCurLeft = false;
+                ComboManager.instance.Clear();
+            }
         }
-        else if (c.gameObject.tag == "QUIZ RIGHT")
+        if (PanelManager.instance.isCurRight)
         {
-
+            if (c.gameObject.tag == "QUIZ LEFT")
+            {
+                if (GameManager.instance.score > 0)
+                {
+                    GameManager.instance.score -= 10000;
+                    ScoreManager.instance.SetScore();
+                }
+                PanelManager.instance.isCurRight = false;
+                ComboManager.instance.Clear();
+            }
+            else if (c.gameObject.tag == "QUIZ RIGHT")
+            {
+                PanelManager.instance.isCurRight = false;
+                ComboManager.instance.IncreaseCombo();
+                PanelManager.instance.panelLastIndex--;
+                Destroy(c.gameObject.transform.parent.gameObject);
+            }
         }
     }
 
@@ -29,9 +61,10 @@ public class PanelSensor : MonoBehaviour
         {
             if (GameManager.instance.score > 0)
             {
-                GameManager.instance.score -= 10;
+                GameManager.instance.score -= 100;
                 ScoreManager.instance.SetScore();
             }
+            ComboManager.instance.Clear();
         }
     }
 }

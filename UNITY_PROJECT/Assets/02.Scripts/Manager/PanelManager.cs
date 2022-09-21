@@ -5,7 +5,11 @@
 /// 
 /// </summary>
 
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngineInternal;
 using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
@@ -19,6 +23,25 @@ public class PanelManager : MonoBehaviour
     public GameObject[] block;        // 패널 프리팹 배열
     public GameObject[] motion;       // 패널 프리팹 배열
 
+    public List<GameObject> ballList = new List<GameObject>();
+    static string[] _LetterArray =
+    { "집중", "평화", "용서", "감사", "침착", "정의", "조화", "자유", "정직", "지혜",
+        "친절", "이해", "활력", "영감", "공감", "겸손", "힘", "지성", "고요", "결단",
+        "사랑", "관용", "자비", "부드러움", "축복", "생명", "믿음", "젊음", "자신감", "덕성",
+        "행복", "영혼", "민첩성", "건강", "충만", "일관성", "끈기", "목적", "성취", "풍요",
+        "성공", "숙달", "능력", "에너지", "소명", "침묵", "직관", "재생", "소생" };
+    public List<string> _LetterList = new List<string>();
+
+    public int panelSpawnCount;
+    public int panelLastIndex;
+    public bool isQuiz;
+    public bool isCurLeft;
+    public bool isCurRight;
+    public int quizCool;
+
+    public string curColor;
+    public string curLetter;
+    
     public static PanelManager instance;
     private void Awake()
     {
@@ -29,6 +52,8 @@ public class PanelManager : MonoBehaviour
 
         panelSpawnCount = -1;
         panelLastIndex  = -1;
+
+        _LetterList.AddRange(_LetterArray);
     }
 
     private void FixedUpdate()
@@ -45,9 +70,6 @@ public class PanelManager : MonoBehaviour
         }
     }
 
-    public int panelSpawnCount;
-    public int panelLastIndex;
-    public bool isQuiz;
     public void PanelInstance()
     {
         GameManager.instance.timer += Time.deltaTime;
@@ -56,12 +78,9 @@ public class PanelManager : MonoBehaviour
             GameManager.instance.timer -= GameManager.instance.secPerBeat;
 
             int panelIndex = Random.Range(0, 10); // <--- 전체 패널 확률
-            int quizCool = Random.Range(5, 25); // <--- 퀴즈 쿨타임
+            int quizCool   = Random.Range(5, 25); // <--- 퀴즈 쿨타임
 
-            Debug.Log(quizCool);
-
-            /* QUIZ 10% */
-            if (panelIndex == 0)
+            /* QUIZ 10% */ if (panelIndex == 0)
             {
                 if (!isQuiz)
                 {
@@ -75,7 +94,7 @@ public class PanelManager : MonoBehaviour
                     if (panelSpawnCount == quizCool && !isQuiz)
                     {
                         _motion.transform.GetChild(4).gameObject.SetActive(true);
-                        panelSpawnCount -= quizCool + 5;
+                        panelSpawnCount -= quizCool + quizCool;
                     }
                 }
                 else if (isQuiz)
@@ -90,19 +109,17 @@ public class PanelManager : MonoBehaviour
                     isQuiz = false;
                 }
             }
-
-            /* BLOCK 10% */
-            else if (panelIndex == 1)
+            /* BLOCK 10% */ else if (panelIndex == 1)
             {
                 GameObject _block = Instantiate(block[Random.Range(0, 3)], panelSpawnPoint);
                 _block.name = "BLOCK";
+                float zScale = Random.Range(1.0f, 4.0f);
+                _block.transform.localScale = new Vector3(1, 1, Random.Range(1, zScale));
 
                 panelSpawnCount++;
                 panelLastIndex++;
             }
-
-            /* MOTION 80% */
-            else if (panelIndex > 1)
+            /* MOTION 80% */ else if (panelIndex > 1)
             {
                 GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
                 _motion.name = "MOTION";
@@ -113,78 +130,11 @@ public class PanelManager : MonoBehaviour
                 if (panelSpawnCount >= quizCool && !isQuiz)
                 {
                     _motion.transform.GetChild(4).gameObject.SetActive(true);
-                    panelSpawnCount -= quizCool + 5; // 이 구문의 숫자가 높을 수록 다음 퀴즈 생성 빈도 조절 가능
+                    panelSpawnCount -= quizCool + quizCool;
                 }
             }
         }
     }
-
-    /*
-    2022-09-20 21:35 'Canvas Quiz' 게임 오브젝트를 Enable 하는 타이밍
-    모션 패널 다음에 나올 패널이 퀴즈 패널임을 예측하는 법
-
-    퀴즈 UI 활성화 코드
-    _motion.transform.GetChild(4).gameObject.SetActive(true);
-    */
-
-    //public void PanelInstance()
-    //{
-    //    GameManager.instance.timer += Time.deltaTime;
-    //    int _PanelIndex = Random.Range(0, 10);
-    //    if (GameManager.instance.timer > GameManager.instance.secPerBeat)
-    //    {
-    //        /* QUIZ 10% */ if (_PanelIndex == 0)
-    //        {
-    //            if (!GameManager.instance.isSafeQuiz)
-    //            {
-    //                Debug.Log("최초에 퀴즈 패널이 안 나오도록 구현");
-    //                GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
-    //                _motion.name = "MOTION";
-    //                GameManager.instance.panelLastIndex++;
-    //                return;
-    //            }
-    //            if (GameManager.instance.isSafeQuiz)
-    //            {
-    //                if (panelSpawnPoint.transform.GetChild(GameManager.instance.panelLastIndex).transform.name == "MOTION")
-    //                {
-    //                    Debug.Log("퀴즈 패널 생성");
-    //                    GameObject _quiz = Instantiate(quiz[0], panelSpawnPoint);
-    //                    _quiz.name = "QUIZ";
-    //                    GameManager.instance.panelLastIndex++;
-    //                }
-    //                else if (panelSpawnPoint.transform.GetChild(GameManager.instance.panelLastIndex).transform.name == "BLOCK")
-    //                {
-    //                    Debug.Log("블럭 패널이 나와서 퀴즈 패널 대신 모션 패널 생성");
-    //                    GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
-    //                    _motion.name = "MOTION";
-    //                    GameManager.instance.panelLastIndex++;
-    //                }
-    //                else if (panelSpawnPoint.transform.GetChild(GameManager.instance.panelLastIndex).transform.name == "QUIZ")
-    //                {
-    //                    Debug.Log("퀴즈 패널이 나와서 퀴즈 패널 대신 모션 패널 생성");
-    //                    GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
-    //                    _motion.name = "MOTION";
-    //                    GameManager.instance.panelLastIndex++;
-    //                }
-    //            }
-    //        }
-    //        /* BLOCK 10% */ else if (_PanelIndex == 1)
-    //        {
-    //            GameObject _block = Instantiate(block[Random.Range(0, 3)], panelSpawnPoint);
-    //            _block.name = "BLOCK";
-    //            GameManager.instance.panelLastIndex++;
-    //            GameManager.instance.isSafeQuiz = true;
-    //        }
-    //        /* MOTION 80% */ else if (_PanelIndex > 1)
-    //        {
-    //            GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
-    //            _motion.name = "MOTION";
-    //            GameManager.instance.panelLastIndex++;
-    //            GameManager.instance.isSafeQuiz = true;
-    //        }
-    //        GameManager.instance.timer -= GameManager.instance.secPerBeat;
-    //    }
-    //}
 
     void PanelCheck()
     {

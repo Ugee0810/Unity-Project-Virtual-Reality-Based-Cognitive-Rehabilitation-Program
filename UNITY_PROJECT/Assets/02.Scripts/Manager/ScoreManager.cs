@@ -39,8 +39,26 @@ public class ScoreManager : MonoBehaviour
 
         ComboManager.instance.IncreaseCombo();
 
-        GameManager.instance.score += 1000;
-        SetScore();
+        if (0 <= ComboManager.instance.combo && ComboManager.instance.combo < 5)
+        {
+            GameManager.instance.score += 1000;
+            SetScore();
+        }
+        else if /*x2*/ (5 <= ComboManager.instance.combo && ComboManager.instance.combo < 10)
+        {
+            GameManager.instance.score += 2000;
+            SetScore();
+        }
+        else if /*x4*/ (10 <= ComboManager.instance.combo && ComboManager.instance.combo < 15)
+        {
+            GameManager.instance.score += 4000;
+            SetScore();
+        }
+        else if /*x8*/ (15 <= ComboManager.instance.combo)
+        {
+            GameManager.instance.score += 8000;
+            SetScore();
+        }
 
         GameManager.instance.kcal += Random.Range(0.1f, 0.2f);
         SetKcal();

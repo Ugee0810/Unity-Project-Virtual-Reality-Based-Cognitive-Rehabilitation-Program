@@ -4,14 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - HAND LEFT
-  - HAND RIGHT
-  - PANEL LEFT
-  - PANEL RIGHT
   - QUIZ
   - BLOCK
   - MOTION
-  - TRIGGER PANEL
+  - HAND LEFT
+  - HAND RIGHT
+  - QUIZ LEFT
+  - QUIZ RIGHT
   layers:
   - Default
   - TransparentFX

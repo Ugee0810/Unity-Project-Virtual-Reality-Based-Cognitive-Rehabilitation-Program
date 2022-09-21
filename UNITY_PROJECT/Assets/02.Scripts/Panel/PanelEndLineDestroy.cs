@@ -22,24 +22,24 @@ public class PanelEndLineDestroy : MonoBehaviour
     {
         if (c.gameObject.tag == "QUIZ")
         {
-            Destroy(c.gameObject);
-            PanelManager.instance.panelLastIndex--;
             _SFX?.Invoke();
             ComboManager.instance.Clear();
+            PanelManager.instance.panelLastIndex--;
+            Destroy(c.gameObject);
         }
 
         if (c.gameObject.tag == "BLOCK")
         {
-            Destroy(c.gameObject);
             PanelManager.instance.panelLastIndex--;
+            Destroy(c.gameObject);
         }
 
         if (c.gameObject.tag == "MOTION")
         {
-            Destroy(c.gameObject);
-            PanelManager.instance.panelLastIndex--;
             _SFX?.Invoke();
             ComboManager.instance.Clear();
+            PanelManager.instance.panelLastIndex--;
+            Destroy(c.gameObject);
         }
     }
 }
