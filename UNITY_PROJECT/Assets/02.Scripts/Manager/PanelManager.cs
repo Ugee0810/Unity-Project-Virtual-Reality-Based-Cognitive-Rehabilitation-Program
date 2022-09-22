@@ -15,7 +15,7 @@ using Random = UnityEngine.Random;
 public class PanelManager : MonoBehaviour
 {
     [Header("[패널 상호작용 요소]")]
-    public Transform  panelSpawnPoint; // 패널 생성 좌표
+    public Transform panelSpawnPoint; // 패널 생성 좌표
     public GameObject panelCheck;
 
     [Header("[패널 프리팹]")]
@@ -41,7 +41,7 @@ public class PanelManager : MonoBehaviour
 
     public string curColor;
     public string curLetter;
-    
+
     public static PanelManager instance;
     private void Awake()
     {
@@ -50,10 +50,10 @@ public class PanelManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        _LetterList.AddRange(_LetterArray);
+
         panelSpawnCount = -1;
         panelLastIndex  = -1;
-
-        _LetterList.AddRange(_LetterArray);
     }
 
     private void FixedUpdate()
@@ -72,7 +72,7 @@ public class PanelManager : MonoBehaviour
                 if (GameManager.instance.modeHalfPlayTime <= 0)
                     GameManager.instance.EndEvent();
             }
-            else if (!GameManager.instance.btnAll.interactable)
+            else if(!GameManager.instance.btnAll.interactable)
             {
                 GameManager.instance.playTime -= Time.deltaTime;
                 if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
@@ -92,59 +92,114 @@ public class PanelManager : MonoBehaviour
             GameManager.instance.panelTimer -= GameManager.instance.secPerBeat;
 
             int panelIndex = Random.Range(0, 10); // <--- 전체 패널 확률
-            int quizCool   = Random.Range(5, 25); // <--- 퀴즈 쿨타임
-
-            /* QUIZ 10% */ if (panelIndex == 0)
+            int quizCool = Random.Range(5, 25); // <--- 퀴즈 쿨타임
+            if (!GameManager.instance.btnObOn.interactable)
             {
-                if (!isQuiz)
+                Debug.Log("장애물 ON");
+                /* QUIZ 10% */
+                if (panelIndex == 0)
                 {
-                    Debug.Log("퀴즈 패널 패턴이 아니므로 모션 패널 생성");
+                    if (!isQuiz)
+                    {
+                        Debug.Log("퀴즈 패널 패턴이 아니므로 모션 패널 생성");
+                        GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
+                        _motion.name = "MOTION";
+
+                        panelSpawnCount++;
+                        panelLastIndex++;
+
+                        if (panelSpawnCount == quizCool && !isQuiz)
+                        {
+                            _motion.transform.GetChild(4).gameObject.SetActive(true);
+                            panelSpawnCount -= quizCool + quizCool;
+                        }
+                    }
+                    else if (isQuiz)
+                    {
+                        Debug.Log("퀴즈 패널 생성");
+                        GameObject _quiz = Instantiate(quiz[0], panelSpawnPoint);
+                        _quiz.name = "QUIZ";
+
+                        panelSpawnCount++;
+                        panelLastIndex++;
+
+                        isQuiz = false;
+                    }
+                }
+                /* BLOCK 10% */
+                else if (panelIndex == 1)
+                {
+                    GameObject _block = Instantiate(block[Random.Range(0, 3)], panelSpawnPoint);
+                    _block.name = "BLOCK";
+                    float zScale = Random.Range(1.0f, 4.0f);
+                    _block.transform.localScale = new Vector3(1, 1, Random.Range(1, zScale));
+
+                    panelSpawnCount++;
+                    panelLastIndex++;
+                }
+                /* MOTION 80% */
+                else if (panelIndex > 1)
+                {
                     GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
                     _motion.name = "MOTION";
 
                     panelSpawnCount++;
                     panelLastIndex++;
 
-                    if (panelSpawnCount == quizCool && !isQuiz)
+                    if (panelSpawnCount >= quizCool && !isQuiz)
                     {
                         _motion.transform.GetChild(4).gameObject.SetActive(true);
                         panelSpawnCount -= quizCool + quizCool;
                     }
                 }
-                else if (isQuiz)
+            }
+            else if (!GameManager.instance.btnObOff.interactable)
+            {
+                Debug.Log("장애물 OFF");
+                /* QUIZ 10% */
+                if (panelIndex == 0)
                 {
-                    Debug.Log("퀴즈 패널 생성");
-                    GameObject _quiz = Instantiate(quiz[0], panelSpawnPoint);
-                    _quiz.name = "QUIZ";
+                    if (!isQuiz)
+                    {
+                        Debug.Log("퀴즈 패널 패턴이 아니므로 모션 패널 생성");
+                        GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
+                        _motion.name = "MOTION";
+
+                        panelSpawnCount++;
+                        panelLastIndex++;
+
+                        if (panelSpawnCount == quizCool && !isQuiz)
+                        {
+                            _motion.transform.GetChild(4).gameObject.SetActive(true);
+                            panelSpawnCount -= quizCool + quizCool;
+                        }
+                    }
+                    else if (isQuiz)
+                    {
+                        Debug.Log("퀴즈 패널 생성");
+                        GameObject _quiz = Instantiate(quiz[0], panelSpawnPoint);
+                        _quiz.name = "QUIZ";
+
+                        panelSpawnCount++;
+                        panelLastIndex++;
+
+                        isQuiz = false;
+                    }
+                }
+                /* MOTION 90% */
+                else if (panelIndex >= 1)
+                {
+                    GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
+                    _motion.name = "MOTION";
 
                     panelSpawnCount++;
                     panelLastIndex++;
 
-                    isQuiz = false;
-                }
-            }
-            /* BLOCK 10% */ else if (panelIndex == 1)
-            {
-                GameObject _block = Instantiate(block[Random.Range(0, 3)], panelSpawnPoint);
-                _block.name = "BLOCK";
-                float zScale = Random.Range(1.0f, 4.0f);
-                _block.transform.localScale = new Vector3(1, 1, Random.Range(1, zScale));
-
-                panelSpawnCount++;
-                panelLastIndex++;
-            }
-            /* MOTION 80% */ else if (panelIndex > 1)
-            {
-                GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
-                _motion.name = "MOTION";
-
-                panelSpawnCount++;
-                panelLastIndex++;
-
-                if (panelSpawnCount >= quizCool && !isQuiz)
-                {
-                    _motion.transform.GetChild(4).gameObject.SetActive(true);
-                    panelSpawnCount -= quizCool + quizCool;
+                    if (panelSpawnCount >= quizCool && !isQuiz)
+                    {
+                        _motion.transform.GetChild(4).gameObject.SetActive(true);
+                        panelSpawnCount -= quizCool + quizCool;
+                    }
                 }
             }
         }

@@ -39,6 +39,16 @@ public class GameManager : MonoBehaviour
     public Button btnAll;
     public Button btnObOn;
     public Button btnObOff;
+    public Button btnBrightLeft;
+    public Button btnBrightRight;
+    public Button btnHeightLeft;
+    public Button btnHeightRight;
+    public Slider sliderBright;
+    public Slider sliderHeight;
+
+    [Header("[Option]")]
+    public float bright;
+    public float height;
 
     [Header("[Environment Objects]")]
     public GameObject baseGround;         // GO Lobby
@@ -106,46 +116,16 @@ public class GameManager : MonoBehaviour
         if (PlayerPrefs.HasKey("Level")) PlayerPrefs.SetString("Level", "-");
         if (PlayerPrefs.HasKey("Score")) PlayerPrefs.SetInt("Score", 0);
         if (PlayerPrefs.HasKey("Kcal"))  PlayerPrefs.SetInt("Kcal", 0);
+    }
 
-        Btn100();
-        BtnObOn();
-}
-
-    public UnityEvent endEvent;
     private void Update()
     {
-        if (isStart)
-        {
-            if (isPause) return;
+        if      (!btn70.interactable)  modePanelSpeed = 0.7f;
+        else if (!btn100.interactable) modePanelSpeed = 1.0f;
+        else if (!btn130.interactable) modePanelSpeed = 1.3f;
 
-            if (!musicPlayed.isPlaying && !isPause)
-            {
-                endEvent?.Invoke();
-            }
-        }
-    }
-
-    public void Btn70()
-    {
-        modePanelSpeed = 0.7f;
-    }
-
-    public void Btn100()
-    {
-        modePanelSpeed = 1f;
-    }
-
-    public void Btn130()
-    {
-        modePanelSpeed = 1.3f;
-    }
-
-    public void BtnObOn()
-    {
-    }
-
-    public void BtnObOff()
-    {
+        bright = sliderBright.value;
+        height = sliderHeight.value;
     }
 
     // 시간 변환 함수
@@ -165,6 +145,42 @@ public class GameManager : MonoBehaviour
         return System.String.Format("{0}:{1:00}:{2:00}", hours, minutes, secondsRemainder);
     }
 
+    public void BrightInc()
+    {
+        if (0 <= bright && bright <= 2.1)
+        {
+            bright += 0.1f;
+            sliderBright.value = bright;
+        }
+    }
+
+    public void BrightDec()
+    {
+        if (0 <= bright && bright <= 2.1)
+        {
+            bright -= 0.1f;
+            sliderBright.value = bright;
+        }
+    }
+
+    public void HeightInc()
+    {
+        if (1.1 <= height && height <= 1.3)
+        {
+            height += 0.01f;
+            sliderHeight.value = height;
+        }
+    }
+
+    public void HeightDec()
+    {
+        if (1.1 <= height && height <= 1.3)
+        {
+            height -= 0.01f;
+            sliderHeight.value = height;
+        }
+    }
+    
     // [Button] Original MusicList Selected
     public void BtnOriginalSelected()
     {
@@ -479,5 +495,22 @@ public class GameManager : MonoBehaviour
         foreach (Transform item in contentResult.transform) Destroy(item.gameObject);
 
         btnReset.interactable = false;
+    }
+
+    // [Button] Quit
+    public void BtnQuit()
+    {
+#if UNITY_WEBPLAYER
+     public static string webplayerQuitURL = "http://google.com/";
+#endif
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBPLAYER
+         Application.OpenURL(webplayerQuitURL);
+#else
+         Application.Quit();
+#endif
+        }
     }
 }
