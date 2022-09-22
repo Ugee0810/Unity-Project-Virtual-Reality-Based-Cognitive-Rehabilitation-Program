@@ -95,7 +95,6 @@ public class PanelManager : MonoBehaviour
             int quizCool = Random.Range(5, 25); // <--- 퀴즈 쿨타임
             if (!GameManager.instance.btnObOn.interactable)
             {
-                Debug.Log("장애물 ON");
                 /* QUIZ 10% */
                 if (panelIndex == 0)
                 {
@@ -155,7 +154,6 @@ public class PanelManager : MonoBehaviour
             }
             else if (!GameManager.instance.btnObOff.interactable)
             {
-                Debug.Log("장애물 OFF");
                 /* QUIZ 10% */
                 if (panelIndex == 0)
                 {
