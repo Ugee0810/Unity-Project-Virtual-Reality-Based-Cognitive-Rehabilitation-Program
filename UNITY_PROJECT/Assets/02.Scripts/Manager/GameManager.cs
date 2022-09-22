@@ -32,6 +32,13 @@ public class GameManager : MonoBehaviour
     public Button btnHard;      
     public Button btnPlay;                // Game Start
     public Button btnReset;
+    public Button btn70;
+    public Button btn100;
+    public Button btn130;
+    public Button btnHalf;
+    public Button btnAll;
+    public Button btnObOn;
+    public Button btnObOff;
 
     [Header("[Environment Objects]")]
     public GameObject baseGround;         // GO Lobby
@@ -53,7 +60,8 @@ public class GameManager : MonoBehaviour
     public float offsetTimer;
     public int   bpm;
     public float secPerBeat;
-    public float timer; // BPM 계산 타이머
+    public float panelTimer; // BPM 계산 타이머
+    public float moveSpeed = 2.0f;
 
     [Header("[Score & Kcal]")]
     public int   score = 0;
@@ -74,6 +82,11 @@ public class GameManager : MonoBehaviour
     public Text _TextScore;
     public Text _TextKcal;
 
+    [Header("[Mode]")]
+    public float modePanelSpeed;
+    public float modeHalfPlayTime;
+    public float modeHalfPlayTimeOffset;
+
     // [Header("[플래그 변수]")]
     [HideInInspector] public bool isStart;       // Game Start
     [HideInInspector] public bool isPause;       // Game Pause
@@ -93,7 +106,10 @@ public class GameManager : MonoBehaviour
         if (PlayerPrefs.HasKey("Level")) PlayerPrefs.SetString("Level", "-");
         if (PlayerPrefs.HasKey("Score")) PlayerPrefs.SetInt("Score", 0);
         if (PlayerPrefs.HasKey("Kcal"))  PlayerPrefs.SetInt("Kcal", 0);
-    }
+
+        Btn100();
+        BtnObOn();
+}
 
     public UnityEvent endEvent;
     private void Update()
@@ -107,6 +123,29 @@ public class GameManager : MonoBehaviour
                 endEvent?.Invoke();
             }
         }
+    }
+
+    public void Btn70()
+    {
+        modePanelSpeed = 0.7f;
+    }
+
+    public void Btn100()
+    {
+        modePanelSpeed = 1f;
+    }
+
+    public void Btn130()
+    {
+        modePanelSpeed = 1.3f;
+    }
+
+    public void BtnObOn()
+    {
+    }
+
+    public void BtnObOff()
+    {
     }
 
     // 시간 변환 함수
@@ -255,7 +294,7 @@ public class GameManager : MonoBehaviour
                 for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
                     Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
 
-            timer = 0;
+            panelTimer = 0;
             offsetTimer = 0;
             secPerBeat = 0;
             PanelManager.instance.panelSpawnCount = -1;
@@ -279,6 +318,10 @@ public class GameManager : MonoBehaviour
             kcal = 0;
             ScoreManager.instance.SetScore();
             ScoreManager.instance.SetKcal();
+            
+            btnEasy.interactable = false;
+            btnNormal.interactable = false;
+            btnHard.interactable = false;
 
             isStart = false;
             isPause = false;
@@ -293,7 +336,7 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
                 Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
 
-        timer = 0;
+        panelTimer = 0;
         offsetTimer = 0;
         secPerBeat = 0;
         PanelManager.instance.panelSpawnCount = -1;
@@ -309,6 +352,10 @@ public class GameManager : MonoBehaviour
         kcal = 0;
         ScoreManager.instance.SetScore();
         ScoreManager.instance.SetKcal();
+
+        btnEasy.interactable = false;
+        btnNormal.interactable = false;
+        btnHard.interactable = false;
 
         isStart = false;
         isPause = false;

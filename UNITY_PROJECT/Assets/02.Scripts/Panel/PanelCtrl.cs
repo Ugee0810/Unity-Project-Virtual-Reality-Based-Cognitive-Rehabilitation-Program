@@ -11,8 +11,6 @@ using UnityEngine;
 
 public class PanelCtrl : MonoBehaviour
 {
-    float moveSpeed = 2.0f;
-
     private void FixedUpdate()
     {
         Move();
@@ -20,6 +18,8 @@ public class PanelCtrl : MonoBehaviour
 
     void Move()
     {
-        transform.position += transform.forward * -moveSpeed * Time.deltaTime;
+        transform.position += transform.forward
+                            * (-GameManager.instance.moveSpeed * GameManager.instance.modePanelSpeed)
+                            * Time.deltaTime;
     }
 }

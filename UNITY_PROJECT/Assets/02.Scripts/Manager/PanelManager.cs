@@ -58,24 +58,38 @@ public class PanelManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager.instance.isStart && GameManager.instance.musicPlayed.isPlaying)
+        if (GameManager.instance.isStart && !GameManager.instance.isPause)
         {
             PanelCheck();
-
             GameManager.instance.offsetTimer += Time.deltaTime;
-            if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
+
+            if (!GameManager.instance.btnHalf.interactable)
             {
-                PanelInstance();
+                GameManager.instance.modeHalfPlayTime -= Time.deltaTime;
+                if (GameManager.instance.modeHalfPlayTimeOffset >= GameManager.instance.offsetTimer)
+                    PanelInstance();
+
+                if (GameManager.instance.modeHalfPlayTime <= 0)
+                    GameManager.instance.EndEvent();
+            }
+            else if (!GameManager.instance.btnAll.interactable)
+            {
+                GameManager.instance.playTime -= Time.deltaTime;
+                if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
+                    PanelInstance();
+
+                if (GameManager.instance.playTime <= 0)
+                    GameManager.instance.EndEvent();
             }
         }
     }
 
     public void PanelInstance()
     {
-        GameManager.instance.timer += Time.deltaTime;
-        if (GameManager.instance.timer > GameManager.instance.secPerBeat)
+        GameManager.instance.panelTimer += Time.deltaTime;
+        if (GameManager.instance.panelTimer > GameManager.instance.secPerBeat)
         {
-            GameManager.instance.timer -= GameManager.instance.secPerBeat;
+            GameManager.instance.panelTimer -= GameManager.instance.secPerBeat;
 
             int panelIndex = Random.Range(0, 10); // <--- 전체 패널 확률
             int quizCool   = Random.Range(5, 25); // <--- 퀴즈 쿨타임

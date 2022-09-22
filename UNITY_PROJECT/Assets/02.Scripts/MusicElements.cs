@@ -25,9 +25,13 @@ public class MusicElements : MonoBehaviour
         // 방금 클릭한 게임 오브젝트를 가져와서 저장
         GameObject selectedElement = EventSystem.current.currentSelectedGameObject;
 
-        GameManager.instance.playTime = selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length;
         GameManager.instance.bpm = UniBpmAnalyzer.AnalyzeBpm(selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip);
+
+        GameManager.instance.playTime = selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length;
         GameManager.instance.playTimeOffset = GameManager.instance.playTime - 15f;
+
+        GameManager.instance.modeHalfPlayTime = GameManager.instance.playTime / 2;
+        GameManager.instance.modeHalfPlayTimeOffset = GameManager.instance.playTime / 2 - 15f;
 
         // textTitle.text ← customMusicElements.AudioSource.text
         GameManager.instance.infoTitle.GetComponent<Text>().text =
