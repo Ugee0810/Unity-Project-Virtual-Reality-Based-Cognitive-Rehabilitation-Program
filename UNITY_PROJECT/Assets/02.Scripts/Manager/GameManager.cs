@@ -15,10 +15,10 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [Header("[UI]")]
-    public GameObject _UILobby;           // UI Lobby
-    public GameObject _UIIngame;          // UI Ingame
-    public GameObject _UIPause;           // UI Pause
-    public GameObject _UIResult;          // UI Result
+    public GameObject uiLobby;           // UI Lobby
+    public GameObject uiIngame;          // UI Ingame
+    public GameObject uiPause;           // UI Pause
+    public GameObject uiResult;          // UI Result
     public GameObject originalScrollView; // UI Original View
     public GameObject customScrollView;   // UI Custom View
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
@@ -82,9 +82,14 @@ public class GameManager : MonoBehaviour
     public AudioSource musicSelected;   // Lobby Music
     public AudioSource musicPlayed;     // Ingame Music
 
+    [Header("[Mode]")]
+    public float modePanelSpeed;
+    public float modeHalfPlayTime;
+    public float modeHalfPlayTimeOffset;
+
     [Header("[InGame Data]")]
     public Text _IngameTextScore;
-    public Text _IngameTextKacl;
+    public Text _IngameTextKcal;
 
     [Header("[Key]")]
     public Text _TextTitle;
@@ -92,17 +97,12 @@ public class GameManager : MonoBehaviour
     public Text _TextScore;
     public Text _TextKcal;
 
-    [Header("[Mode]")]
-    public float modePanelSpeed;
-    public float modeHalfPlayTime;
-    public float modeHalfPlayTimeOffset;
-
     // [Header("[플래그 변수]")]
-    [HideInInspector] public bool isStart;       // Game Start
-    [HideInInspector] public bool isPause;       // Game Pause
-    [HideInInspector] public bool isHandChange;  // True : Hand Controller | False : Lay Controller
-    [HideInInspector] public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
-    [HideInInspector] public bool isSensorRight; // 패널 접촉 유/무 오른쪽
+    public bool isStart;       // Game Start
+    public bool isPause;       // Game Pause
+    public bool isHandChange;  // True : Hand Controller | False : Lay Controller
+    public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
+    public bool isSensorRight; // 패널 접촉 유/무 오른쪽
 
     public static GameManager instance;
     private void Awake()
@@ -215,10 +215,6 @@ public class GameManager : MonoBehaviour
         secPerBeat = 420f / bpm;
 
         PanelManager.instance.quizCool = 15;
-        btnEasy.interactable   = false;
-        btnNormal.interactable = true;
-        btnHard.interactable   = true;
-        btnPlay.interactable   = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Normal
@@ -227,10 +223,6 @@ public class GameManager : MonoBehaviour
         secPerBeat = 360f / bpm;
 
         PanelManager.instance.quizCool = 10;
-        btnEasy.interactable   = true;
-        btnNormal.interactable = false;
-        btnHard.interactable   = true;
-        btnPlay.interactable   = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Hard
@@ -239,21 +231,15 @@ public class GameManager : MonoBehaviour
         secPerBeat = 300f / bpm;
 
         PanelManager.instance.quizCool = 5;
-        btnEasy.interactable   = true;
-        btnNormal.interactable = true;
-        btnHard.interactable   = false;
-        btnPlay.interactable   = true; // 노래 재생(Play) 버튼 활성화
     }
 
     // [Button] Play
     public void BtnPlay()
     {
-        _UILobby.SetActive(false);
+        uiLobby.SetActive(false);
         baseGround.SetActive(false);
-        _UIIngame.SetActive(true);
+        uiIngame.SetActive(true);
         inGameEnvironment.SetActive(true);
-
-        isStart = true;
 
         musicBackGround.Pause();
         musicSelected.Stop();
@@ -261,6 +247,8 @@ public class GameManager : MonoBehaviour
 
         isHandChange = true;
         ControllerModeChange();
+
+        isStart = true;
     }
 
     // [Button] Pause
@@ -269,34 +257,33 @@ public class GameManager : MonoBehaviour
         if (isStart)
         {
             // Music Paused UI On
-            _UIPause.SetActive(true);
+            uiPause.SetActive(true);
 
             // 플레이 중 노래 일시 정지
             Time.timeScale = 0;
             musicPlayed.Pause();
 
-            isPause = true;
             isHandChange = false;
             ControllerModeChange();
+
+            isPause = true;
         }
     }
 
     // [Button] UnPause
     public void BtnInGameUnPause()
     {
-        if (isStart && isPause)
-        {
-            // Music Paused UI Off
-            _UIPause.SetActive(false);
+        // Music Paused UI Off
+        uiPause.SetActive(false);
 
-            // 플레이 중 노래 일시 정지 해제
-            Time.timeScale = 1;
-            musicPlayed.UnPause();
+        // 플레이 중 노래 일시 정지 해제
+        Time.timeScale = 1;
+        musicPlayed.UnPause();
 
-            isPause = false;
-            isHandChange = true;
-            ControllerModeChange();
-        }
+        isHandChange = true;
+        ControllerModeChange();
+
+        isPause = false;
     }
 
     // [Button] Pause to Back to the Lobby
@@ -321,9 +308,10 @@ public class GameManager : MonoBehaviour
 
             btnPlay.interactable = false;
 
-            _UIIngame.SetActive(false);
-            _UIPause.SetActive(false);
+            uiIngame.SetActive(false);
+            uiPause.SetActive(false);
             inGameEnvironment.SetActive(false);
+            uiLobby.SetActive(true);
             baseGround.SetActive(true);
 
             Time.timeScale = 1;
@@ -363,7 +351,7 @@ public class GameManager : MonoBehaviour
 
         musicBackGround.UnPause();
         ResultData();
-        _UIResult.SetActive(true);
+        uiResult.SetActive(true);
         score = 0;
         kcal = 0;
         ScoreManager.instance.SetScore();
@@ -384,16 +372,16 @@ public class GameManager : MonoBehaviour
     {
         AddReusltList();
 
-        _UIIngame.SetActive(false);
+        uiIngame.SetActive(false);
         inGameEnvironment.SetActive(false);
-        _UIResult.SetActive(false);
-        _UILobby.SetActive(true);
+        uiResult.SetActive(false);
+        uiLobby.SetActive(true);
         baseGround.SetActive(true);
 
         btnPlay.interactable = false;
     }
 
-    void ControllerModeChange()
+    public void ControllerModeChange()
     {
         if /*Hand Controller*/ (isHandChange)
         {
@@ -427,7 +415,7 @@ public class GameManager : MonoBehaviour
         else if (!btnHard.interactable)
             _TextLevel.text = PlayerPrefs.GetString("Level", "Hard");
         _TextScore.text = PlayerPrefs.GetString("Score", $"{_IngameTextScore.text}");
-        _TextKcal.text = PlayerPrefs.GetString("Kcal", $"{_IngameTextKacl.text}");
+        _TextKcal.text = PlayerPrefs.GetString("Kcal", $"{_IngameTextKcal.text}");
     }
 
     void OriginalListRenewal()

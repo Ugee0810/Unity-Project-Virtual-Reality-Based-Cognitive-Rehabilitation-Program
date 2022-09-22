@@ -6,10 +6,7 @@
 /// </summary>
 
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngineInternal;
 using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
@@ -19,9 +16,9 @@ public class PanelManager : MonoBehaviour
     public GameObject panelCheck;
 
     [Header("[패널 프리팹]")]
-    public GameObject[] quiz;         // 패널 프리팹 배열
-    public GameObject[] block;        // 패널 프리팹 배열
-    public GameObject[] motion;       // 패널 프리팹 배열
+    public GameObject[] quiz;   // 퀴즈 패널 프리팹 배열
+    public GameObject[] block;  // 블록 패널 프리팹 배열
+    public GameObject[] motion; // 모션 패널 프리팹 배열
 
     public List<GameObject> ballList = new List<GameObject>();
     static string[] _LetterArray =
@@ -69,17 +66,15 @@ public class PanelManager : MonoBehaviour
                 if (GameManager.instance.modeHalfPlayTimeOffset >= GameManager.instance.offsetTimer)
                     PanelInstance();
 
-                if (GameManager.instance.modeHalfPlayTime <= 0)
-                    GameManager.instance.EndEvent();
+                if (GameManager.instance.modeHalfPlayTime <= 0) GameManager.instance.EndEvent();
             }
-            else if(!GameManager.instance.btnAll.interactable)
+            else if (!GameManager.instance.btnAll.interactable)
             {
                 GameManager.instance.playTime -= Time.deltaTime;
                 if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
                     PanelInstance();
 
-                if (GameManager.instance.playTime <= 0)
-                    GameManager.instance.EndEvent();
+                if (GameManager.instance.playTime <= 0) GameManager.instance.EndEvent();
             }
         }
     }
@@ -101,7 +96,7 @@ public class PanelManager : MonoBehaviour
                     if (!isQuiz)
                     {
                         Debug.Log("퀴즈 패널 패턴이 아니므로 모션 패널 생성");
-                        GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
+                        GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
                         _motion.name = "MOTION";
 
                         panelSpawnCount++;
@@ -110,7 +105,7 @@ public class PanelManager : MonoBehaviour
                         if (panelSpawnCount == quizCool && !isQuiz)
                         {
                             _motion.transform.GetChild(4).gameObject.SetActive(true);
-                            panelSpawnCount -= quizCool + quizCool;
+                            panelSpawnCount -= quizCool;
                         }
                     }
                     else if (isQuiz)
@@ -139,7 +134,7 @@ public class PanelManager : MonoBehaviour
                 /* MOTION 80% */
                 else if (panelIndex > 1)
                 {
-                    GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
+                    GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
                     _motion.name = "MOTION";
 
                     panelSpawnCount++;
@@ -148,7 +143,7 @@ public class PanelManager : MonoBehaviour
                     if (panelSpawnCount >= quizCool && !isQuiz)
                     {
                         _motion.transform.GetChild(4).gameObject.SetActive(true);
-                        panelSpawnCount -= quizCool + quizCool;
+                        panelSpawnCount -= quizCool;
                     }
                 }
             }
@@ -160,7 +155,7 @@ public class PanelManager : MonoBehaviour
                     if (!isQuiz)
                     {
                         Debug.Log("퀴즈 패널 패턴이 아니므로 모션 패널 생성");
-                        GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
+                        GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
                         _motion.name = "MOTION";
 
                         panelSpawnCount++;
@@ -169,7 +164,7 @@ public class PanelManager : MonoBehaviour
                         if (panelSpawnCount == quizCool && !isQuiz)
                         {
                             _motion.transform.GetChild(4).gameObject.SetActive(true);
-                            panelSpawnCount -= quizCool + quizCool;
+                            panelSpawnCount -= quizCool;
                         }
                     }
                     else if (isQuiz)
@@ -187,7 +182,7 @@ public class PanelManager : MonoBehaviour
                 /* MOTION 90% */
                 else if (panelIndex >= 1)
                 {
-                    GameObject _motion = Instantiate(motion[Random.Range(0, 1)], panelSpawnPoint);
+                    GameObject _motion = Instantiate(motion[Random.Range(0, 12)], panelSpawnPoint);
                     _motion.name = "MOTION";
 
                     panelSpawnCount++;
@@ -196,7 +191,7 @@ public class PanelManager : MonoBehaviour
                     if (panelSpawnCount >= quizCool && !isQuiz)
                     {
                         _motion.transform.GetChild(4).gameObject.SetActive(true);
-                        panelSpawnCount -= quizCool + quizCool;
+                        panelSpawnCount -= quizCool;
                     }
                 }
             }
@@ -208,7 +203,8 @@ public class PanelManager : MonoBehaviour
         if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
         {
             panelCheck.SetActive(true);
-            if (panelCheck.activeSelf) StartCoroutine(ScoreManager.instance.Increase());
+            if (panelCheck.activeSelf)
+                StartCoroutine(ScoreManager.instance.Increase());
         }
         else if (!GameManager.instance.isSensorLeft || !GameManager.instance.isSensorRight)
         {
