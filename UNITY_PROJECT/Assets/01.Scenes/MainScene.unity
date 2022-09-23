@@ -163,8 +163,6 @@ MonoBehaviour:
   contentCustom: {fileID: 17726796}
   contentResult: {fileID: 1577210977}
   infoTitle: {fileID: 234477430}
-  btnOriginal: {fileID: 2145037785}
-  btnCustom: {fileID: 674109438}
   btnEasy: {fileID: 1577877484}
   btnNormal: {fileID: 1920614950}
   btnHard: {fileID: 1229533256}
@@ -177,14 +175,12 @@ MonoBehaviour:
   btnAll: {fileID: 1473025847}
   btnObOn: {fileID: 870680522}
   btnObOff: {fileID: 695831250}
+  sliderBright: {fileID: 811501162}
   btnBrightLeft: {fileID: 2033659943}
   btnBrightRight: {fileID: 1428439840}
+  sliderHeight: {fileID: 2143415651}
   btnHeightLeft: {fileID: 668984220}
   btnHeightRight: {fileID: 642340830}
-  sliderBright: {fileID: 811501162}
-  sliderHeight: {fileID: 2143415651}
-  baseGround: {fileID: 682854498}
-  inGameEnvironment: {fileID: 708912650}
   musicElement: {fileID: 1001780630179371840, guid: a8edfaf69e22ad045b4deff8e1ae665d,
     type: 3}
   resultElement: {fileID: 4694132861935244557, guid: 51c1d066ffbfb654e8570b005ffec392,
@@ -193,29 +189,29 @@ MonoBehaviour:
   layRightController: {fileID: 1279742389}
   handLeftController: {fileID: 1924551894}
   handRightController: {fileID: 1332571244}
-  playTime: 0
-  playTimeOffset: 0
-  offsetTimer: 0
-  bpm: 0
-  secPerBeat: 0
-  panelTimer: 0
-  moveSpeed: 2
-  score: 0
-  kcal: 0
   musicBackGround: {fileID: 1161132230}
   musicSelected: {fileID: 160552299}
   musicPlayed: {fileID: 1504925052}
-  modePanelSpeed: 0
-  modeHalfPlayTime: 0
-  modeHalfPlayTimeOffset: 0
-  bright: 0
-  height: 0
   _IngameTextScore: {fileID: 1585804227}
-  _IngameTextKcal: {fileID: 0}
+  _IngameTextKcal: {fileID: 1941148715}
   _TextTitle: {fileID: 631271807}
   _TextLevel: {fileID: 1196825168}
   _TextScore: {fileID: 1208027177}
   _TextKcal: {fileID: 1603690423}
+  playTime: 0
+  playTimeOffset: 0
+  halfPlayTime: 0
+  halfHalfPlayTimeOffset: 0
+  offsetTimer: 0
+  moveSpeed: 2
+  modePanelSpeed: 0
+  bpm: 0
+  secPerBeat: 0
+  panelTimer: 0
+  score: 0
+  kcal: 0
+  bright: 0
+  height: 0
   isStart: 0
   isPause: 0
   isHandChange: 0
@@ -5647,6 +5643,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 712533846}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 11017395}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: HeightDec
@@ -5798,6 +5806,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 712533846}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 11017395}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: HeightInc
@@ -22573,7 +22593,7 @@ GameObject:
   - component: {fileID: 1205326651}
   - component: {fileID: 1205326650}
   m_Layer: 5
-  m_Name: Text Combo
+  m_Name: Ingame Text Combo
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -24858,6 +24878,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 712533846}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 11017395}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: BrightDec
@@ -30941,7 +30973,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1547517319}
   m_Layer: 5
-  m_Name: Mode GameSpeed
+  m_Name: Mode PanelSpeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31401,7 +31433,7 @@ GameObject:
   - component: {fileID: 1585804228}
   - component: {fileID: 1585804227}
   m_Layer: 5
-  m_Name: Text Score
+  m_Name: Ingame Text Score
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -31896,7 +31928,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC804\uCCB4"
+  m_Text: 100%
 --- !u!222 &1642138392
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32446,7 +32478,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uAC8C\uC784 \uC18D\uB3C4"
+  m_Text: "\uD328\uB110 \uC18D\uB3C4"
 --- !u!222 &1747619491
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -33594,7 +33626,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "1\uC808"
+  m_Text: 50%
 --- !u!222 &1856851156
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -33736,12 +33768,12 @@ MonoBehaviour:
   _LetterList: []
   panelSpawnCount: 0
   panelLastIndex: 0
-  isQuiz: 0
-  isCurLeft: 0
-  isCurRight: 0
   quizCool: 0
   curColor: 
   curLetter: 
+  isQuiz: 0
+  isCurLeft: 0
+  isCurRight: 0
 --- !u!1 &1879980889
 GameObject:
   m_ObjectHideFlags: 0
@@ -34653,7 +34685,7 @@ GameObject:
   - component: {fileID: 1941148716}
   - component: {fileID: 1941148715}
   m_Layer: 5
-  m_Name: Text Kcal
+  m_Name: Ingame Text Kcal
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -35632,6 +35664,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 712533846}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 11017395}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: BrightInc

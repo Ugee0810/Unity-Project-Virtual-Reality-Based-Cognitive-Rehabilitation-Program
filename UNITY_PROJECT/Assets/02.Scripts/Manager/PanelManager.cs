@@ -31,13 +31,14 @@ public class PanelManager : MonoBehaviour
 
     public int panelSpawnCount;
     public int panelLastIndex;
-    public bool isQuiz;
-    public bool isCurLeft;
-    public bool isCurRight;
     public int quizCool;
 
     public string curColor;
     public string curLetter;
+
+    public bool isQuiz;
+    public bool isCurLeft;
+    public bool isCurRight;
 
     public static PanelManager instance;
     private void Awake()

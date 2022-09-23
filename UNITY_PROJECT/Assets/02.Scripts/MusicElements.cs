@@ -18,6 +18,7 @@ public class MusicElements : MonoBehaviour
         GameManager.instance.btnEasy.interactable   = true;
         GameManager.instance.btnNormal.interactable = true;
         GameManager.instance.btnHard.interactable   = true;
+        GameManager.instance.btnPlay.interactable   = false;
 
         // BGM Pause
         GameManager.instance.musicBackGround.Pause();

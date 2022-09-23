@@ -20,9 +20,6 @@ public class GameManager : MonoBehaviour
     public GameObject uiPause;            // UI Pause
     public GameObject uiResult;           // UI Result
 
-    public GameObject originalScrollView; // UI Original View
-    public GameObject customScrollView;   // UI Custom View
-
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
     public GameObject contentResult;      // 결과     리소스 프리팹 생성 위치(부모)
@@ -100,7 +97,7 @@ public class GameManager : MonoBehaviour
     public float bright;
     public float height;
 
-    // [Header("[플래그 변수]")]
+    [Header("[플래그 변수]")]
     public bool isStart;       // Game Start
     public bool isPause;       // Game Pause
     public bool isHandChange;  // True : Hand Controller | False : Lay Controller
@@ -173,7 +170,7 @@ public class GameManager : MonoBehaviour
     // [Button] 키 조절 증가
     public void HeightInc()
     {
-        if (1.0 <= height && height <= 1.2)
+        if (1.0f <= height && height <= 1.2f)
         {
             height += 0.01f;
             sliderHeight.value = height;
@@ -183,7 +180,7 @@ public class GameManager : MonoBehaviour
     // [Button] 키 조절 감소
     public void HeightDec()
     {
-        if (1.0 <= height && height <= 1.2)
+        if (1.0f <= height && height <= 1.2f)
         {
             height -= 0.01f;
             sliderHeight.value = height;
@@ -244,17 +241,26 @@ public class GameManager : MonoBehaviour
                 for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
                     Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
 
-            // 패널 관련 초기화
-            panelTimer  = 0;
+            // 노래, 패널 관련 초기화
+            playTime = 0;
+            playTimeOffset = 0;
+            halfPlayTime = 0;
+            halfHalfPlayTimeOffset = 0;
             offsetTimer = 0;
-            secPerBeat  = 0;
+            modePanelSpeed = 0;
+            bpm = 0;
+            secPerBeat = 0;
+            panelTimer = 0;
             PanelManager.instance.panelSpawnCount = -1;
             PanelManager.instance.panelLastIndex  = -1;
+            PanelManager.instance.quizCool   = 0;
+            PanelManager.instance.curColor   = "";
+            PanelManager.instance.curLetter  = "";
             PanelManager.instance.isQuiz     = false;
             PanelManager.instance.isCurLeft  = false;
             PanelManager.instance.isCurRight = false;
 
-            // 스코어 관련 초기화
+            // 스코어, 칼로리 초기화
             score = 0;
             kcal  = 0;
             ScoreManager.instance.SetScore();
@@ -278,17 +284,26 @@ public class GameManager : MonoBehaviour
         btnNormal.interactable = false;
         btnHard.interactable = false;
 
-        // 패널 관련 초기화
-        panelTimer  = 0;
+        // 노래, 패널 관련 초기화
+        playTime = 0;
+        playTimeOffset = 0;
+        halfPlayTime = 0;
+        halfHalfPlayTimeOffset = 0;
         offsetTimer = 0;
-        secPerBeat  = 0;
+        modePanelSpeed = 0;
+        bpm = 0;
+        secPerBeat = 0;
+        panelTimer = 0;
         PanelManager.instance.panelSpawnCount = -1;
         PanelManager.instance.panelLastIndex  = -1;
+        PanelManager.instance.quizCool   = 0;
+        PanelManager.instance.curColor   = "";
+        PanelManager.instance.curLetter  = "";
         PanelManager.instance.isQuiz     = false;
         PanelManager.instance.isCurLeft  = false;
         PanelManager.instance.isCurRight = false;
 
-        // 스코어 관련 초기화
+        // 스코어, 칼로리 초기화
         score = 0;
         kcal  = 0;
         ScoreManager.instance.SetScore();
