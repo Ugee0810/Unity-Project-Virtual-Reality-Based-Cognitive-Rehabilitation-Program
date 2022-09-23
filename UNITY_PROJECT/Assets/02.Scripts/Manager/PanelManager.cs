@@ -62,11 +62,11 @@ public class PanelManager : MonoBehaviour
 
             if (!GameManager.instance.btnHalf.interactable)
             {
-                GameManager.instance.modeHalfPlayTime -= Time.deltaTime;
-                if (GameManager.instance.modeHalfPlayTimeOffset >= GameManager.instance.offsetTimer)
+                GameManager.instance.halfPlayTime -= Time.deltaTime;
+                if (GameManager.instance.halfHalfPlayTimeOffset >= GameManager.instance.offsetTimer)
                     PanelInstance();
 
-                if (GameManager.instance.modeHalfPlayTime <= 0) GameManager.instance.EndEvent();
+                if (GameManager.instance.halfPlayTime <= 0) GameManager.instance.InGameEnd();
             }
             else if (!GameManager.instance.btnAll.interactable)
             {
@@ -74,7 +74,7 @@ public class PanelManager : MonoBehaviour
                 if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
                     PanelInstance();
 
-                if (GameManager.instance.playTime <= 0) GameManager.instance.EndEvent();
+                if (GameManager.instance.playTime <= 0) GameManager.instance.InGameEnd();
             }
         }
     }

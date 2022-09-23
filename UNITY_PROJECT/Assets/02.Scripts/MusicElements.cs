@@ -30,8 +30,8 @@ public class MusicElements : MonoBehaviour
         GameManager.instance.playTime = selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length;
         GameManager.instance.playTimeOffset = GameManager.instance.playTime - 15f;
 
-        GameManager.instance.modeHalfPlayTime = GameManager.instance.playTime / 2;
-        GameManager.instance.modeHalfPlayTimeOffset = GameManager.instance.playTime / 2 - 15f;
+        GameManager.instance.halfPlayTime = GameManager.instance.playTime / 2;
+        GameManager.instance.halfHalfPlayTimeOffset = GameManager.instance.playTime / 2 - 15f;
 
         // textTitle.text ← customMusicElements.AudioSource.text
         GameManager.instance.infoTitle.GetComponent<Text>().text =

@@ -15,44 +15,45 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [Header("[UI]")]
-    public GameObject uiLobby;           // UI Lobby
-    public GameObject uiIngame;          // UI Ingame
-    public GameObject uiPause;           // UI Pause
-    public GameObject uiResult;          // UI Result
+    public GameObject uiLobby;            // UI Lobby
+    public GameObject uiIngame;           // UI Ingame
+    public GameObject uiPause;            // UI Pause
+    public GameObject uiResult;           // UI Result
+
     public GameObject originalScrollView; // UI Original View
     public GameObject customScrollView;   // UI Custom View
+
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
     public GameObject contentResult;      // 결과     리소스 프리팹 생성 위치(부모)
+
     public Text infoTitle;                // Panel Music Info - Music Title
-    public Button btnOriginal;            // Original List
-    public Button btnCustom;              // Custom List
-    public Button btnEasy;               
-    public Button btnNormal;             
-    public Button btnHard;      
-    public Button btnPlay;                // Game Start
+
+    public Button btnEasy;
+    public Button btnNormal;
+    public Button btnHard;
+
+    public Button btnPlay;
+
     public Button btnReset;
+
     public Button btn70;
     public Button btn100;
     public Button btn130;
+
     public Button btnHalf;
     public Button btnAll;
+
     public Button btnObOn;
     public Button btnObOff;
+
+    public Slider sliderBright;
     public Button btnBrightLeft;
     public Button btnBrightRight;
+
+    public Slider sliderHeight;
     public Button btnHeightLeft;
     public Button btnHeightRight;
-    public Slider sliderBright;
-    public Slider sliderHeight;
-
-    [Header("[Option]")]
-    public float bright;
-    public float height;
-
-    [Header("[Environment Objects]")]
-    public GameObject baseGround;         // GO Lobby
-    public GameObject inGameEnvironment;  // GO Ingame
 
     [Header("[Prefabs]")]
     public GameObject musicElement;
@@ -64,28 +65,10 @@ public class GameManager : MonoBehaviour
     public GameObject handLeftController;
     public GameObject handRightController;
 
-    [Header("[Music Info]")]
-    public float playTime;
-    public float playTimeOffset; // 패널 젠 시간
-    public float offsetTimer;
-    public int   bpm;
-    public float secPerBeat;
-    public float panelTimer; // BPM 계산 타이머
-    public float moveSpeed = 2.0f;
-
-    [Header("[Score & Kcal]")]
-    public int   score = 0;
-    public float kcal  = 0;
-
     [Header("[Audio Source]")]
     public AudioSource musicBackGround; // BGM
     public AudioSource musicSelected;   // Lobby Music
     public AudioSource musicPlayed;     // Ingame Music
-
-    [Header("[Mode]")]
-    public float modePanelSpeed;
-    public float modeHalfPlayTime;
-    public float modeHalfPlayTimeOffset;
 
     [Header("[InGame Data]")]
     public Text _IngameTextScore;
@@ -96,6 +79,26 @@ public class GameManager : MonoBehaviour
     public Text _TextLevel;
     public Text _TextScore;
     public Text _TextKcal;
+
+    [Header("[Music Info]")]
+    public float playTime;
+    public float playTimeOffset;
+    public float halfPlayTime;
+    public float halfHalfPlayTimeOffset;
+    public float offsetTimer;
+    public float moveSpeed = 2.0f;
+    public float modePanelSpeed;
+    public int   bpm;
+    public float secPerBeat;
+    public float panelTimer; // BPM 계산 타이머
+
+    [Header("[Score & Kcal]")]
+    public int   score = 0;
+    public float kcal  = 0;
+
+    [Header("[Option]")]
+    public float bright;
+    public float height;
 
     // [Header("[플래그 변수]")]
     public bool isStart;       // Game Start
@@ -120,31 +123,34 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if      (!btn70.interactable)  modePanelSpeed = 0.7f;
-        else if (!btn100.interactable) modePanelSpeed = 1.0f;
-        else if (!btn130.interactable) modePanelSpeed = 1.3f;
+        // Panel Speed
+        if      /*70%*/  (!btn70.interactable)  modePanelSpeed = 0.7f;
+        else if /*100%*/ (!btn100.interactable) modePanelSpeed = 1.0f;
+        else if /*130%*/ (!btn130.interactable) modePanelSpeed = 1.3f;
 
+        // Option
         bright = sliderBright.value;
         height = sliderHeight.value;
-    }
 
-    // 시간 변환 함수
-    public static string TimeFormatter(float seconds, bool forceHHMMSS = false)
-    {
-        float secondsRemainder = Mathf.Floor((seconds % 60) * 100) / 100.0f;
-        int minutes = ((int)(seconds / 60)) % 60;
-        int hours = (int)(seconds / 3600);
-
-        if (!forceHHMMSS)
+        // Level
+        if      /*EasySelected*/   (!btnEasy.interactable)
         {
-            if (hours == 0)
-            {
-                return System.String.Format("{0:00}:{1:00.00}", minutes, secondsRemainder);
-            }
+            secPerBeat = 420f / bpm;
+            PanelManager.instance.quizCool = 15;
         }
-        return System.String.Format("{0}:{1:00}:{2:00}", hours, minutes, secondsRemainder);
+        else if /*NormalSelected*/ (!btnNormal.interactable)
+        {
+            secPerBeat = 360f / bpm;
+            PanelManager.instance.quizCool = 10;
+        }
+        else if /*HardSelected*/   (!btnHard.interactable)
+        {
+            secPerBeat = 300f / bpm;
+            PanelManager.instance.quizCool = 5;
+        }
     }
 
+    // [Button] 밝기 증가
     public void BrightInc()
     {
         if (0 <= bright && bright <= 2.1)
@@ -154,6 +160,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // [Button] 밝기 감소
     public void BrightDec()
     {
         if (0 <= bright && bright <= 2.1)
@@ -163,224 +170,132 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // [Button] 키 조절 증가
     public void HeightInc()
     {
-        if (1.1 <= height && height <= 1.3)
+        if (1.0 <= height && height <= 1.2)
         {
             height += 0.01f;
             sliderHeight.value = height;
         }
     }
 
+    // [Button] 키 조절 감소
     public void HeightDec()
     {
-        if (1.1 <= height && height <= 1.3)
+        if (1.0 <= height && height <= 1.2)
         {
             height -= 0.01f;
             sliderHeight.value = height;
         }
     }
-    
-    // [Button] Original MusicList Selected
-    public void BtnOriginalSelected()
-    {
-        originalScrollView.SetActive(true);
-        customScrollView.SetActive(false);
-        OriginalListRenewal();
 
-        btnOriginal.interactable = false;
-        btnCustom.interactable = true;
-
-        musicSelected.Stop();
-        musicBackGround.UnPause();
-    }
-
-    // [Button] Custom MusicList Selected
-    public void BtnCustomSelected()
-    {
-        originalScrollView.SetActive(false);
-        customScrollView.SetActive(true);
-        CustomListRenewal();
-
-        btnOriginal.interactable = true;
-        btnCustom.interactable = false;
-
-        musicSelected.Stop();
-        musicBackGround.UnPause();
-    }
-
-    // [Button] Easy
-    public void BtnLvEasy()
-    {
-        secPerBeat = 420f / bpm;
-
-        PanelManager.instance.quizCool = 15;
-    }
-
-    // [Button] Normal
-    public void BtnLvNormal()
-    {
-        secPerBeat = 360f / bpm;
-
-        PanelManager.instance.quizCool = 10;
-    }
-
-    // [Button] Hard
-    public void BtnLvHard()
-    {
-        secPerBeat = 300f / bpm;
-
-        PanelManager.instance.quizCool = 5;
-    }
-
-    // [Button] Play
+    // [Button] 로비 ---> 인게임
     public void BtnPlay()
     {
-        uiLobby.SetActive(false);
-        baseGround.SetActive(false);
-        uiIngame.SetActive(true);
-        inGameEnvironment.SetActive(true);
-
-        musicBackGround.Pause();
-        musicSelected.Stop();
-        musicPlayed.Play();
-
-        isHandChange = true;
-        ControllerModeChange();
-
         isStart = true;
+        isHandChange = true;
     }
 
-    // [Button] Pause
+    // [Button] 인게임 ---> 일시정지
     public void BtnInGamePause()
     {
-        if (isStart)
+        if (isStart && !isPause)
         {
+            isPause = true;
+            isHandChange = false;
+
             // Music Paused UI On
             uiPause.SetActive(true);
 
             // 플레이 중 노래 일시 정지
             Time.timeScale = 0;
             musicPlayed.Pause();
-
-            isHandChange = false;
-            ControllerModeChange();
-
-            isPause = true;
         }
     }
 
-    // [Button] UnPause
+    // [Button] 일시정지 ---> 인게임
     public void BtnInGameUnPause()
     {
+        isPause = false;
+        isHandChange = true;
+
         // Music Paused UI Off
         uiPause.SetActive(false);
 
         // 플레이 중 노래 일시 정지 해제
         Time.timeScale = 1;
         musicPlayed.UnPause();
-
-        isHandChange = true;
-        ControllerModeChange();
-
-        isPause = false;
     }
 
-    // [Button] Pause to Back to the Lobby
+    // [Button] 일시정지 ---> 메인
     public void BtnPauseBackLobby()
     {
         if (isStart && isPause)
         {
+            isStart = false;
+            isPause = false;
+
+            Time.timeScale = 1;
+
             // 패널 생성 된 거 삭제
             int numOfChild = PanelManager.instance.panelSpawnPoint.transform.childCount;
             if (numOfChild != 0)
                 for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
                     Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
 
-            panelTimer = 0;
+            // 패널 관련 초기화
+            panelTimer  = 0;
             offsetTimer = 0;
-            secPerBeat = 0;
+            secPerBeat  = 0;
             PanelManager.instance.panelSpawnCount = -1;
             PanelManager.instance.panelLastIndex  = -1;
-            PanelManager.instance.isQuiz = false;
-            PanelManager.instance.isCurLeft = false;
+            PanelManager.instance.isQuiz     = false;
+            PanelManager.instance.isCurLeft  = false;
             PanelManager.instance.isCurRight = false;
 
-            btnPlay.interactable = false;
-
-            uiIngame.SetActive(false);
-            uiPause.SetActive(false);
-            inGameEnvironment.SetActive(false);
-            uiLobby.SetActive(true);
-            baseGround.SetActive(true);
-
-            Time.timeScale = 1;
-            musicBackGround.UnPause();
-            musicPlayed.Stop();
-
+            // 스코어 관련 초기화
             score = 0;
-            kcal = 0;
+            kcal  = 0;
             ScoreManager.instance.SetScore();
             ScoreManager.instance.SetKcal();
-            
-            btnEasy.interactable = false;
-            btnNormal.interactable = false;
-            btnHard.interactable = false;
-
-            isStart = false;
-            isPause = false;
         }
     }
 
-    public void EndEvent()
+    // [Event] 인게임 종료
+    public void InGameEnd()
     {
-        // 패널 생성 된 거 삭제
-        int numOfChild = PanelManager.instance.panelSpawnPoint.transform.childCount;
-        if (numOfChild != 0)
-            for (int i = 0; i < PanelManager.instance.panelSpawnPoint.transform.childCount; i++)
-                Destroy(PanelManager.instance.panelSpawnPoint.transform.GetChild(i).gameObject);
-
-        panelTimer = 0;
-        offsetTimer = 0;
-        secPerBeat = 0;
-        PanelManager.instance.panelSpawnCount = -1;
-        PanelManager.instance.panelLastIndex  = -1;
-        PanelManager.instance.isQuiz = false;
-        PanelManager.instance.isCurLeft = false;
-        PanelManager.instance.isCurRight = false;
-
-        musicBackGround.UnPause();
-        ResultData();
-        uiResult.SetActive(true);
-        score = 0;
-        kcal = 0;
-        ScoreManager.instance.SetScore();
-        ScoreManager.instance.SetKcal();
-
-        btnEasy.interactable = false;
-        btnNormal.interactable = false;
-        btnHard.interactable = false;
-
         isStart = false;
         isPause = false;
         isHandChange = false;
         ControllerModeChange();
+
+        // 로비 관련 초기화
+        ResultData();
+        uiResult.SetActive(true);
+        musicBackGround.UnPause();
+        btnEasy.interactable = false;
+        btnNormal.interactable = false;
+        btnHard.interactable = false;
+
+        // 패널 관련 초기화
+        panelTimer  = 0;
+        offsetTimer = 0;
+        secPerBeat  = 0;
+        PanelManager.instance.panelSpawnCount = -1;
+        PanelManager.instance.panelLastIndex  = -1;
+        PanelManager.instance.isQuiz     = false;
+        PanelManager.instance.isCurLeft  = false;
+        PanelManager.instance.isCurRight = false;
+
+        // 스코어 관련 초기화
+        score = 0;
+        kcal  = 0;
+        ScoreManager.instance.SetScore();
+        ScoreManager.instance.SetKcal();
     }
 
-    // [Button] End to Back to the Lobby
-    public void BtnEndBackLobby()
-    {
-        AddReusltList();
-
-        uiIngame.SetActive(false);
-        inGameEnvironment.SetActive(false);
-        uiResult.SetActive(false);
-        uiLobby.SetActive(true);
-        baseGround.SetActive(true);
-
-        btnPlay.interactable = false;
-    }
-
+    // [Event] 컨트롤러 변경
     public void ControllerModeChange()
     {
         if /*Hand Controller*/ (isHandChange)
@@ -405,6 +320,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // [Event] 인게임 결과 복사
     public void ResultData()
     {
         _TextTitle.text = PlayerPrefs.GetString("Title", $"{musicPlayed.clip.name}");
@@ -418,11 +334,12 @@ public class GameManager : MonoBehaviour
         _TextKcal.text = PlayerPrefs.GetString("Kcal", $"{_IngameTextKcal.text}");
     }
 
-    void OriginalListRenewal()
+    // [Event] Original Music 폴더의 AudioClip 속성 파일 조회 ---> Original Music Element 생성
+    public void OriginalListRenewal()
     {
         foreach (Transform item in contentOriginal.transform) Destroy(item.gameObject);
 
-        // Custom Music 폴더의 AudioClip 속성 파일 조회
+        // Original Music 폴더의 AudioClip 속성 파일 조회
         object[] originalMusics = Resources.LoadAll<AudioClip>("Original Music");
 
         for (int i = 0; i < originalMusics.Length; i++)
@@ -443,7 +360,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void CustomListRenewal()
+    // [Event] Custom Music 폴더의 AudioClip 속성 파일 조회 ---> Custom Music Element 생성
+    public void CustomListRenewal()
     {
         foreach (Transform item in contentCustom.transform) Destroy(item.gameObject);
 
@@ -468,7 +386,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void AddReusltList()
+    // 결과 리스트 초기화 버튼 활성화
+    public void AddReusltList()
     {
         GameObject resultElementPrefab = Instantiate(resultElement, contentResult.transform.position, contentResult.transform.rotation);
         resultElementPrefab.transform.parent = contentResult.transform;
@@ -477,15 +396,33 @@ public class GameManager : MonoBehaviour
         btnReset.interactable = true;
     }
 
-    // [Button] 결과 리스트 초기화
+    // 결과 리스트 초기화 버튼 비활성화
     public void ResultListReset()
     {
-        foreach (Transform item in contentResult.transform) Destroy(item.gameObject);
+        foreach (Transform item in contentResult.transform)
+            Destroy(item.gameObject);
 
         btnReset.interactable = false;
     }
 
-    // [Button] Quit
+    // TimeFormatter Method
+    public static string TimeFormatter(float seconds, bool forceHHMMSS = false)
+    {
+        float secondsRemainder = Mathf.Floor((seconds % 60) * 100) / 100.0f;
+        int minutes = ((int)(seconds / 60)) % 60;
+        int hours = (int)(seconds / 3600);
+
+        if (!forceHHMMSS)
+        {
+            if (hours == 0)
+            {
+                return System.String.Format("{0:00}:{1:00.00}", minutes, secondsRemainder);
+            }
+        }
+        return System.String.Format("{0}:{1:00}:{2:00}", hours, minutes, secondsRemainder);
+    }
+
+    // Quit Game Method
     public void BtnQuit()
     {
 #if UNITY_WEBPLAYER
