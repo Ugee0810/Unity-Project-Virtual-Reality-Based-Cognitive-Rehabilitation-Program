@@ -252,7 +252,6 @@ public class GameManager : MonoBehaviour
             secPerBeat = 0;
             panelTimer = 0;
             PanelManager.instance.panelSpawnCount = -1;
-            PanelManager.instance.panelLastIndex  = -1;
             PanelManager.instance.quizCool   = 0;
             PanelManager.instance.curColor   = "";
             PanelManager.instance.curLetter  = "";
@@ -265,6 +264,7 @@ public class GameManager : MonoBehaviour
             kcal  = 0;
             ScoreManager.instance.SetScore();
             ScoreManager.instance.SetKcal();
+            ComboManager.instance.Clear();
         }
     }
 
@@ -295,7 +295,6 @@ public class GameManager : MonoBehaviour
         secPerBeat = 0;
         panelTimer = 0;
         PanelManager.instance.panelSpawnCount = -1;
-        PanelManager.instance.panelLastIndex  = -1;
         PanelManager.instance.quizCool   = 0;
         PanelManager.instance.curColor   = "";
         PanelManager.instance.curLetter  = "";
@@ -308,6 +307,7 @@ public class GameManager : MonoBehaviour
         kcal  = 0;
         ScoreManager.instance.SetScore();
         ScoreManager.instance.SetKcal();
+        ComboManager.instance.Clear();
     }
 
     // [Event] 컨트롤러 변경

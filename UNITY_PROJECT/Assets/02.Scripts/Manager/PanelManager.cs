@@ -7,13 +7,14 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
 {
     [Header("[패널 상호작용 요소]")]
     public Transform panelSpawnPoint; // 패널 생성 좌표
-    public GameObject panelCheck;
+    // public GameObject motionPanelCheck;
 
     [Header("[패널 프리팹]")]
     public GameObject[] quiz;   // 퀴즈 패널 프리팹 배열
@@ -30,7 +31,6 @@ public class PanelManager : MonoBehaviour
     public List<string> _LetterList = new List<string>();
 
     public int panelSpawnCount;
-    public int panelLastIndex;
     public int quizCool;
 
     public string curColor;
@@ -51,7 +51,6 @@ public class PanelManager : MonoBehaviour
         _LetterList.AddRange(_LetterArray);
 
         panelSpawnCount = -1;
-        panelLastIndex  = -1;
     }
 
     private void FixedUpdate()
@@ -101,7 +100,6 @@ public class PanelManager : MonoBehaviour
                         _motion.name = "MOTION";
 
                         panelSpawnCount++;
-                        panelLastIndex++;
 
                         if (panelSpawnCount == quizCool && !isQuiz)
                         {
@@ -116,7 +114,6 @@ public class PanelManager : MonoBehaviour
                         _quiz.name = "QUIZ";
 
                         panelSpawnCount++;
-                        panelLastIndex++;
 
                         isQuiz = false;
                     }
@@ -130,7 +127,6 @@ public class PanelManager : MonoBehaviour
                     _block.transform.localScale = new Vector3(1, 1, Random.Range(1, zScale));
 
                     panelSpawnCount++;
-                    panelLastIndex++;
                 }
                 /* MOTION 80% */
                 else if (panelIndex > 1)
@@ -139,7 +135,6 @@ public class PanelManager : MonoBehaviour
                     _motion.name = "MOTION";
 
                     panelSpawnCount++;
-                    panelLastIndex++;
 
                     if (panelSpawnCount >= quizCool && !isQuiz)
                     {
@@ -160,7 +155,6 @@ public class PanelManager : MonoBehaviour
                         _motion.name = "MOTION";
 
                         panelSpawnCount++;
-                        panelLastIndex++;
 
                         if (panelSpawnCount == quizCool && !isQuiz)
                         {
@@ -175,7 +169,6 @@ public class PanelManager : MonoBehaviour
                         _quiz.name = "QUIZ";
 
                         panelSpawnCount++;
-                        panelLastIndex++;
 
                         isQuiz = false;
                     }
@@ -187,7 +180,6 @@ public class PanelManager : MonoBehaviour
                     _motion.name = "MOTION";
 
                     panelSpawnCount++;
-                    panelLastIndex++;
 
                     if (panelSpawnCount >= quizCool && !isQuiz)
                     {
@@ -199,17 +191,14 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    public UnityEvent _SFX;
     void PanelCheck()
     {
         if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
         {
-            panelCheck.SetActive(true);
-            if (panelCheck.activeSelf)
-                StartCoroutine(ScoreManager.instance.Increase());
-        }
-        else if (!GameManager.instance.isSensorLeft || !GameManager.instance.isSensorRight)
-        {
-            panelCheck.SetActive(false);
+            _SFX?.Invoke();
+            StartCoroutine(ScoreManager.instance.Increase());
+            Destroy(panelSpawnPoint.transform.GetChild(0).gameObject);
         }
     }
 }
