@@ -5,44 +5,36 @@ using UnityEngine.UI;
 
 public class PlayHeadControls : MonoBehaviour
 {
-    public AudioSource audioSource;
-    public Slider slider;
-
     private void Awake()
     {
-        slider.minValue = 0;
-        slider.value = 0;
+        GameManager.instance.inGameSlider.minValue = 0;
+        GameManager.instance.inGameSlider.value = 0;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (GameManager.instance.isStart)
         {
             if (!GameManager.instance.btnHalf.interactable)
             {
-                slider.maxValue = (audioSource.clip.length * audioSource.clip.frequency * audioSource.clip.channels / 2) - 1;
+                GameManager.instance.inGameSlider.maxValue = (GameManager.instance.musicPlayed.clip.length * GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels / 2) - 1;
                 Event();
             }
             else if (!GameManager.instance.btnAll.interactable)
             {
-                slider.maxValue = (audioSource.clip.length * audioSource.clip.frequency * audioSource.clip.channels) - 1;
+                GameManager.instance.inGameSlider.maxValue = (GameManager.instance.musicPlayed.clip.length * GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels) - 1;
                 Event();
             }
-        }
-        else
-        {
-            slider.minValue = 0;
-            slider.value = 0;
         }
     }
 
     void Event()
     {
-        slider.value = audioSource.time * audioSource.clip.frequency * audioSource.clip.channels;
+        GameManager.instance.inGameSlider.value = GameManager.instance.musicPlayed.time * GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels;
     }
 
     public void Scrub()
     {
-        audioSource.time = slider.value / (audioSource.clip.frequency * audioSource.clip.channels);
+        GameManager.instance.musicPlayed.time = GameManager.instance.inGameSlider.value / (GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels);
     }
 }

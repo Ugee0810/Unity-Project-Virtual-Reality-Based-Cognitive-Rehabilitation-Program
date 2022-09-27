@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
     public Button btnHeightLeft;
     public Button btnHeightRight;
 
+    public Slider inGameSlider;
+
     [Header("[Prefabs]")]
     public GameObject musicElement;
     public GameObject resultElement;
@@ -265,6 +267,10 @@ public class GameManager : MonoBehaviour
             ScoreManager.instance.SetScore();
             ScoreManager.instance.SetKcal();
             ComboManager.instance.Clear();
+
+            // 인게임 플레이 타임 슬라이더 초기화
+            inGameSlider.minValue = 0;
+            inGameSlider.value = 0;
         }
     }
 
@@ -308,6 +314,10 @@ public class GameManager : MonoBehaviour
         ScoreManager.instance.SetScore();
         ScoreManager.instance.SetKcal();
         ComboManager.instance.Clear();
+
+        // 인게임 플레이 타임 슬라이더 초기화
+        inGameSlider.minValue = 0;
+        inGameSlider.value = 0;
     }
 
     // [Event] 컨트롤러 변경

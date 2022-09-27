@@ -179,6 +179,7 @@ MonoBehaviour:
   sliderHeight: {fileID: 2143415651}
   btnHeightLeft: {fileID: 668984220}
   btnHeightRight: {fileID: 642340830}
+  inGameSlider: {fileID: 1404356160}
   musicElement: {fileID: 1001780630179371840, guid: a8edfaf69e22ad045b4deff8e1ae665d,
     type: 3}
   resultElement: {fileID: 4694132861935244557, guid: 51c1d066ffbfb654e8570b005ffec392,
