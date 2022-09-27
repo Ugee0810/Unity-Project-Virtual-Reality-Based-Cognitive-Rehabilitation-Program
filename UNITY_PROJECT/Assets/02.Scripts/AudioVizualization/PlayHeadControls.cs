@@ -18,8 +18,16 @@ public class PlayHeadControls : MonoBehaviour
     {
         if (GameManager.instance.isStart)
         {
-            slider.maxValue = (audioSource.clip.length * audioSource.clip.frequency * audioSource.clip.channels) - 1;
-            Event();
+            if (!GameManager.instance.btnHalf.interactable)
+            {
+                slider.maxValue = (audioSource.clip.length * audioSource.clip.frequency * audioSource.clip.channels / 2) - 1;
+                Event();
+            }
+            else if (!GameManager.instance.btnAll.interactable)
+            {
+                slider.maxValue = (audioSource.clip.length * audioSource.clip.frequency * audioSource.clip.channels) - 1;
+                Event();
+            }
         }
         else
         {
