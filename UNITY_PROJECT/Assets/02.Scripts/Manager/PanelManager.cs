@@ -14,7 +14,6 @@ public class PanelManager : MonoBehaviour
 {
     [Header("[패널 상호작용 요소]")]
     public Transform panelSpawnPoint; // 패널 생성 좌표
-    // public GameObject motionPanelCheck;
 
     [Header("[패널 프리팹]")]
     public GameObject[] quiz;   // 퀴즈 패널 프리팹 배열
