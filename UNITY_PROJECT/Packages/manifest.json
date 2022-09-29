@@ -3,6 +3,7 @@
     "com.febucci.custom-hierarchy": "https://github.com/febucci/unitypackage-custom-hierarchy.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
+    "com.unity.animation.rigging": "1.1.1",
     "com.unity.burst": "1.6.5",
     "com.unity.collab-proxy": "1.17.1",
     "com.unity.ide.rider": "3.0.15",
