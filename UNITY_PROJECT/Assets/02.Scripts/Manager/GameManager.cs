@@ -13,6 +13,9 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("[SkyBox Rotate]")]
+    public float RotateSpeed = 0.1f;
+
     [Header("[UI]")]
     public GameObject uiLobby;            // UI Lobby
     public GameObject uiIngame;           // UI Ingame
@@ -121,6 +124,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        RenderSettings.skybox.SetFloat("_Rotation", Time.time * RotateSpeed);
+
         // Panel Speed
         if      /*70%*/  (!btn70.interactable)  modePanelSpeed = 0.7f;
         else if /*100%*/ (!btn100.interactable) modePanelSpeed = 1.0f;

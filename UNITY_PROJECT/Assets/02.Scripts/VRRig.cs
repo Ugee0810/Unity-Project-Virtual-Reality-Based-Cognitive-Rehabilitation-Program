@@ -5,15 +5,25 @@ using UnityEngine;
 public class VRMap
 {
     // VR 타겟이라는 VR 변환을 위해 실행 가능한 클래스 4가지
-    public Transform vrTarget;
+    public Transform[] vrTarget;
     public Transform rigTarget;
     public Vector3 trackingPositionOffset;
     public Vector3 trackingRotationOffset;
 
     public void Map()
     {
-        rigTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
-        rigTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
+        // Lay Controller
+        if (GameManager.instance.layLeftController.activeSelf && GameManager.instance.layRightController.activeSelf)
+        {
+            rigTarget.position = vrTarget[0].TransformPoint(trackingPositionOffset);
+            rigTarget.rotation = vrTarget[0].rotation * Quaternion.Euler(trackingRotationOffset);
+        }
+        // Hand Controller
+        else if (GameManager.instance.handLeftController.activeSelf && GameManager.instance.handRightController.activeSelf)
+        {
+            rigTarget.position = vrTarget[1].TransformPoint(trackingPositionOffset);
+            rigTarget.rotation = vrTarget[1].rotation * Quaternion.Euler(trackingRotationOffset);
+        }
     }
 }
 
