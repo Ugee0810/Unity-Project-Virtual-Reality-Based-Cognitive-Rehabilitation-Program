@@ -65,7 +65,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (tutorialDialogNum == 0)
         {
-
+            return;
         }
         else if (tutorialDialogNum == 1)
         {
