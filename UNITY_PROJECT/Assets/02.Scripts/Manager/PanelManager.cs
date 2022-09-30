@@ -191,7 +191,7 @@ public class PanelManager : MonoBehaviour
     }
 
     public UnityEvent _SFX;
-    void PanelCheck()
+    public void PanelCheck()
     {
         if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
         {

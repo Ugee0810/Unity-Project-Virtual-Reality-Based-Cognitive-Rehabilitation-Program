@@ -16,11 +16,28 @@ using UnityEngine.EventSystems;
 
 public class MusicElements : MonoBehaviour
 {
+    int click = 0;
     public void Select()
     {
-        GameManager.instance.btnEasy.interactable   = true;
-        GameManager.instance.btnNormal.interactable = true;
-        GameManager.instance.btnHard.interactable   = true;
+        click++;
+        if (TutorialManager.instance.isTutoLobby)
+        {
+            if (click == 1)
+            {
+                TutorialManager.instance.ShowText();
+                GameManager.instance.btnEasy.interactable = true;
+                GameManager.instance.btnNormal.interactable = false;
+                GameManager.instance.btnHard.interactable = false;
+                click++;
+            }
+        }
+        else if (!TutorialManager.instance.isTutoLobby)
+        {
+            GameManager.instance.btnEasy.interactable   = true;
+            GameManager.instance.btnNormal.interactable = true;
+            GameManager.instance.btnHard.interactable   = true;
+        }
+
         GameManager.instance.btnPlay.interactable   = false;
 
         // 방금 클릭한 게임 오브젝트를 가져 와 selectedElement에 저장

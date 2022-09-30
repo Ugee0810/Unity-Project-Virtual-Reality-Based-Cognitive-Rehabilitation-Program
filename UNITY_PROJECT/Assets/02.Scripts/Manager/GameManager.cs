@@ -17,10 +17,17 @@ public class GameManager : MonoBehaviour
     public float RotateSpeed = 0.1f;
 
     [Header("[UI]")]
+    public GameObject uiTutorial;         // UI Tutorial
     public GameObject uiLobby;            // UI Lobby
     public GameObject uiIngame;           // UI Ingame
     public GameObject uiPause;            // UI Pause
     public GameObject uiResult;           // UI Result
+
+    public GameObject option;
+    public GameObject result;
+
+    public Button btnOriginal;
+    public Button btnCustom;
 
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
@@ -196,8 +203,11 @@ public class GameManager : MonoBehaviour
     // [Button] 로비 ---> 인게임
     public void BtnPlay()
     {
-        isStart = true;
-        isHandChange = true;
+        if (!TutorialManager.instance.isTutoLobby)
+        {
+            isStart = true;
+            isHandChange = true;
+        }
     }
 
     // [Button] 인게임 ---> 일시정지
@@ -366,26 +376,29 @@ public class GameManager : MonoBehaviour
     // [Event] Original Music 폴더의 AudioClip 속성 파일 조회 ---> Original Music Element 생성
     public void OriginalListRenewal()
     {
-        foreach (Transform item in contentOriginal.transform) Destroy(item.gameObject);
-
-        // Original Music 폴더의 AudioClip 속성 파일 조회
-        object[] originalMusics = Resources.LoadAll<AudioClip>("Original Music");
-
-        for (int i = 0; i < originalMusics.Length; i++)
+        if (!TutorialManager.instance.isTutoLobby)
         {
-            // AudioClip to GameObject
-            GameObject originalMusicElementPrefab = originalMusics[i] as GameObject;
-            originalMusicElementPrefab = Instantiate(musicElement, contentOriginal.transform.position, contentOriginal.transform.rotation);
-            originalMusicElementPrefab.name = $"Original Music Element_{i}";
-            originalMusicElementPrefab.transform.parent = contentOriginal.transform;
-            originalMusicElementPrefab.transform.localScale = Vector3.one;
+            foreach (Transform item in contentOriginal.transform) Destroy(item.gameObject);
 
-            // AudioSource.clip ← Resources-Custom Musics.AudioClip
-            originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
-            // (float)MusicLength to (string)PlayTime
-            originalMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = TimeFormatter(originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
-            // textTitle.text ← customMusicElements.AudioSource.text
-            originalMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
+            // Original Music 폴더의 AudioClip 속성 파일 조회
+            object[] originalMusics = Resources.LoadAll<AudioClip>("Original Music");
+
+            for (int i = 0; i < originalMusics.Length; i++)
+            {
+                // AudioClip to GameObject
+                GameObject originalMusicElementPrefab = originalMusics[i] as GameObject;
+                originalMusicElementPrefab = Instantiate(musicElement, contentOriginal.transform.position, contentOriginal.transform.rotation);
+                originalMusicElementPrefab.name = $"Original Music Element_{i}";
+                originalMusicElementPrefab.transform.parent = contentOriginal.transform;
+                originalMusicElementPrefab.transform.localScale = Vector3.one;
+
+                // AudioSource.clip ← Resources-Custom Musics.AudioClip
+                originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
+                // (float)MusicLength to (string)PlayTime
+                originalMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = TimeFormatter(originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
+                // textTitle.text ← customMusicElements.AudioSource.text
+                originalMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
+            }
         }
     }
 
@@ -435,7 +448,7 @@ public class GameManager : MonoBehaviour
     }
 
     // TimeFormatter Method
-    public static string TimeFormatter(float seconds, bool forceHHMMSS = false)
+    public string TimeFormatter(float seconds, bool forceHHMMSS = false)
     {
         float secondsRemainder = Mathf.Floor((seconds % 60) * 100) / 100.0f;
         int minutes = ((int)(seconds / 60)) % 60;
