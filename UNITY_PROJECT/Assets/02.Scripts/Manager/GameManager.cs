@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // [Button] 밝기 증가
+    // [Onclick] 밝기 증가
     public void BrightInc()
     {
         if (0 <= bright && bright <= 2.1)
@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // [Button] 밝기 감소
+    // [Onclick] 밝기 감소
     public void BrightDec()
     {
         if (0 <= bright && bright <= 2.1)
@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // [Button] 키 조절 증가
+    // [Onclick] 키 조절 증가
     public void HeightInc()
     {
         if (1.0f <= height && height <= 1.2f)
@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // [Button] 키 조절 감소
+    // [Onclick] 키 조절 감소
     public void HeightDec()
     {
         if (1.0f <= height && height <= 1.2f)
@@ -200,17 +200,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // [Button] 로비 ---> 인게임
+    // [Onclick] 로비 ---> 인게임
     public void BtnPlay()
     {
-        if (!TutorialManager.instance.isTutoLobby)
+        if (!TutorialManager.instance.isTutorial)
         {
             isStart = true;
             isHandChange = true;
         }
     }
 
-    // [Button] 인게임 ---> 일시정지
+    // [Onclick] 인게임 ---> 일시정지
     public void BtnInGamePause()
     {
         if (isStart && !isPause)
@@ -227,7 +227,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // [Button] 일시정지 ---> 인게임
+    // [Onclick] 일시정지 ---> 인게임
     public void BtnInGameUnPause()
     {
         isPause = false;
@@ -241,10 +241,10 @@ public class GameManager : MonoBehaviour
         musicPlayed.UnPause();
     }
 
-    // [Button] 일시정지 ---> 메인
+    // [Onclick] 일시정지 ---> 메인
     public void BtnPauseBackLobby()
     {
-        if (isStart && isPause)
+        if ((isStart && isPause) || TutorialManager.instance.isTutorial)
         {
             isStart = false;
             isPause = false;
@@ -285,6 +285,23 @@ public class GameManager : MonoBehaviour
             // 인게임 플레이 타임 슬라이더 초기화
             inGameSlider.minValue = 0;
             inGameSlider.value = 0;
+
+            if (TutorialManager.instance.isTutorial)
+            {
+                foreach (Transform item in contentOriginal.transform) Destroy(item.gameObject);
+
+                TutorialManager.instance.tutorialStep = 0;
+                TutorialManager.instance.tutoPanelSpawnCount = 0;
+                TutorialManager.instance.tutoPanelDestroyCount = 0;
+                TutorialManager.instance.tutoPanelTimer = 0;
+                TutorialManager.instance.isMotionClear = false;
+                TutorialManager.instance.isObstacleClear = false;
+                TutorialManager.instance.isMotionQuizClear = false;
+                TutorialManager.instance.isQuizClear = false;
+
+                TutorialManager.instance.isTutorial = false;
+                StopCoroutine(TutorialManager.instance.TutorialStart());
+            }
         }
     }
 
@@ -300,9 +317,9 @@ public class GameManager : MonoBehaviour
         ResultData();
         uiResult.SetActive(true);
         musicBackGround.UnPause();
-        btnEasy.interactable = false;
+        btnEasy.interactable   = false;
         btnNormal.interactable = false;
-        btnHard.interactable = false;
+        btnHard.interactable   = false;
 
         // 노래, 패널 관련 초기화
         playTime = 0;
@@ -363,7 +380,7 @@ public class GameManager : MonoBehaviour
     public void ResultData()
     {
         _TextTitle.text = PlayerPrefs.GetString("Title", $"{musicPlayed.clip.name}");
-        if      (!btnEasy.interactable)
+        if (!btnEasy.interactable)
             _TextLevel.text = PlayerPrefs.GetString("Level", "Easy");
         else if (!btnNormal.interactable)
             _TextLevel.text = PlayerPrefs.GetString("Level", "Normal");
@@ -376,7 +393,7 @@ public class GameManager : MonoBehaviour
     // [Event] Original Music 폴더의 AudioClip 속성 파일 조회 ---> Original Music Element 생성
     public void OriginalListRenewal()
     {
-        if (!TutorialManager.instance.isTutoLobby)
+        if (!TutorialManager.instance.isTutorial)
         {
             foreach (Transform item in contentOriginal.transform) Destroy(item.gameObject);
 
@@ -431,11 +448,14 @@ public class GameManager : MonoBehaviour
     // 결과 리스트 초기화 버튼 활성화
     public void AddReusltList()
     {
-        GameObject resultElementPrefab = Instantiate(resultElement, contentResult.transform.position, contentResult.transform.rotation);
-        resultElementPrefab.transform.parent = contentResult.transform;
-        resultElementPrefab.transform.localScale = Vector3.one;
+        if (!TutorialManager.instance.isTutorial)
+        {
+            GameObject resultElementPrefab = Instantiate(resultElement, contentResult.transform.position, contentResult.transform.rotation);
+            resultElementPrefab.transform.parent = contentResult.transform;
+            resultElementPrefab.transform.localScale = Vector3.one;
 
-        btnReset.interactable = true;
+            btnReset.interactable = true;
+        }
     }
 
     // 결과 리스트 초기화 버튼 비활성화
@@ -464,7 +484,7 @@ public class GameManager : MonoBehaviour
         return System.String.Format("{0}:{1:00}:{2:00}", hours, minutes, secondsRemainder);
     }
 
-    // Quit Game Method
+    // [Onclick] Quit Game Method
     public void BtnQuit()
     {
 #if UNITY_WEBPLAYER

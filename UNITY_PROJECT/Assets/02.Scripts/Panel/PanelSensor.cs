@@ -28,6 +28,8 @@ public class PanelSensor : MonoBehaviour
                 ComboManager.instance.IncreaseCombo();
                 PanelManager.instance.isCurLeft = false;
                 Destroy(c.gameObject.transform.parent.gameObject);
+                if (TutorialManager.instance.isTutorial)
+                    TutorialManager.instance.tutoPanelDestroyCount++;
             }
             else if (c.gameObject.tag == "QUIZ RIGHT")
             {
@@ -62,6 +64,8 @@ public class PanelSensor : MonoBehaviour
                 ComboManager.instance.IncreaseCombo();
                 PanelManager.instance.isCurRight = false;
                 Destroy(c.gameObject.transform.parent.gameObject);
+                if (TutorialManager.instance.isTutorial)
+                    TutorialManager.instance.tutoPanelDestroyCount++;
             }
         }
     }

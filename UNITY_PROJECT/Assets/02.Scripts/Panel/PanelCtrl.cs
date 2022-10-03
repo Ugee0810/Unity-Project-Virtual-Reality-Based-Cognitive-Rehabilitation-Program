@@ -18,11 +18,11 @@ public class PanelCtrl : MonoBehaviour
 
     void Move()
     {
-        if (!TutorialManager.instance.isTutoLobby)
+        if (!TutorialManager.instance.isTutorial)
         transform.position += transform.forward
                             * (-GameManager.instance.moveSpeed * GameManager.instance.modePanelSpeed)
                             * Time.deltaTime;
-        else if (TutorialManager.instance.isTutoLobby)
+        else if (TutorialManager.instance.isTutorial)
             transform.position += transform.forward
                                 * -TutorialManager.instance.tutoMoveSpeed
                                 * Time.deltaTime;

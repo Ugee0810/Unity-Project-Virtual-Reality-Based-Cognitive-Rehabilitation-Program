@@ -22,11 +22,15 @@ public class PanelEndLineDestroy : MonoBehaviour
             _SFX?.Invoke();
             ComboManager.instance.Clear();
             Destroy(c.gameObject);
+            if (TutorialManager.instance.isTutorial)
+                TutorialManager.instance.tutoPanelDestroyCount++;
         }
 
         if (c.gameObject.tag == "BLOCK")
         {
             Destroy(c.gameObject);
+            if (TutorialManager.instance.isTutorial)
+                TutorialManager.instance.tutoPanelDestroyCount++;
         }
 
         if (c.gameObject.tag == "MOTION")
@@ -34,6 +38,8 @@ public class PanelEndLineDestroy : MonoBehaviour
             _SFX?.Invoke();
             ComboManager.instance.Clear();
             Destroy(c.gameObject);
+            if (TutorialManager.instance.isTutorial)
+                TutorialManager.instance.tutoPanelDestroyCount++;
         }
     }
 }

@@ -198,6 +198,8 @@ public class PanelManager : MonoBehaviour
             _SFX?.Invoke();
             StartCoroutine(ScoreManager.instance.Increase());
             Destroy(panelSpawnPoint.transform.GetChild(0).gameObject);
+            if (TutorialManager.instance.isTutorial)
+                TutorialManager.instance.tutoPanelDestroyCount++;
         }
     }
 }

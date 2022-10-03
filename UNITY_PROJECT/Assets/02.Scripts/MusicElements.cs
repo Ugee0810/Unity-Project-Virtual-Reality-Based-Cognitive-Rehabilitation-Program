@@ -16,22 +16,11 @@ using UnityEngine.EventSystems;
 
 public class MusicElements : MonoBehaviour
 {
-    int click = 0;
     public void Select()
     {
-        click++;
-        if (TutorialManager.instance.isTutoLobby)
-        {
-            if (click == 1)
-            {
-                TutorialManager.instance.ShowText();
-                GameManager.instance.btnEasy.interactable = true;
-                GameManager.instance.btnNormal.interactable = false;
-                GameManager.instance.btnHard.interactable = false;
-                click++;
-            }
-        }
-        else if (!TutorialManager.instance.isTutoLobby)
+        if (TutorialManager.instance.isTutorial)
+            TutorialManager.instance.TutorialStep();
+        else if (!TutorialManager.instance.isTutorial)
         {
             GameManager.instance.btnEasy.interactable   = true;
             GameManager.instance.btnNormal.interactable = true;
