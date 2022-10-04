@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour
     // [Onclick] 인게임 ---> 일시정지
     public void BtnInGamePause()
     {
-        if (isStart && !isPause)
+        if (isStart && !isPause && !TutorialManager.instance.isTutorial)
         {
             isPause = true;
             isHandChange = false;
@@ -244,7 +244,7 @@ public class GameManager : MonoBehaviour
     // [Onclick] 일시정지 ---> 메인
     public void BtnPauseBackLobby()
     {
-        if ((isStart && isPause) || TutorialManager.instance.isTutorial)
+        if (isStart && isPause)
         {
             isStart = false;
             isPause = false;
@@ -285,23 +285,6 @@ public class GameManager : MonoBehaviour
             // 인게임 플레이 타임 슬라이더 초기화
             inGameSlider.minValue = 0;
             inGameSlider.value = 0;
-
-            if (TutorialManager.instance.isTutorial)
-            {
-                foreach (Transform item in contentOriginal.transform) Destroy(item.gameObject);
-
-                TutorialManager.instance.tutorialStep = 0;
-                TutorialManager.instance.tutoPanelSpawnCount = 0;
-                TutorialManager.instance.tutoPanelDestroyCount = 0;
-                TutorialManager.instance.tutoPanelTimer = 0;
-                TutorialManager.instance.isMotionClear = false;
-                TutorialManager.instance.isObstacleClear = false;
-                TutorialManager.instance.isMotionQuizClear = false;
-                TutorialManager.instance.isQuizClear = false;
-
-                TutorialManager.instance.isTutorial = false;
-                StopCoroutine(TutorialManager.instance.TutorialStart());
-            }
         }
     }
 

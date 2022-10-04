@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1065403811274",
+    "project_id": "unity-project-vr-program",
+    "storage_bucket": "unity-project-vr-program.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065403811274:android:bdd9e831e8a78c0f6ebb33",
+        "android_client_info": {
+          "package_name": "com.thejoen.VRBasedCognitiveRehabilitationProgram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1065403811274-vk1rpa7cvjnatf6vskmmkd6ndj92n5i0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_BWw3tU2ikP213sI0kkQbx-nmXb6Rwio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065403811274-vk1rpa7cvjnatf6vskmmkd6ndj92n5i0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
