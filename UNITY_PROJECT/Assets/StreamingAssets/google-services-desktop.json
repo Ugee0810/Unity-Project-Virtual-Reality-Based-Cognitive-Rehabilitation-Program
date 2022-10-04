@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1065403811274-sp2lj3ml9jkl1pgp8kiaqgaop83o7tib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thejoen.VRBasedCognitiveRehabilitationProgram",
+            "certificate_hash": "0fe1647f592008103b51762b7db3862dd23179b0"
+          }
+        },
+        {
           "client_id": "1065403811274-vk1rpa7cvjnatf6vskmmkd6ndj92n5i0.apps.googleusercontent.com",
           "client_type": 3
         }
