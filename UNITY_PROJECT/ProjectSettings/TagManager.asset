@@ -11,6 +11,22 @@ TagManager:
   - HAND RIGHT
   - QUIZ LEFT
   - QUIZ RIGHT
+  - b
+  - v
+  - n
+  - x
+  - c
+  - m
+  - z
+  - s
+  - h
+  - d
+  - g
+  - l
+  - k
+  - a
+  - f
+  - j
   layers:
   - Default
   - TransparentFX
@@ -19,10 +35,10 @@ TagManager:
   - Water
   - UI
   - Head Model
-  - 
-  - 
-  - 
-  - 
+  - Hands
+  - Interactive
+  - Typing Hands
+  - Keyboard
   - 
   - 
   - 

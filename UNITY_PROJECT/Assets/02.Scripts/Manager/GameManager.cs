@@ -298,6 +298,7 @@ public class GameManager : MonoBehaviour
 
         // 로비 관련 초기화
         ResultData();
+        //AddReusltList();
         uiResult.SetActive(true);
         musicBackGround.UnPause();
         btnEasy.interactable   = false;
