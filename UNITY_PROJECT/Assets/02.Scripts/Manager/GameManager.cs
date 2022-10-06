@@ -9,6 +9,7 @@
 /// </summary>
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -113,6 +114,9 @@ public class GameManager : MonoBehaviour
     public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
     public bool isSensorRight; // 패널 접촉 유/무 오른쪽
 
+    [Header("[InputActionReference]")]
+    public InputActionReference gamePause = null;
+
     public static GameManager instance;
     private void Awake()
     {
@@ -205,11 +209,12 @@ public class GameManager : MonoBehaviour
         {
             isStart = true;
             isRayState = false;
+            gamePause.action.started += XRI_InGamePause;
         }
     }
 
-    // [Onclick] 인게임 ---> 일시정지
-    public void BtnInGamePause()
+    // [XRI Input Action Binding(Primary Buuton)] 인게임 ---> 일시정지
+    public void XRI_InGamePause(InputAction.CallbackContext context)
     {
         if (isStart && !isPause && !TutorialManager.instance.isTutorial)
         {
@@ -283,6 +288,8 @@ public class GameManager : MonoBehaviour
             // 인게임 플레이 타임 슬라이더 초기화
             inGameSlider.minValue = 0;
             inGameSlider.value = 0;
+
+            gamePause.action.started -= XRI_InGamePause;
         }
     }
 
@@ -331,6 +338,8 @@ public class GameManager : MonoBehaviour
         // 인게임 플레이 타임 슬라이더 초기화
         inGameSlider.minValue = 0;
         inGameSlider.value = 0;
+
+        gamePause.action.started -= XRI_InGamePause;
     }
 
     // [Event] 컨트롤러 변경
