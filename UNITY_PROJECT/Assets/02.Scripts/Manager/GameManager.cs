@@ -68,10 +68,8 @@ public class GameManager : MonoBehaviour
     public GameObject resultElement;
 
     [Header("[Origin Controller]")]
-    public GameObject layLeftController;
-    public GameObject layRightController;
-    public GameObject handLeftController;
-    public GameObject handRightController;
+    public GameObject rayInteractorLeft;
+    public GameObject rayInteractorRight;
 
     [Header("[Audio Source]")]
     public AudioSource musicBackGround; // BGM
@@ -111,7 +109,7 @@ public class GameManager : MonoBehaviour
     [Header("[플래그 변수]")]
     public bool isStart;       // Game Start
     public bool isPause;       // Game Pause
-    public bool isHandChange;  // True : Hand Controller | False : Lay Controller
+    public bool isRayState;  // True : Hand Controller | False : Lay Controller
     public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
     public bool isSensorRight; // 패널 접촉 유/무 오른쪽
 
@@ -206,7 +204,7 @@ public class GameManager : MonoBehaviour
         if (!TutorialManager.instance.isTutorial)
         {
             isStart = true;
-            isHandChange = true;
+            isRayState = false;
         }
     }
 
@@ -216,7 +214,7 @@ public class GameManager : MonoBehaviour
         if (isStart && !isPause && !TutorialManager.instance.isTutorial)
         {
             isPause = true;
-            isHandChange = false;
+            isRayState = true;
 
             // Music Paused UI On
             uiPause.SetActive(true);
@@ -231,7 +229,7 @@ public class GameManager : MonoBehaviour
     public void BtnInGameUnPause()
     {
         isPause = false;
-        isHandChange = true;
+        isRayState = false;
 
         // Music Paused UI Off
         uiPause.SetActive(false);
@@ -293,7 +291,7 @@ public class GameManager : MonoBehaviour
     {
         isStart = false;
         isPause = false;
-        isHandChange = false;
+        isRayState = true;
         ControllerModeChange();
 
         // 로비 관련 초기화
@@ -338,25 +336,19 @@ public class GameManager : MonoBehaviour
     // [Event] 컨트롤러 변경
     public void ControllerModeChange()
     {
-        if /*Hand Controller*/ (isHandChange)
+        if (isRayState)
         {
-            layLeftController.SetActive(false);
-            layRightController.SetActive(false);
+            rayInteractorLeft.SetActive(true);
+            rayInteractorRight.SetActive(true);
 
-            handLeftController.SetActive(true);
-            handRightController.SetActive(true);
-
-            isHandChange = false;
+            isRayState = false;
         }
-        else /*Lay Controller*/
+        else
         {
-            handLeftController.SetActive(false);
-            handRightController.SetActive(false);
+            rayInteractorLeft.SetActive(false);
+            rayInteractorRight.SetActive(false);
 
-            layLeftController.SetActive(true);
-            layRightController.SetActive(true);
-
-            isHandChange = true;
+            isRayState = true;
         }
     }
 

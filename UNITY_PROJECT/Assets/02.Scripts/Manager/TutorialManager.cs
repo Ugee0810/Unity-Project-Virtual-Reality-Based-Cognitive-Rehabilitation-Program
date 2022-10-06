@@ -810,7 +810,7 @@ public class TutorialManager : MonoBehaviour
     {
         Time.timeScale = 1;
         GameManager.instance.musicPlayed.UnPause();
-        GameManager.instance.isHandChange = true;
+        GameManager.instance.isRayState = false;
         GameManager.instance.ControllerModeChange();
         yield return null;
     }
@@ -819,7 +819,7 @@ public class TutorialManager : MonoBehaviour
     {
         Time.timeScale = 0;
         GameManager.instance.musicPlayed.Pause();
-        GameManager.instance.isHandChange = false;
+        GameManager.instance.isRayState = true;
         GameManager.instance.ControllerModeChange();
         yield return null;
     }

@@ -2,14 +2,11 @@ using UnityEngine;
 
 public class TypingArea : MonoBehaviour
 {
-    public GameObject layLeftHand;
-    public GameObject layRightHand;
+    public GameObject controllerLeft;
+    public GameObject controllerRight;
 
-    public GameObject layLeftColl;
-    public GameObject layRightColl;
-
-    public GameObject leftHand;
-    public GameObject rightHand;
+    public GameObject rayLeftInteractor;
+    public GameObject rayRightInteractor;
 
     public GameObject leftTypingHand;
     public GameObject rightTypingHand;
@@ -17,18 +14,15 @@ public class TypingArea : MonoBehaviour
     private void OnTriggerEnter(Collider c)
     {
         GameObject hand = c.gameObject;
-        if (hand == null)
-            return;
-        if (hand == layLeftColl || hand == leftHand)
+        if (hand == null) return;
+        if (hand == controllerLeft)
         {
-            leftHand.SetActive(true);
-            layLeftHand.SetActive(false);
+            rayLeftInteractor.SetActive(false);
             leftTypingHand.SetActive(true);
         }
-        else if (hand == layRightColl || hand == rightHand)
+        else if (hand == controllerRight)
         {
-            rightHand.SetActive(true);
-            layRightHand.SetActive(false);
+            rayRightInteractor.SetActive(false);
             rightTypingHand.SetActive(true);
         }
     }
@@ -36,18 +30,15 @@ public class TypingArea : MonoBehaviour
     private void OnTriggerExit(Collider c)
     {
         GameObject hand = c.gameObject;
-        if (hand == null)
-            return;
-        if (hand == layLeftHand || hand == leftHand)
+        if (hand == null) return;
+        if (hand == controllerLeft)
         {
-            layLeftHand.SetActive(true);
-            leftHand.SetActive(false);
+            rayLeftInteractor.SetActive(true);
             leftTypingHand.SetActive(false);
         }
-        else if (hand == layRightHand || hand == rightHand)
+        else if (hand == controllerRight)
         {
-            layRightHand.SetActive(true);
-            rightHand.SetActive(false);
+            rayRightInteractor.SetActive(true);
             rightTypingHand.SetActive(false);
         }
     }
