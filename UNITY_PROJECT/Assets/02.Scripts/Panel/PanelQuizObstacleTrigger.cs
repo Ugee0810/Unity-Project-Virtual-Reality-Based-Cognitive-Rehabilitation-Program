@@ -1,5 +1,5 @@
 /// <summary>
-/// PanelSensor.cs
+/// PanelQuizObstacleTrigger.cs
 /// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
 /// This software is released under the GPL-2.0 license
 /// 
@@ -11,10 +11,10 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PanelSensor : MonoBehaviour
+public class PanelQuizObstacleTrigger : MonoBehaviour
 {
-    public UnityEvent _SFX_Currect;
-    public UnityEvent _SFX_Fail;
+    public UnityEvent _SFX_Quiz_Currect;
+    public UnityEvent _SFX_Quiz_Fail;
 
     private void OnTriggerEnter(Collider c)
     {
@@ -22,7 +22,7 @@ public class PanelSensor : MonoBehaviour
         {
             if (c.gameObject.tag == "QUIZ LEFT")
             {
-                _SFX_Currect?.Invoke();
+                _SFX_Quiz_Currect?.Invoke();
                 GameManager.instance.score += 10000;
                 ScoreManager.instance.SetScore();
                 ComboManager.instance.IncreaseCombo();
@@ -33,7 +33,7 @@ public class PanelSensor : MonoBehaviour
             }
             else if (c.gameObject.tag == "QUIZ RIGHT")
             {
-                _SFX_Fail?.Invoke();
+                _SFX_Quiz_Fail?.Invoke();
                 if (GameManager.instance.score > 0)
                 {
                     GameManager.instance.score -= 10000;
@@ -47,7 +47,7 @@ public class PanelSensor : MonoBehaviour
         {
             if (c.gameObject.tag == "QUIZ LEFT")
             {
-                _SFX_Fail?.Invoke();
+                _SFX_Quiz_Fail?.Invoke();
                 if (GameManager.instance.score > 0)
                 {
                     GameManager.instance.score -= 10000;
@@ -58,7 +58,7 @@ public class PanelSensor : MonoBehaviour
             }
             else if (c.gameObject.tag == "QUIZ RIGHT")
             {
-                _SFX_Currect?.Invoke();
+                _SFX_Quiz_Currect?.Invoke();
                 GameManager.instance.score += 10000;
                 ScoreManager.instance.SetScore();
                 ComboManager.instance.IncreaseCombo();

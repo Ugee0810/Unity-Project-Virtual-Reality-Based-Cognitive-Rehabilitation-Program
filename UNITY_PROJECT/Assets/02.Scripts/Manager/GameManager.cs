@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
     [Header("[플래그 변수]")]
     public bool isStart;       // Game Start
     public bool isPause;       // Game Pause
-    public bool isRayState;  // True : Hand Controller | False : Lay Controller
+    public bool isRayState;    // True : Hand Controller | False : Lay Controller
     public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
     public bool isSensorRight; // 패널 접촉 유/무 오른쪽
 
@@ -185,7 +185,7 @@ public class GameManager : MonoBehaviour
     // [Onclick] 키 조절 증가
     public void HeightInc()
     {
-        if (1.0f <= height && height <= 1.2f)
+        if (1.9f <= height && height <= 2.1f)
         {
             height += 0.01f;
             sliderHeight.value = height;
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
     // [Onclick] 키 조절 감소
     public void HeightDec()
     {
-        if (1.0f <= height && height <= 1.2f)
+        if (1.9f <= height && height <= 2.1f)
         {
             height -= 0.01f;
             sliderHeight.value = height;
@@ -223,6 +223,8 @@ public class GameManager : MonoBehaviour
 
             // Music Paused UI On
             uiPause.SetActive(true);
+            rayInteractorLeft.SetActive(true);
+            rayInteractorRight.SetActive(true);
 
             // 플레이 중 노래 일시 정지
             Time.timeScale = 0;
@@ -238,6 +240,8 @@ public class GameManager : MonoBehaviour
 
         // Music Paused UI Off
         uiPause.SetActive(false);
+        rayInteractorLeft.SetActive(false);
+        rayInteractorRight.SetActive(false);
 
         // 플레이 중 노래 일시 정지 해제
         Time.timeScale = 1;
