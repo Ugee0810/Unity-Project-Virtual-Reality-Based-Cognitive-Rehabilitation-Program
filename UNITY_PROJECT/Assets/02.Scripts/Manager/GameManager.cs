@@ -8,6 +8,7 @@
 /// 오리지널 또는 커스텀 노래 조회 버튼을 눌렀을 때 라이브러리 내 음악을 조회 후 각 정보들을 Element들에게 전달합니다.
 /// </summary>
 
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -15,7 +16,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [Header("[SkyBox Rotate]")]
-    public float RotateSpeed = 0.1f;
+    [SerializeField] float RotateSpeed = 0.1f;
 
     [Header("[UI]")]
     public GameObject uiTutorial;         // UI Tutorial
@@ -30,6 +31,8 @@ public class GameManager : MonoBehaviour
     public Button btnOriginal;
     public Button btnCustom;
 
+    public GameObject bgTutorial;
+
     public GameObject contentOriginal;    // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;      // 커스텀   리소스 프리팹 생성 위치(부모)
     public GameObject contentResult;      // 결과     리소스 프리팹 생성 위치(부모)
@@ -42,17 +45,25 @@ public class GameManager : MonoBehaviour
 
     public Button btnPlay;
 
-    public Button btnReset;
-
+    public TMP_Text textPsInfo;
     public Button btn70;
+    public Image imagePs70;
     public Button btn100;
+    public Image imagePs100;
     public Button btn130;
+    public Image imagePs130;
 
+    public TMP_Text textMlInfo;
     public Button btnHalf;
+    public Image imageMl50;
     public Button btnAll;
+    public Image imageMl100;
 
+    public TMP_Text textObsInfo;
     public Button btnObOn;
+    public Image imageObsOn;
     public Button btnObOff;
+    public Image imageObsOff;
 
     public Slider sliderBright;
     public Button btnBrightLeft;
@@ -63,6 +74,8 @@ public class GameManager : MonoBehaviour
     public Button btnHeightRight;
 
     public Slider inGameSlider;
+
+    public Button btnReset;
 
     [Header("[Prefabs]")]
     public GameObject musicElement;
@@ -160,6 +173,26 @@ public class GameManager : MonoBehaviour
             secPerBeat = 300f / bpm;
             PanelManager.instance.quizCool = 5;
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (!btn70.interactable)
+            textPsInfo.text = "x0.7";
+        else if (!btn100.interactable)
+            textPsInfo.text = "x1.0";
+        else if (!btn130.interactable)
+            textPsInfo.text = "x1.3";
+
+        if (!btnHalf.interactable)
+            textMlInfo.text = "절반";
+        else if (!btnAll.interactable)
+            textMlInfo.text = "전부";
+
+        if (!btnObOn.interactable)
+            textObsInfo.text = "ON";
+        else if (!btnObOff.interactable)
+            textObsInfo.text = "OFF";
     }
 
     // [Onclick] 밝기 증가
@@ -313,6 +346,7 @@ public class GameManager : MonoBehaviour
         btnEasy.interactable   = false;
         btnNormal.interactable = false;
         btnHard.interactable   = false;
+        infoTitle.text = "- Not Search";
 
         // 노래, 패널 관련 초기화
         playTime = 0;
@@ -400,10 +434,12 @@ public class GameManager : MonoBehaviour
 
                 // AudioSource.clip ← Resources-Custom Musics.AudioClip
                 originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)originalMusics[i];
+                // 분석한 BPM을 텍스트에 저장
+                originalMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = $"BPM : {UniBpmAnalyzer.AnalyzeBpm(originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip)}";
                 // (float)MusicLength to (string)PlayTime
-                originalMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = TimeFormatter(originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
+                originalMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = TimeFormatter(originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
                 // textTitle.text ← customMusicElements.AudioSource.text
-                originalMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
+                originalMusicElementPrefab.transform.GetChild(0).gameObject.GetComponent<Text>().text = originalMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
             }
         }
     }
@@ -427,10 +463,12 @@ public class GameManager : MonoBehaviour
 
             // AudioSource.clip ← Resources-Custom Musics.AudioClip
             customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)customMusics[i];
+            // 분석한 BPM을 텍스트에 저장
+            customMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = $"BPM : {UniBpmAnalyzer.AnalyzeBpm(customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip)}";
             // (float)MusicLength to (string)PlayTime
-            customMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = TimeFormatter(customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
+            customMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = TimeFormatter(customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
             // textTitle.text ← customMusicElements.AudioSource.text
-            customMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
+            customMusicElementPrefab.transform.GetChild(0).gameObject.GetComponent<Text>().text = customMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name;
         }
     }
 
