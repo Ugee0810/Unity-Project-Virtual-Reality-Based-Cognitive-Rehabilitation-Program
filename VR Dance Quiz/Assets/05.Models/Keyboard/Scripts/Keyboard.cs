@@ -19,7 +19,7 @@ public class Keyboard : MonoBehaviour
     {
         if (GameManager.instance.isEmail)
             inputFieldEmail.text += c;
-        else if (GameManager.instance.isPassword)
+        if (GameManager.instance.isPassword)
             inputFieldPassword.text += c;
     }
 
@@ -28,7 +28,7 @@ public class Keyboard : MonoBehaviour
         if (GameManager.instance.isEmail)
             if (inputFieldEmail.text.Length > 0)
                 inputFieldEmail.text = inputFieldEmail.text.Substring(0, inputFieldEmail.text.Length - 1);
-        else if (GameManager.instance.isPassword)
+        if (GameManager.instance.isPassword)
             if (inputFieldPassword.text.Length > 0)
                 inputFieldPassword.text = inputFieldPassword.text.Substring(0, inputFieldPassword.text.Length - 1);
     }
@@ -37,7 +37,7 @@ public class Keyboard : MonoBehaviour
     {
         if (GameManager.instance.isEmail)
             inputFieldEmail.text += " ";
-        else if (GameManager.instance.isPassword)
+        if (GameManager.instance.isPassword)
             inputFieldPassword.text += " ";
     }
 
