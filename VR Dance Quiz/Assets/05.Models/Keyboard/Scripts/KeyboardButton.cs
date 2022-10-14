@@ -10,7 +10,7 @@ public class KeyboardButton : MonoBehaviour
     {
         Keyboard = GetComponentInParent<Keyboard>();
         buttonText = GetComponentInChildren<TextMeshProUGUI>();
-        if (buttonText.text.Length == 1)
+        if (buttonText.text.Length == 1 && buttonText.text != "@" && buttonText.text != ".")
         {
             NameToButtonText();
             GetComponentInChildren<ButtonVR>().onRelease.AddListener(delegate { Keyboard.InsertChar(buttonText.text); });

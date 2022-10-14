@@ -5,6 +5,6 @@
   <string name="project_id" translatable="false">vr-dance-quiz</string>
   <string name="google_api_key" translatable="false">AIzaSyAEw8RCYFctiMla5pGXq9PIlrX7IG7LvNI</string>
   <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAEw8RCYFctiMla5pGXq9PIlrX7IG7LvNI</string>
-  <string name="google_app_id" translatable="false">1:999369700377:android:2243ff0cb930fbb368e688</string>
+  <string name="google_app_id" translatable="false">1:999369700377:android:25027df2830dcd9768e688</string>
   <string name="default_web_client_id" translatable="false">999369700377-l5ikrv9i7hibks87n5r4l6t3a9iu5ils.apps.googleusercontent.com</string>
 </resources>

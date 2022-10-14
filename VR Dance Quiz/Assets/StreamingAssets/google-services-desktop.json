@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:999369700377:android:2243ff0cb930fbb368e688",
+        "mobilesdk_app_id": "1:999369700377:android:25027df2830dcd9768e688",
         "android_client_info": {
-          "package_name": "com.VRMotionCompany.VRDanceQuiz"
+          "package_name": "com.VLightStutio.VRDanceQuiz"
         }
       },
       "oauth_client": [

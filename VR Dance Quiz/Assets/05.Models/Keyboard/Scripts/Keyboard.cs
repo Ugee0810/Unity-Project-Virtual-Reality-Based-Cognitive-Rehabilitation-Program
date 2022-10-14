@@ -56,4 +56,20 @@ public class Keyboard : MonoBehaviour
             caps = false;
         }
     }
+
+    public void At()
+    {
+        if (GameManager.instance.isEmail)
+            inputFieldEmail.text += "@";
+        if (GameManager.instance.isPassword)
+            inputFieldPassword.text += "@";
+    }
+
+    public void Dot()
+    {
+        if (GameManager.instance.isEmail)
+            inputFieldEmail.text += ".";
+        if (GameManager.instance.isPassword)
+            inputFieldPassword.text += ".";
+    }
 }
