@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "999369700377",
+    "project_id": "vr-dance-quiz",
+    "storage_bucket": "vr-dance-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999369700377:android:2243ff0cb930fbb368e688",
+        "android_client_info": {
+          "package_name": "com.VRMotionCompany.VRDanceQuiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999369700377-l5ikrv9i7hibks87n5r4l6t3a9iu5ils.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEw8RCYFctiMla5pGXq9PIlrX7IG7LvNI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999369700377-l5ikrv9i7hibks87n5r4l6t3a9iu5ils.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
