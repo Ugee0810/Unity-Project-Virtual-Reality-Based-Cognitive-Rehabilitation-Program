@@ -13,14 +13,15 @@ using Random = UnityEngine.Random;
 public class PanelManager : MonoBehaviour
 {
     [Header("[패널 상호작용 요소]")]
-    public Transform panelSpawnPoint; // 패널 생성 좌표
+    public Transform panelSpawnPoint;
 
     [Header("[패널 프리팹]")]
-    public GameObject[] quiz;   // 퀴즈 패널 프리팹 배열
-    public GameObject[] block;  // 블록 패널 프리팹 배열
-    public GameObject[] motion; // 모션 패널 프리팹 배열
+    public GameObject[] quiz;
+    public GameObject[] block;
+    public GameObject[] motion;
+    public GameObject[] colorBalls;
 
-    public List<GameObject> ballList = new List<GameObject>();
+    [Header("[문구 리스트]")]
     static string[] _LetterArray =
     { "집중", "평화", "용서", "감사", "침착", "정의", "조화", "자유", "정직", "지혜",
         "친절", "이해", "활력", "영감", "공감", "겸손", "힘", "지성", "고요", "결단",
@@ -57,7 +58,7 @@ public class PanelManager : MonoBehaviour
             PanelCheck();
             GameManager.instance.offsetTimer += Time.deltaTime;
 
-            if (!GameManager.instance.btnHalf.interactable)
+            if      (!GameManager.instance.btnModes[3].interactable)
             {
                 GameManager.instance.halfPlayTime -= Time.deltaTime;
                 if (GameManager.instance.halfHalfPlayTimeOffset >= GameManager.instance.offsetTimer)
@@ -65,7 +66,7 @@ public class PanelManager : MonoBehaviour
 
                 if (GameManager.instance.halfPlayTime <= 0) GameManager.instance.InGameEnd();
             }
-            else if (!GameManager.instance.btnAll.interactable)
+            else if (!GameManager.instance.btnModes[4].interactable)
             {
                 GameManager.instance.playTime -= Time.deltaTime;
                 if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
@@ -85,7 +86,7 @@ public class PanelManager : MonoBehaviour
 
             int panelIndex = Random.Range(0, 10); // <--- 전체 패널 확률
             int quizCool = Random.Range(5, 25); // <--- 퀴즈 쿨타임
-            if (!GameManager.instance.btnObOn.interactable)
+            if (!GameManager.instance.btnModes[5].interactable)
             {
                 /* QUIZ 10% */
                 if (panelIndex == 0)
@@ -140,7 +141,7 @@ public class PanelManager : MonoBehaviour
                     }
                 }
             }
-            else if (!GameManager.instance.btnObOff.interactable)
+            else if (!GameManager.instance.btnModes[6].interactable)
             {
                 /* QUIZ 10% */
                 if (panelIndex == 0)
@@ -188,13 +189,11 @@ public class PanelManager : MonoBehaviour
         }
     }
 
-    public UnityEvent _SFX;
     public void PanelCheck()
     {
         if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
         {
-            _SFX?.Invoke();
-            StartCoroutine(GameManager.instance.Increase());
+            StartCoroutine(ScoreManaged.Increase());
             Destroy(panelSpawnPoint.transform.GetChild(0).gameObject);
             if (TutorialManager.instance.isTutorial)
                 TutorialManager.instance.tutoPanelDestroyCount++;

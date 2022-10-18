@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class PlayHeadControls : MonoBehaviour
 {
@@ -15,12 +12,12 @@ public class PlayHeadControls : MonoBehaviour
     {
         if (GameManager.instance.isStart)
         {
-            if (!GameManager.instance.btnHalf.interactable)
+            if      (!GameManager.instance.btnModes[3].interactable)
             {
                 GameManager.instance.playedMusicSlide.maxValue = (GameManager.instance.musicPlayed.clip.length * GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels / 2) - 1;
                 Event();
             }
-            else if (!GameManager.instance.btnAll.interactable)
+            else if (!GameManager.instance.btnModes[4].interactable)
             {
                 GameManager.instance.playedMusicSlide.maxValue = (GameManager.instance.musicPlayed.clip.length * GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels) - 1;
                 Event();

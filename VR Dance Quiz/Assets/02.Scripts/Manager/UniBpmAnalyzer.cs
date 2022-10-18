@@ -50,13 +50,13 @@ public class UniBpmAnalyzer
         {
             return -1;
         }
-        Debug.Log("AnalyzeBpm audioClipName : " + clip.name);
+        //Debug.Log("AnalyzeBpm audioClipName : " + clip.name);
 
         int frequency = clip.frequency;
-        Debug.Log("Frequency : " + frequency);
+        //Debug.Log("Frequency : " + frequency);
 
         int channels = clip.channels;
-        Debug.Log("Channels : " + channels);
+        //Debug.Log("Channels : " + channels);
 
         int splitFrameSize = Mathf.FloorToInt(((float)frequency / (float)BASE_FREQUENCY) * ((float)channels / (float)BASE_CHANNELS) * (float)BASE_SPLIT_SAMPLE_SIZE);
 
@@ -69,14 +69,14 @@ public class UniBpmAnalyzer
 
         // Search bpm from volume array
         int bpm = SearchBpm(volumeArr, frequency, splitFrameSize);
-        Debug.Log("Matched BPM : " + bpm);
+        //Debug.Log("Matched BPM : " + bpm);
 
         var strBuilder = new StringBuilder("BPM Match Data List\n");
         for (int i = 0; i < bpmMatchDatas.Length; i++)
         {
             strBuilder.Append("bpm : " + bpmMatchDatas[i].bpm + ", match : " + Mathf.FloorToInt(bpmMatchDatas[i].match * 10000f) + "\n");
         }
-        Debug.Log(strBuilder.ToString());
+        //Debug.Log(strBuilder.ToString());
 
         return bpm;
     }

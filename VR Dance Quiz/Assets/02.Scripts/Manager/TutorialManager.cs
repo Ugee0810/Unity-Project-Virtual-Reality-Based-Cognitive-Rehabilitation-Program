@@ -212,15 +212,15 @@ public class TutorialManager : MonoBehaviour
         // UI Result(Lobby Right UI) OFF
         GameManager.instance.uiLobbyResult.SetActive(false);
         // Original Theme Select ON
-        GameManager.instance.btnOriginal.interactable = true;
+        GameManager.instance.btnMusicTheme[0].interactable = true;
         // Custom Theme Select OFF
-        GameManager.instance.btnCustom.interactable = false;
+        GameManager.instance.btnMusicTheme[1].interactable = false;
         // Easy OFF
-        GameManager.instance.btnEasy.interactable = false;
+        GameManager.instance.btnLevels[0].interactable = false;
         // Normal OFF
-        GameManager.instance.btnNormal.interactable = false;
+        GameManager.instance.btnLevels[1].interactable = false;
         // Hard OFF
-        GameManager.instance.btnHard.interactable = false;
+        GameManager.instance.btnLevels[2].interactable = false;
         // Play OFF
         GameManager.instance.btnPlay.interactable = false;
         // Tutorial(Btn) OFF
@@ -240,7 +240,7 @@ public class TutorialManager : MonoBehaviour
     void Step3()
     {
         // Custom Theme Select OFF
-        GameManager.instance.btnCustom.interactable = false;
+        GameManager.instance.btnMusicTheme[1].interactable = false;
         // 안내 문구 강조 OFF
         textTutoOriginal.text = "Original";
 
@@ -251,11 +251,11 @@ public class TutorialManager : MonoBehaviour
     void Step4()
     {
         // Easy ON
-        GameManager.instance.btnEasy.interactable   = true;
+        GameManager.instance.btnLevels[0].interactable = true;
         // Normal OFF
-        GameManager.instance.btnNormal.interactable = false;
+        GameManager.instance.btnLevels[1].interactable = false;
         // Hard OFF
-        GameManager.instance.btnHard.interactable   = false;
+        GameManager.instance.btnLevels[2].interactable = false;
         // Music Element OFF
         GameManager.instance.contentOriginal.transform.GetChild(0).GetComponent<Button>().interactable = false;
         // 안내 문구 강조 OFF
@@ -270,11 +270,11 @@ public class TutorialManager : MonoBehaviour
     void Step5()
     {
         // Easy OFF
-        GameManager.instance.btnEasy.interactable = false;
+        GameManager.instance.btnLevels[0].interactable = false;
         // Normal OFF
-        GameManager.instance.btnNormal.interactable = false;
+        GameManager.instance.btnLevels[1].interactable = false;
         // Hard OFF
-        GameManager.instance.btnHard.interactable = false;
+        GameManager.instance.btnLevels[2].interactable = false;
         // 안내 문구 강조 OFF
         textTutoEasy.text = "쉬움";
         // 안내 문구 강조 ON
@@ -417,9 +417,9 @@ public class TutorialManager : MonoBehaviour
         // UI Result(Lobby Right UI) ON
         GameManager.instance.uiLobbyResult.SetActive(true);
         // Original Theme Select ON
-        GameManager.instance.btnOriginal.interactable = true;
+        GameManager.instance.btnMusicTheme[0].interactable = true;
         // Custom Theme Select ON
-        GameManager.instance.btnCustom.interactable = true;
+        GameManager.instance.btnMusicTheme[1].interactable = true;
         // Tutorial(Btn) ON
         GameManager.instance.bgTutorial.SetActive(true);
 
@@ -452,30 +452,27 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(TutorialStart());
     }
 
-
     GameObject tutorialMusicElementPrefab;
     // [Onclick] 오리지널 버튼 클릭
     public void TutorialListRenewal()
     {
         if (isTutorial)
         {
+            // List Reset
             foreach (Transform item in GameManager.instance.contentOriginal.transform) Destroy(item.gameObject);
-
             object tutorialMusic = Resources.Load<AudioClip>("Original Music/Cat Life");
             tutorialMusicElementPrefab = tutorialMusic as GameObject;
             tutorialMusicElementPrefab = Instantiate(GameManager.instance.musicElement, GameManager.instance.contentOriginal.transform.position, GameManager.instance.contentOriginal.transform.rotation);
-            tutorialMusicElementPrefab.name = "Tutorial Music Element";
             tutorialMusicElementPrefab.transform.parent = GameManager.instance.contentOriginal.transform;
             tutorialMusicElementPrefab.transform.localScale = Vector3.one;
-
             // AudioSource.clip ← Resources-Custom Musics.AudioClip
-            tutorialMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip = (AudioClip)tutorialMusic;
+            tutorialMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().clip = (AudioClip)tutorialMusic;
             // 분석한 BPM을 텍스트에 저장
-            tutorialMusicElementPrefab.transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = $"BPM : {UniBpmAnalyzer.AnalyzeBpm(tutorialMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip)}";
+            tutorialMusicElementPrefab.transform.GetChild(2).GetComponent<TMP_Text>().text = $"BPM : {UniBpmAnalyzer.AnalyzeBpm(tutorialMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().clip)}";
             // (float)MusicLength to (string)PlayTime
-            tutorialMusicElementPrefab.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = GameManager.instance.TimeFormatter(tutorialMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length, false);
+            tutorialMusicElementPrefab.transform.GetChild(1).GetComponent<TMP_Text>().text = GameManager.instance.TimeFormatter(tutorialMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().clip.length, false);
             // textTitle.text ← customMusicElements.AudioSource.text
-            tutorialMusicElementPrefab.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = "<bounce a=0.3 f=0.3>Cat Life</bounce>"/*tutorialMusicElementPrefab.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name*/;
+            tutorialMusicElementPrefab.transform.GetChild(0).GetComponent<TMP_Text>().text = "<bounce a=0.3 f=0.3>Cat Life</bounce>";
         }
     }
 
@@ -483,8 +480,7 @@ public class TutorialManager : MonoBehaviour
     {
         Time.timeScale = 1;
         GameManager.instance.musicPlayed.UnPause();
-        GameManager.instance.isRayState = false;
-        GameManager.instance.ControllerModeChange();
+        GameManager.instance.RayControllerMode(false);
         yield return null;
     }
 
@@ -492,8 +488,7 @@ public class TutorialManager : MonoBehaviour
     {
         Time.timeScale = 0;
         GameManager.instance.musicPlayed.Pause();
-        GameManager.instance.isRayState = true;
-        GameManager.instance.ControllerModeChange();
+        GameManager.instance.RayControllerMode(true);
         yield return null;
     }
 

@@ -9,13 +9,9 @@
 /// </summary>
 
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PanelQuizObstacleTrigger : MonoBehaviour
 {
-    public UnityEvent _SFX_Quiz_Currect;
-    public UnityEvent _SFX_Quiz_Fail;
-
     private void OnTriggerEnter(Collider c)
     {
         if (GameManager.instance.isStart)
@@ -24,9 +20,9 @@ public class PanelQuizObstacleTrigger : MonoBehaviour
             {
                 if (c.gameObject.tag == "QUIZ LEFT")
                 {
-                    _SFX_Quiz_Currect?.Invoke();
-                    GameManager.instance.score += 10000;
-                    GameManager.instance.SetScore();
+                    // SFX(Currect)
+                    GameManager.instance.sFX[1]?.Invoke();
+                    ScoreManaged.SetScore(GameManager.instance.score += 10000);
                     ComboManager.instance.IncreaseCombo();
                     PanelManager.instance.isCurLeft = false;
                     Destroy(c.gameObject.transform.parent.gameObject);
@@ -35,12 +31,10 @@ public class PanelQuizObstacleTrigger : MonoBehaviour
                 }
                 else if (c.gameObject.tag == "QUIZ RIGHT")
                 {
-                    _SFX_Quiz_Fail?.Invoke();
+                    // SFX(Fail)
+                    GameManager.instance.sFX[2]?.Invoke();
                     if (GameManager.instance.score > 0)
-                    {
-                        GameManager.instance.score -= 10000;
-                        GameManager.instance.SetScore();
-                    }
+                        ScoreManaged.SetScore(GameManager.instance.score -= 10000);
                     PanelManager.instance.isCurLeft = false;
                     ComboManager.instance.Clear();
                 }
@@ -49,20 +43,18 @@ public class PanelQuizObstacleTrigger : MonoBehaviour
             {
                 if (c.gameObject.tag == "QUIZ LEFT")
                 {
-                    _SFX_Quiz_Fail?.Invoke();
+                    // SFX(Fail)
+                    GameManager.instance.sFX[2]?.Invoke();
                     if (GameManager.instance.score > 0)
-                    {
-                        GameManager.instance.score -= 10000;
-                        GameManager.instance.SetScore();
-                    }
+                        ScoreManaged.SetScore(GameManager.instance.score -= 10000);
                     PanelManager.instance.isCurRight = false;
                     ComboManager.instance.Clear();
                 }
                 else if (c.gameObject.tag == "QUIZ RIGHT")
                 {
-                    _SFX_Quiz_Currect?.Invoke();
-                    GameManager.instance.score += 10000;
-                    GameManager.instance.SetScore();
+                    // SFX(Currect)
+                    GameManager.instance.sFX[1]?.Invoke();
+                    ScoreManaged.SetScore(GameManager.instance.score += 10000);
                     ComboManager.instance.IncreaseCombo();
                     PanelManager.instance.isCurRight = false;
                     Destroy(c.gameObject.transform.parent.gameObject);
@@ -80,10 +72,7 @@ public class PanelQuizObstacleTrigger : MonoBehaviour
             if (c.gameObject.tag == "BLOCK")
             {
                 if (GameManager.instance.score > 0)
-                {
-                    GameManager.instance.score -= 100;
-                    GameManager.instance.SetScore();
-                }
+                    ScoreManaged.SetScore(GameManager.instance.score -= 100);
                 ComboManager.instance.Clear();
             }
         }

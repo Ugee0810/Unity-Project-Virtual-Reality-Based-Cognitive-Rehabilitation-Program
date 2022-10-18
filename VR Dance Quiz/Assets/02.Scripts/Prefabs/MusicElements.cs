@@ -23,9 +23,9 @@ public class MusicElements : MonoBehaviour
             TutorialManager.instance.TutorialStep();
         else if (!TutorialManager.instance.isTutorial)
         {
-            GameManager.instance.btnEasy.interactable   = true;
-            GameManager.instance.btnNormal.interactable = true;
-            GameManager.instance.btnHard.interactable   = true;
+            GameManager.instance.btnLevels[0].interactable = true;
+            GameManager.instance.btnLevels[1].interactable = true;
+            GameManager.instance.btnLevels[2].interactable = true;
         }
 
         GameManager.instance.btnPlay.interactable   = false;
