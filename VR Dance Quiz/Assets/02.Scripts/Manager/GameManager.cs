@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
     public float halfHalfPlayTimeOffset;
     public float offsetTimer;
     public float moveSpeed = 2.0f;
-    public float modePanelSpeed;
+    public float modePanelSpeed = 1.0f;
     public int   bpm;
     public float secPerBeat;
     public float panelTimer; // BPM 계산 타이머
@@ -459,17 +459,17 @@ public class GameManager : MonoBehaviour
     // [Event] 인게임 완곡 이후 이벤트
     public void InGameEnd()
     {
-        // [Event] 인게임 종료 이벤트
-        EndResetEvent();
         // Ray Controller ON
         RayControllerMode(true);
         // Ingame Result Data Copy
         textKeys[0].text = PlayerPrefs.GetString("Title", $"{musicPlayed.clip.name}");
-        if (!btnLevels[0].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "Easy");
-        else if (!btnLevels[1].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "Normal");
-        else if (!btnLevels[2].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "Hard");
+        if (!btnLevels[0].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "쉬움");
+        if (!btnLevels[1].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "보통");
+        if (!btnLevels[2].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "어려움");
         textKeys[2].text = PlayerPrefs.GetString("Score", $"{textIngameScore.text}");
         textKeys[3].text = PlayerPrefs.GetString("Kcal", $"{textIngameKcal.text}");
+        // [Event] 인게임 종료 이벤트
+        EndResetEvent();
         // UI Result ON
         uiResult.SetActive(true);
     }
@@ -492,7 +492,6 @@ public class GameManager : MonoBehaviour
         halfPlayTime = 0;
         halfHalfPlayTimeOffset = 0;
         offsetTimer = 0;
-        modePanelSpeed = 0;
         bpm = 0;
         secPerBeat = 0;
         panelTimer = 0;
