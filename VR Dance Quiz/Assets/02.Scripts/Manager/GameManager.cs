@@ -503,9 +503,9 @@ public class GameManager : MonoBehaviour
         PanelManager.instance.isCurLeft = false;
         PanelManager.instance.isCurRight = false;
         // 스코어 초기화
-        ScoreManaged.SetScore(0);
+        ScoreManaged.SetScore(score = 0);
         // 칼로리 초기화
-        ScoreManaged.SetKcal(0);
+        ScoreManaged.SetKcal(kcal = 0);
         // 콤보 초기화
         ComboManager.instance.Clear();
         // 인게임 플레이 타임 슬라이더 초기화
