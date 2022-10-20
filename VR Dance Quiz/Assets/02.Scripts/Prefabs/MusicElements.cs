@@ -18,46 +18,27 @@ public class MusicElements : MonoBehaviour
 {
     public void Select()
     {
-        if (TutorialManager.instance.isTutorial)
-            TutorialManager.instance.TutorialStep();
-        else if (!TutorialManager.instance.isTutorial)
-        {
-            GameManager.instance.btnLevels[0].interactable = true;
-            GameManager.instance.btnLevels[1].interactable = true;
-            GameManager.instance.btnLevels[2].interactable = true;
-        }
-
-        GameManager.instance.btnPlay.interactable   = false;
-
+        if (TutorialManager.instance.isTutorial) TutorialManager.instance.TutorialStep();
+        else for (int i = 0; i < GameManager.instance.btnLevels.Length; i++) GameManager.instance.btnLevels[i].interactable = true;
+        GameManager.instance.btnPlay.interactable = false;
         // 방금 클릭한 게임 오브젝트를 가져 와 selectedElement에 저장
         GameObject selectedElement = EventSystem.current.currentSelectedGameObject;
-
         // UniBpmAnalyzer.cs의 AnalyzeBpm() 함수로 선택한 오브젝트의 자식 오디오 소스의 BPM을 조사한 수치를 GameManager의 bpm에 선언
-        GameManager.instance.bpm = UniBpmAnalyzer.AnalyzeBpm(selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip);
-
+        GameManager.instance.bpm = UniBpmAnalyzer.AnalyzeBpm(selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip);
         // 플레이 타임(100%)
-        GameManager.instance.playTime = selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.length;
+        GameManager.instance.playTime = selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip.length;
         GameManager.instance.playTimeOffset = GameManager.instance.playTime - 15f;
-
         // 플레이 타임(50%)
         GameManager.instance.halfPlayTime = GameManager.instance.playTime / 2;
         GameManager.instance.halfHalfPlayTimeOffset = GameManager.instance.playTime / 2 - 15f;
-
         // Info Title.text ← customMusicElements.AudioSource.text
-        GameManager.instance.infoTitle.GetComponent<TMP_Text>().text =
-            $"- {selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip.name}";
-
+        GameManager.instance.infoTitle.GetComponent<TMP_Text>().text = $"- {selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip.name}";
         // 프리팹 오디오 소스 클립 -> musicSelected의 클립
-        GameManager.instance.musicSelected.GetComponent<AudioSource>().clip = 
-            selectedElement.transform.GetChild(3).gameObject.GetComponent<AudioSource>().clip;
-
+        GameManager.instance.musicSelected.GetComponent<AudioSource>().clip = selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip;
         // 플레이에 사용 될 오디오 소스 대칭화
-        GameManager.instance.musicPlayed.GetComponent<AudioSource>().clip = 
-            GameManager.instance.musicSelected.GetComponent<AudioSource>().clip;
-
+        GameManager.instance.musicPlayed.GetComponent<AudioSource>().clip = GameManager.instance.musicSelected.GetComponent<AudioSource>().clip;
         // BGM Pause
         GameManager.instance.musicBackGround.Pause();
-
         // MusicSelected Play
         GameManager.instance.musicSelected.Play();
     }

@@ -30,10 +30,10 @@ public class TutorialManager : MonoBehaviour
     public string[] textBox = {
         "<speed=0.5><rainb f=0.2>안녕하세요.</rainb> 반갑습니다." +
             "\n지금부터 플레이 방법을 안내해드리겠습니다.",
-        "<speed=0.5>상단의 <rainb f=0.2>[오리지널]</rainb> 테마를 선택해주세요.",
+        "<speed=0.5>상단의 <rainb f=0.2>[Original]</rainb> 테마를 선택해주세요.",
         "<speed=0.5>노래<rainb f=0.2>[Cat Life]</rainb>를 선택해주세요.",
         "<speed=0.5>난이도 <rainb f=0.2>[쉬움]</rainb>을 선택해주세요.",
-        "<speed=0.5><rainb f=0.2>[플레이]</rainb> 버튼을 눌러 게임을 시작합니다.",
+        "<speed=0.5><rainb f=0.2>[시작]</rainb> 버튼을 눌러 게임을 시작합니다.",
         "<speed=0.5><size=7>게임으로 진입했습니다." +
             "\n\n좌측에는 획득한 <bounce a=0.3 f=0.3>점수</bounce>와 <bounce a=0.3 f=0.3>소모된 칼로리</bounce>가 표시됩니다." +
             "\n동작 또는 퀴즈에 성공하면 점수와 콤보가 오릅니다." +
@@ -174,20 +174,14 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitWhile(() => tutorialStep < 17);
     }
 
-    public (Vector3, Vector2, Quaternion) XR_TutoCanvasSize()
+    (Vector3, Vector2, Quaternion) XR_TutoCanvasSize(int tutorialStep)
     {
-        if      (tutorialStep == 0)
-            return (new Vector3(0f, 2f, 1f), new Vector2(200f, 50f), Quaternion.Euler(10f, 0f, 0f));
-        else if (tutorialStep == 1)
-            return (new Vector3(0f, 1.3f, 0.85f), new Vector2(180f, 20f), Quaternion.Euler(50f, 0f, 0f));
-        else if (tutorialStep == 5)
-            return (new Vector3(0f, 2.25f, 1f), new Vector2(200f, 110f), Quaternion.Euler(0f, 0f, 0f));
-        else if (tutorialStep == 14)
-            return (new Vector3(0f, 2.9f, 0.9f), new Vector2(240f, 70f), Quaternion.Euler(-15f, 0f, 0f));
-        else if (tutorialStep == 15)
-            return (new Vector3(0f, 1.3f, 0.85f), new Vector2(180f, 40f), Quaternion.Euler(50f, 0f, 0f));
-        else
-            return (new Vector3(0f, 0f, 0f), new Vector2(0f, 0f), Quaternion.identity);
+        if      (tutorialStep == 0) return (new Vector3(0f, 2f, 1f), new Vector2(200f, 50f), Quaternion.Euler(10f, 0f, 0f));
+        else if (tutorialStep == 1) return (new Vector3(0f, 1.3f, 0.85f), new Vector2(180f, 20f), Quaternion.Euler(50f, 0f, 0f));
+        else if (tutorialStep == 5) return (new Vector3(0f, 2.25f, 1f), new Vector2(200f, 110f), Quaternion.Euler(0f, 0f, 0f));
+        else if (tutorialStep == 14) return (new Vector3(0f, 2.9f, 0.9f), new Vector2(250f, 70f), Quaternion.Euler(-15f, 0f, 0f));
+        else if (tutorialStep == 15) return (new Vector3(0f, 1.3f, 0.85f), new Vector2(180f, 40f), Quaternion.Euler(50f, 0f, 0f));
+        else return (new Vector3(0f, 0f, 0f), new Vector2(0f, 0f), Quaternion.identity);
     }
 
     // 튜토리얼 시작 안내
@@ -196,7 +190,10 @@ public class TutorialManager : MonoBehaviour
         GameManager.instance.uiTutorial.SetActive(true);
         GameManager.instance.uiLobby.SetActive(false);
 
-        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize();
+        foreach (Transform item in GameManager.instance.contentOriginal.transform) Destroy(item.gameObject);
+        foreach (Transform item in GameManager.instance.contentCustom.transform)   Destroy(item.gameObject);
+
+        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
         textAnimatorPlayer.ShowText(textBox[0]);
     }
 
@@ -215,12 +212,8 @@ public class TutorialManager : MonoBehaviour
         GameManager.instance.btnMusicTheme[0].interactable = true;
         // Custom Theme Select OFF
         GameManager.instance.btnMusicTheme[1].interactable = false;
-        // Easy OFF
-        GameManager.instance.btnLevels[0].interactable = false;
-        // Normal OFF
-        GameManager.instance.btnLevels[1].interactable = false;
-        // Hard OFF
-        GameManager.instance.btnLevels[2].interactable = false;
+        // Levels OFF
+        for (int i = 0; i < GameManager.instance.btnLevels.Length; i++) GameManager.instance.btnLevels[i].interactable = false;
         // Play OFF
         GameManager.instance.btnPlay.interactable = false;
         // Tutorial(Btn) OFF
@@ -230,9 +223,8 @@ public class TutorialManager : MonoBehaviour
         // 안내 문구 강조
         textTutoOriginal.text = "<bounce a=0.5 f=0.5>Original</bounce>";
 
-        foreach (Transform item in GameManager.instance.contentOriginal.transform) Destroy(item.gameObject);
+        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
 
-        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize();
         textAnimatorPlayer.ShowText(textBox[1]);
     }
 
@@ -259,7 +251,7 @@ public class TutorialManager : MonoBehaviour
         // Music Element OFF
         GameManager.instance.contentOriginal.transform.GetChild(0).GetComponent<Button>().interactable = false;
         // 안내 문구 강조 OFF
-        tutorialMusicElementPrefab.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = "Cat Life";
+        GameManager.instance.contentOriginal.transform.GetChild(0).GetComponent<TMP_Text>().text = "Cat Life";
         // 안내 문구 강조 ON
         textTutoEasy.text = "<bounce a=0.5 f=0.5>쉬움</bounce>";
 
@@ -269,12 +261,8 @@ public class TutorialManager : MonoBehaviour
     // Play 버튼 안내
     void Step5()
     {
-        // Easy OFF
-        GameManager.instance.btnLevels[0].interactable = false;
-        // Normal OFF
-        GameManager.instance.btnLevels[1].interactable = false;
-        // Hard OFF
-        GameManager.instance.btnLevels[2].interactable = false;
+        // Levels OFF
+        for (int i = 0; i < GameManager.instance.btnLevels.Length; i++) GameManager.instance.btnLevels[i].interactable = false;
         // 안내 문구 강조 OFF
         textTutoEasy.text = "쉬움";
         // 안내 문구 강조 ON
@@ -295,7 +283,7 @@ public class TutorialManager : MonoBehaviour
         // TimeStop, HandChange
         StartCoroutine(TimeStop());
 
-        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize();
+        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
         textAnimatorPlayer.ShowText(textBox[5]);
     }
 
@@ -381,7 +369,7 @@ public class TutorialManager : MonoBehaviour
     // 결과창 출력
     void Step15() 
     {
-        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize();
+        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
         // 퀴즈 패널 클리어
         isQuizClear = true;
         // Tutorial Button OFF
@@ -399,7 +387,7 @@ public class TutorialManager : MonoBehaviour
     // 옵션 안내 후 종료
     void Step16()
     {
-        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize();
+        (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
 
         // Tutorial Button ON
         btnTutoNext.interactable = true;
@@ -439,8 +427,7 @@ public class TutorialManager : MonoBehaviour
     // [OnClick] tutorialStep++
     public void TutorialStep()
     {
-        if (isTutorial)
-            tutorialStep++;
+        if (isTutorial) tutorialStep++;
     }
 
     // [OnClick] 로비 ---> 튜토리얼 버튼
@@ -450,30 +437,6 @@ public class TutorialManager : MonoBehaviour
         GameManager.instance.musicBackGround.UnPause();
         GameManager.instance.musicSelected.Stop();
         StartCoroutine(TutorialStart());
-    }
-
-    GameObject tutorialMusicElementPrefab;
-    // [Onclick] 오리지널 버튼 클릭
-    public void TutorialListRenewal()
-    {
-        if (isTutorial)
-        {
-            // List Reset
-            foreach (Transform item in GameManager.instance.contentOriginal.transform) Destroy(item.gameObject);
-            object tutorialMusic = Resources.Load<AudioClip>("Original Music/Cat Life");
-            tutorialMusicElementPrefab = tutorialMusic as GameObject;
-            tutorialMusicElementPrefab = Instantiate(GameManager.instance.musicElement, GameManager.instance.contentOriginal.transform.position, GameManager.instance.contentOriginal.transform.rotation);
-            tutorialMusicElementPrefab.transform.parent = GameManager.instance.contentOriginal.transform;
-            tutorialMusicElementPrefab.transform.localScale = Vector3.one;
-            // AudioSource.clip ← Resources-Custom Musics.AudioClip
-            tutorialMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().clip = (AudioClip)tutorialMusic;
-            // 분석한 BPM을 텍스트에 저장
-            tutorialMusicElementPrefab.transform.GetChild(2).GetComponent<TMP_Text>().text = $"BPM : {UniBpmAnalyzer.AnalyzeBpm(tutorialMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().clip)}";
-            // (float)MusicLength to (string)PlayTime
-            tutorialMusicElementPrefab.transform.GetChild(1).GetComponent<TMP_Text>().text = GameManager.instance.TimeFormatter(tutorialMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().clip.length, false);
-            // textTitle.text ← customMusicElements.AudioSource.text
-            tutorialMusicElementPrefab.transform.GetChild(0).GetComponent<TMP_Text>().text = "<bounce a=0.3 f=0.3>Cat Life</bounce>";
-        }
     }
 
     public IEnumerator TimeStart()
