@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class PanelManager : MonoBehaviour
@@ -47,7 +46,6 @@ public class PanelManager : MonoBehaviour
         else Destroy(gameObject);
 
         _LetterList.AddRange(_LetterArray);
-
         panelSpawnCount = -1;
     }
 
@@ -61,17 +59,13 @@ public class PanelManager : MonoBehaviour
             if      (!GameManager.instance.btnModes[3].interactable)
             {
                 GameManager.instance.halfPlayTime -= Time.deltaTime;
-                if (GameManager.instance.halfHalfPlayTimeOffset >= GameManager.instance.offsetTimer)
-                    PanelInstance();
-
+                if (GameManager.instance.halfHalfPlayTimeOffset >= GameManager.instance.offsetTimer) PanelInstance();
                 if (GameManager.instance.halfPlayTime <= 0) GameManager.instance.InGameEnd();
             }
             else if (!GameManager.instance.btnModes[4].interactable)
             {
                 GameManager.instance.playTime -= Time.deltaTime;
-                if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer)
-                    PanelInstance();
-
+                if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer) PanelInstance();
                 if (GameManager.instance.playTime <= 0) GameManager.instance.InGameEnd();
             }
         }

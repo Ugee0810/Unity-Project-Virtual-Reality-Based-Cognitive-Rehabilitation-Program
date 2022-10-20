@@ -1506,6 +1506,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Ray Left ON",
+                    "type": "Button",
+                    "id": "e6ee99aa-780b-4301-8726-c09246946dc8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ray Right ON",
+                    "type": "Button",
+                    "id": "b0a61ff3-3c31-48e3-bcce-6ba1ea55eb30",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1528,6 +1546,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "179e94cd-b183-4045-b875-d82a9299dfd0",
+                    "path": "<XRController>{LeftHand}/gripButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ray Left ON",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd5bef70-5fc3-4f4e-87b3-1dc6fa47542c",
+                    "path": "<XRController>{RightHand}/gripButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ray Right ON",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

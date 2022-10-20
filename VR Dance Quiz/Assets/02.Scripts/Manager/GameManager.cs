@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
 {
     [Header("[Input Action Reference]")]
     public InputActionReference gamePause;
+    public InputActionReference gameRayLeftON;
+    public InputActionReference gameRayRightON;
 
     [Header("[SkyBox Rotate]")]
     [SerializeField] float rotateSpeed = 1f;
@@ -175,6 +177,9 @@ public class GameManager : MonoBehaviour
         btnEndBackLobby.onClick.AddListener(OnClick_BtnEndBackLobby);
         // Btn Reset
         btnReset.onClick.AddListener(OnClick_BtnReset);
+        // 레이 컨트롤러 인풋액션 활성화
+        gameRayLeftON.action.started += XRI_InGamePause;
+        gameRayRightON.action.started += XRI_InGamePause;
     }
 
     private void FixedUpdate()
@@ -392,6 +397,9 @@ public class GameManager : MonoBehaviour
             RayControllerMode(false);
             // 일시정지 인풋액션 활성화
             gamePause.action.started += XRI_InGamePause;
+            // 레이 컨트롤러 인풋액션 비활성화
+            gameRayLeftON.action.started -= XRI_InGamePause;
+            gameRayRightON.action.started -= XRI_InGamePause;
         }
         uiLobby.SetActive(false);
         lobbyBaseGround.SetActive(false);
@@ -403,6 +411,20 @@ public class GameManager : MonoBehaviour
         sFX[1]?.Invoke();
 
         TutorialManager.instance.TutorialStep();
+    }
+
+    // [XRI Input Action Binding(Left Grip Button)] Ray Left ON
+    public void XRI_RayLeftON(InputAction.CallbackContext context)
+    {
+        rayInteractorLeft .SetActive(true);
+        rayInteractorRight.SetActive(false);
+    }
+
+    // [XRI Input Action Binding(Right Grip Button)] Ray Right ON
+    public void XRI_RayRightON(InputAction.CallbackContext context)
+    {
+        rayInteractorLeft .SetActive(false);
+        rayInteractorRight.SetActive(true);
     }
 
     // [XRI Input Action Binding(Primary Button)] 인게임 ---> 일시정지
@@ -418,6 +440,9 @@ public class GameManager : MonoBehaviour
             // 플레이 중 노래 일시 정지
             Time.timeScale = 0;
             musicPlayed.Pause();
+            // 레이 컨트롤러 인풋액션 활성화
+            gameRayLeftON.action.started += XRI_InGamePause;
+            gameRayRightON.action.started += XRI_InGamePause;
         }
     }
 
@@ -454,6 +479,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         musicPlayed.UnPause();
         sFX[0]?.Invoke();
+        // 레이 컨트롤러 인풋액션 비활성화
+        gameRayLeftON.action.started -= XRI_InGamePause;
+        gameRayRightON.action.started -= XRI_InGamePause;
     }
 
     // [Event] 인게임 완곡 이후 이벤트
@@ -479,7 +507,6 @@ public class GameManager : MonoBehaviour
     {
         isStart = false;
         isPause = false;
-
         // 로비 관련 초기화
         infoTitle.text = "- Not Search";
         btnLevels[0].interactable = false;
@@ -513,6 +540,9 @@ public class GameManager : MonoBehaviour
         playedMusicSlide.value = 0;
         // 일시정지 인풋액션 비활성화
         gamePause.action.started -= XRI_InGamePause;
+        // 레이 컨트롤러 인풋액션 활성화
+        gameRayLeftON.action.started += XRI_InGamePause;
+        gameRayRightON.action.started += XRI_InGamePause;
         // BGM ON
         musicBackGround.UnPause();
     }
