@@ -1,4 +1,4 @@
-/// <summary>
+    /// <summary>
 /// GameManager.cs
 /// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
 /// This software is released under the GPL-2.0 license
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
     public float halfPlayTime;
     public float halfHalfPlayTimeOffset;
     public float offsetTimer;
-    public float moveSpeed = 2.0f;
+    public float moveSpeed = 3.0f;
     public float modePanelSpeed = 1.0f;
     public int   bpm;
     public float secPerBeat;
