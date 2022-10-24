@@ -55,8 +55,7 @@ public class PanelManager : MonoBehaviour
         {
             PanelCheck();
             GameManager.instance.offsetTimer += Time.deltaTime;
-
-            if      (!GameManager.instance.btnModes[3].interactable)
+            if (!GameManager.instance.btnModes[3].interactable)
             {
                 GameManager.instance.halfPlayTime -= Time.deltaTime;
                 if (GameManager.instance.halfHalfPlayTimeOffset >= GameManager.instance.offsetTimer) PanelInstance();
@@ -189,8 +188,7 @@ public class PanelManager : MonoBehaviour
         {
             StartCoroutine(ScoreManaged.Increase());
             Destroy(panelSpawnPoint.transform.GetChild(0).gameObject);
-            if (TutorialManager.instance.isTutorial)
-                TutorialManager.instance.tutoPanelDestroyCount++;
+            if (TutorialManager.instance.isTutorial) TutorialManager.instance.tutoPanelDestroyCount++;
         }
     }
 }

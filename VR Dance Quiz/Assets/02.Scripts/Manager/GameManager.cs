@@ -22,9 +22,6 @@ public class GameManager : MonoBehaviour
     [Header("[Input Action Reference]")]
     public InputActionReference gamePause;
 
-    [Header("[SkyBox Rotate]")]
-    [SerializeField] float rotateSpeed = 1f;
-
     [Header("[UI - 전체]")]
     public GameObject uiTutorial; // UI Tutorial
     public GameObject uiLobby;    // UI Lobby
@@ -170,8 +167,6 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Skybox Rotate
-        RenderSettings.skybox.SetFloat("_Rotation", Time.time * rotateSpeed);
         // Option
         bright = sliderBright.value;
         height = sliderHeight.value;
@@ -191,17 +186,17 @@ public class GameManager : MonoBehaviour
     void OnClick_Options(Button button, float bright, float height, Slider sBright, Slider sHeight, UnityEvent sfx)
     {
         // 밝기 - 왼쪽(감소)
-        if (button == btnBrightLeft && (0 <= bright) && (bright <= 2.1))
+        if (button == btnBrightLeft && (0 <= bright) && (bright <= 4.2))
         {
-            bright -= 0.1f;
+            bright -= 0.2f;
             sBright.value = bright;
             sfx?.Invoke();
         }
 
         // 밝기 - 오른쪽(증가)
-        if (button == btnBrightRight && (0 <= bright) && (bright <= 2.1))
+        if (button == btnBrightRight && (0 <= bright) && (bright <= 4.2))
         {
-            bright += 0.1f;
+            bright += 0.2f;
             sBright.value = bright;
             sfx?.Invoke();
         }
@@ -438,7 +433,7 @@ public class GameManager : MonoBehaviour
             buttons[2].interactable = true;
             sfx?.Invoke();
             secPerBeat = 420f / bpm;
-            PanelManager.instance.quizCool = 15;
+            PanelManager.instance.quizCool = 14;
             btnPlay.interactable = true;
 
             TutorialManager.instance.TutorialStep();
@@ -451,7 +446,7 @@ public class GameManager : MonoBehaviour
             buttons[2].interactable = true;
             sfx?.Invoke();
             secPerBeat = 360f / bpm;
-            PanelManager.instance.quizCool = 10;
+            PanelManager.instance.quizCool = 11;
             btnPlay.interactable = true;
         }
         // Hard Selected
@@ -462,7 +457,7 @@ public class GameManager : MonoBehaviour
             buttons[2].interactable = false;
             sfx?.Invoke();
             secPerBeat = 300f / bpm;
-            PanelManager.instance.quizCool = 5;
+            PanelManager.instance.quizCool = 8;
             btnPlay.interactable = true;
         }
     }
