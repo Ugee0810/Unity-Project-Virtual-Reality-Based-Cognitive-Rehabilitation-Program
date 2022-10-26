@@ -558,7 +558,7 @@ public class GameManager : MonoBehaviour
         textKeys[0].text = PlayerPrefs.GetString("Title", $"{musicPlayed.clip.name}");
         if (!btnLevels[0].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "Easy");
         if (!btnLevels[1].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "Normal");
-        if (!btnLevels[2].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "Hard");
+        if (!btnLevels[2].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "어려움");
         textKeys[2].text = PlayerPrefs.GetString("Score", $"{textIngameScore.text}");
         textKeys[3].text = PlayerPrefs.GetString("Kcal", $"{textIngameKcal.text}");
         // [Event] 인게임 종료 이벤트

@@ -32,8 +32,8 @@ public class TutorialManager : MonoBehaviour
             "\n지금부터 플레이 방법을 안내해드리겠습니다.",
         "<speed=0.5>상단의 <rainb f=0.2>[Original]</rainb> 테마를 선택해주세요.",
         "<speed=0.5>노래<rainb f=0.2>[Cat Life]</rainb>를 선택해주세요.",
-        "<speed=0.5>난이도 <rainb f=0.2>[쉬움]</rainb>을 선택해주세요.",
-        "<speed=0.5><rainb f=0.2>[시작]</rainb> 버튼을 눌러 게임을 시작합니다.",
+        "<speed=0.5>난이도 <rainb f=0.2>[Easy]</rainb>을 선택해주세요.",
+        "<speed=0.5><rainb f=0.2>[Play]</rainb> 버튼을 눌러 게임을 시작합니다.",
         "<speed=0.5><size=7>게임으로 진입했습니다." +
             "\n\n좌측에는 획득한 <bounce a=0.3 f=0.3>점수</bounce>와 <bounce a=0.3 f=0.3>소모된 칼로리</bounce>가 표시됩니다." +
             "\n동작 또는 퀴즈에 성공하면 점수와 콤보가 오릅니다." +
@@ -83,9 +83,6 @@ public class TutorialManager : MonoBehaviour
         isObstacleClear = false;
         isMotionQuizClear = false;
         isQuizClear = false;
-
-        //UnityEngine.Assertions.Assert.IsNotNull(textAnimatorPlayer, $"Text Animator Player component is null in {gameObject.name}");
-        //textAnimatorPlayer.textAnimator.onEvent += OnEvent;
     }
 
     private void FixedUpdate()
@@ -251,9 +248,9 @@ public class TutorialManager : MonoBehaviour
         // Music Element OFF
         GameManager.instance.contentOriginal.transform.GetChild(0).GetComponent<Button>().interactable = false;
         // 안내 문구 강조 OFF
-        GameManager.instance.contentOriginal.transform.GetChild(0).GetComponent<TMP_Text>().text = "Cat Life";
+        GameManager.instance.contentOriginal.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = "Cat Life";
         // 안내 문구 강조 ON
-        textTutoEasy.text = "<bounce a=0.5 f=0.5>쉬움</bounce>";
+        textTutoEasy.text = "<bounce a=0.5 f=0.5>Easy</bounce>";
 
         textAnimatorPlayer.ShowText(textBox[3]);
     }
@@ -264,9 +261,9 @@ public class TutorialManager : MonoBehaviour
         // Levels OFF
         for (int i = 0; i < GameManager.instance.btnLevels.Length; i++) GameManager.instance.btnLevels[i].interactable = false;
         // 안내 문구 강조 OFF
-        textTutoEasy.text = "쉬움";
+        textTutoEasy.text = "Easy";
         // 안내 문구 강조 ON
-        textTutoPlay.text = "<bounce a=0.5 f=0.5>시 작</bounce>";
+        textTutoPlay.text = "<bounce a=0.5 f=0.5>Play</bounce>";
 
         textAnimatorPlayer.ShowText(textBox[4]);
     }
@@ -275,7 +272,7 @@ public class TutorialManager : MonoBehaviour
     void Step6() 
     {
         // 안내 문구 강조 OFF
-        textTutoPlay.text = "시 작";
+        textTutoPlay.text = "Play";
 
         // Tutorial Button ON
         btnTutoNext.interactable = true;
@@ -496,7 +493,6 @@ public class TutorialManager : MonoBehaviour
             }
             else if (tutoPanelSpawnCount == 5)
             {
-                Debug.Log("퀴즈 패널 생성");
                 GameObject _quiz = Instantiate(tutoPanels[5], PanelManager.instance.panelSpawnPoint);
                 _quiz.name = "QUIZ";
                 tutoPanelSpawnCount++;

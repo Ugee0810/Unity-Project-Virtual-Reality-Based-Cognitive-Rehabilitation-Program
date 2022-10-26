@@ -10554,43 +10554,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 178966397}
   m_CullTransparentMesh: 1
---- !u!84 &179565660
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: WaterDepthMap
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1 &190228771
 GameObject:
   m_ObjectHideFlags: 0
@@ -10989,7 +10952,7 @@ MonoBehaviour:
   uiLobby: {fileID: 160598959}
   uiIngame: {fileID: 646381417}
   uiPause: {fileID: 1970668142}
-  uiResult: {fileID: 0}
+  uiResult: {fileID: 1258866891}
   uiLobbyOption: {fileID: 2146103642}
   uiLobbyResult: {fileID: 988048296}
   sliderBright: {fileID: 7397291651396415556}
@@ -12629,6 +12592,43 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527842834}
   m_CullTransparentMesh: 1
+--- !u!84 &546188587
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterDepthMap
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 1024
+  m_Height: 1024
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1 &548695716
 GameObject:
   m_ObjectHideFlags: 0
@@ -14060,7 +14060,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2112910784}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -10, y: 10, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -14500,9 +14500,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 989771482}
   m_Father: {fileID: 2112910784}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -10, y: -1, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -24222,17 +24223,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 948878846}
-  m_LocalRotation: {x: -0.08682413, y: -0.08682413, z: -0.0075961305, w: 0.99240386}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.0000000074505815, y: -0.07726724, z: -0.013624306, w: 0.99691737}
+  m_LocalPosition: {x: 0, y: 0, z: 5.6782994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2112910784}
-  m_RootOrder: 1
+  m_Father: {fileID: 1713647029}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -10, y: -10, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: -29.699997}
+  m_AnchoredPosition: {x: 0.000015258789, y: 32.203224}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &948878849
@@ -25018,17 +25019,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 989771481}
-  m_LocalRotation: {x: -0.08682413, y: -0.08682413, z: -0.0075961305, w: 0.99240386}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.0000000074505815, y: -0.07726724, z: -0.013624306, w: 0.99691737}
+  m_LocalPosition: {x: 0, y: 0, z: 5.5393796}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2112910784}
+  m_Father: {fileID: 652891319}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -10, y: -10, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: 31.9}
+  m_AnchoredPosition: {x: 0, y: 31.41537}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &989771484
@@ -26945,7 +26946,7 @@ GameObject:
   m_Layer: 5
   m_Name: '[BTN] Prev'
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -27834,7 +27835,7 @@ GameObject:
   m_Layer: 5
   m_Name: '[BTN] Next'
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -36812,9 +36813,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 948878847}
   m_Father: {fileID: 2112910784}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -10, y: -1, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -38719,12 +38721,12 @@ MonoBehaviour:
   textBox:
   - "<speed=0.5><rainb f=0.2>\uC548\uB155\uD558\uC138\uC694.</rainb> \uBC18\uAC11\uC2B5\uB2C8\uB2E4.\n\uC9C0\uAE08\uBD80\uD130
     \uD50C\uB808\uC774 \uBC29\uBC95\uC744 \uC548\uB0B4\uD574\uB4DC\uB9AC\uACA0\uC2B5\uB2C8\uB2E4."
-  - "<speed=0.5>\uC0C1\uB2E8\uC758 <rainb f=0.2>[\uC624\uB9AC\uC9C0\uB110]</rainb>
-    \uD14C\uB9C8\uB97C \uC120\uD0DD\uD574\uC8FC\uC138\uC694."
+  - "<speed=0.5>\uC0C1\uB2E8\uC758 <rainb f=0.2>[Original]</rainb> \uD14C\uB9C8\uB97C
+    \uC120\uD0DD\uD574\uC8FC\uC138\uC694."
   - "<speed=0.5>\uB178\uB798<rainb f=0.2>[Cat Life]</rainb>\uB97C \uC120\uD0DD\uD574\uC8FC\uC138\uC694."
-  - "<speed=0.5>\uB09C\uC774\uB3C4 <rainb f=0.2>[\uC26C\uC6C0]</rainb>\uC744 \uC120\uD0DD\uD574\uC8FC\uC138\uC694."
-  - "<speed=0.5><rainb f=0.2>[\uD50C\uB808\uC774]</rainb> \uBC84\uD2BC\uC744 \uB20C\uB7EC
-    \uAC8C\uC784\uC744 \uC2DC\uC791\uD569\uB2C8\uB2E4."
+  - "<speed=0.5>\uB09C\uC774\uB3C4 <rainb f=0.2>[Easy]</rainb>\uC744 \uC120\uD0DD\uD574\uC8FC\uC138\uC694."
+  - "<speed=0.5><rainb f=0.2>[Play]</rainb> \uBC84\uD2BC\uC744 \uB20C\uB7EC \uAC8C\uC784\uC744
+    \uC2DC\uC791\uD569\uB2C8\uB2E4."
   - "<speed=0.5><size=7>\uAC8C\uC784\uC73C\uB85C \uC9C4\uC785\uD588\uC2B5\uB2C8\uB2E4.\n\n\uC88C\uCE21\uC5D0\uB294
     \uD68D\uB4DD\uD55C <bounce a=0.3 f=0.3>\uC810\uC218</bounce>\uC640 <bounce a=0.3
     f=0.3>\uC18C\uBAA8\uB41C \uCE7C\uB85C\uB9AC</bounce>\uAC00 \uD45C\uC2DC\uB429\uB2C8\uB2E4.\n\uB3D9\uC791
@@ -38751,11 +38753,11 @@ MonoBehaviour:
   - "<speed=0.5>\uBC1D\uAE30\uC640 \uD0A4 \uC870\uC808\uC740 \uB85C\uBE44\uC758 \uC67C\uCABD\uC5D0
     \uC788\uC2B5\uB2C8\uB2E4.\n\uD29C\uD1A0\uB9AC\uC5BC\uC744 \uB9C8\uCE58\uACA0\uC2B5\uB2C8\uB2E4."
   tutoPanels:
-  - {fileID: 2182226493125285127, guid: 33346409952977a4d881868f239b3fe8, type: 3}
   - {fileID: 722148556229215842, guid: f562c3fc468447f408052e44f220b2a9, type: 3}
-  - {fileID: 4798388708482620758, guid: 5ad1ed13282c2e74b9c27cbb0f7a595d, type: 3}
+  - {fileID: 2182226493125285127, guid: 33346409952977a4d881868f239b3fe8, type: 3}
+  - {fileID: 7158261777735331574, guid: 5564c063f87baf241895a61d57fddeb8, type: 3}
   - {fileID: 1020610426066342541, guid: ccca955453d1b6f44b11b13560df5ae1, type: 3}
-  - {fileID: 2720595478359537202, guid: cb8956a0e942d1e4aa1e7d49fc30778e, type: 3}
+  - {fileID: 2733853735872269117, guid: a202a939495125d4cafd29bf71c9b5f7, type: 3}
   - {fileID: 3896500684323076715, guid: be6da43b745c7804f8d32aceedfbe99a, type: 3}
   tutoPanelSpawnCount: 0
   tutoPanelDestroyCount: 0
@@ -40043,7 +40045,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC2DC \uC791"
+  m_text: Play
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6604cd59e05c756488989c92c1be9ebe, type: 2}
   m_sharedMaterial: {fileID: -7368317813799659597, guid: 6604cd59e05c756488989c92c1be9ebe,
@@ -49972,8 +49974,6 @@ RectTransform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 989771482}
-  - {fileID: 948878847}
   - {fileID: 652891319}
   - {fileID: 1713647029}
   - {fileID: 595865305}
@@ -82344,7 +82344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   computeOverride: 0
-  _depthTex: {fileID: 179565660}
+  _depthTex: {fileID: 546188587}
   bakedDepthTex: {fileID: 0}
   _waves:
   - amplitude: 0.12725109
@@ -87130,7 +87130,7 @@ GameObject:
   m_Layer: 5
   m_Name: '[BTN] Next'
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -87167,7 +87167,7 @@ GameObject:
   m_Layer: 5
   m_Name: '[BTN] Prev'
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -105219,7 +105219,7 @@ GameObject:
   m_Layer: 5
   m_Name: '[BTN] Prev'
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -105293,7 +105293,7 @@ GameObject:
   m_Layer: 5
   m_Name: '[BTN] Next'
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
