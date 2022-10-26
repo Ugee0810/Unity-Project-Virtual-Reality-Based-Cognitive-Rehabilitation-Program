@@ -120,7 +120,7 @@ MonoBehaviour:
     numWaves: 4
     amplitude: 0.25
     direction: -176
-    wavelength: 10
+    wavelength: 5
   _foamSettings:
     foamType: 1
     basicFoam:

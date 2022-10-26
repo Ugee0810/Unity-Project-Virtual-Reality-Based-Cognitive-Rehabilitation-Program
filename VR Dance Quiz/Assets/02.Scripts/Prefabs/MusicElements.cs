@@ -32,7 +32,7 @@ public class MusicElements : MonoBehaviour
         GameManager.instance.halfPlayTime = GameManager.instance.playTime / 2;
         GameManager.instance.halfHalfPlayTimeOffset = GameManager.instance.playTime / 2 - 15f;
         // Info Title.text ← customMusicElements.AudioSource.text
-        GameManager.instance.infoTitle.GetComponent<TMP_Text>().text = $"- {selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip.name}";
+        GameManager.instance.infoTitle.GetComponent<TMP_Text>().text = $"※ {selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip.name}";
         // 프리팹 오디오 소스 클립 -> musicSelected의 클립
         GameManager.instance.musicSelected.GetComponent<AudioSource>().clip = selectedElement.transform.GetChild(3).GetComponent<AudioSource>().clip;
         // 플레이에 사용 될 오디오 소스 대칭화

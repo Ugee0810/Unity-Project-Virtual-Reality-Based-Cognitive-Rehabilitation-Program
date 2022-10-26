@@ -575,7 +575,7 @@ public class GameManager : MonoBehaviour
         isStart = false;
         isPause = false;
         // 로비 관련 초기화
-        infoTitle.text = "- Not Search";
+        infoTitle.text = "※ Not Search";
         btnLevels[0].interactable = false;
         btnLevels[1].interactable = false;
         btnLevels[2].interactable = false;

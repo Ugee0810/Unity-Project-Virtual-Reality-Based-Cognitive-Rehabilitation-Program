@@ -219,7 +219,7 @@ public class TutorialManager : MonoBehaviour
         // Tutorial(Btn) OFF
         GameManager.instance.bgTutorial.SetActive(false);
         // InfoTitle Reset
-        GameManager.instance.infoTitle.text = "- Not Search";
+        GameManager.instance.infoTitle.text = "※ Not Search";
         // 안내 문구 강조
         textTutoOriginal.text = "<bounce a=0.5 f=0.5>Original</bounce>";
 
