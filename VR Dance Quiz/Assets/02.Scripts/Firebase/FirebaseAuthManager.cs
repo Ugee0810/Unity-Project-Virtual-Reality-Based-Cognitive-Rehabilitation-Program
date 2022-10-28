@@ -75,7 +75,7 @@ public class FirebaseAuthManager
             {
                 // 회원가입 실패 이유 ---> 이메일이 비정상 / 비밀번호가 너무 간단 / 이미 가입된 이메일 등
                 //Debug.Log("회원가입 실패");
-                LoginSystem.instance.SigninFailMessage();
+                Singleton<LoginSystem>.Instance.SigninFailMessage();
                 return;
             }
 
@@ -99,7 +99,7 @@ public class FirebaseAuthManager
             {
                 // 로그인 실패 이유 ---> 이메일이 비정상 / 비밀번호가 너무 간단 / 이미 가입된 이메일 등
                 //Debug.Log("로그인 실패");
-                LoginSystem.instance.LoginFailMessage();
+                Singleton<LoginSystem>.Instance.LoginFailMessage();
                 return;
             }
 

@@ -1,13 +1,11 @@
 /// <summary>
 /// QuizPanelA.cs
-/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
 /// This software is released under the GPL-2.0 license
 /// 
 /// 컬러는 둘 다 같아도 됨
 /// </summary>
 
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -36,11 +34,11 @@ public class QuizPanelA : MonoBehaviour
         switch (randomDir)
         {
             case 0: // Currect Letter is Left
-                PanelManager.instance.isCurLeft = true;
-                Debug.Log("isCurLeft : " + PanelManager.instance.isCurLeft);
+                Singleton<PanelManager>.Instance.isCurLeft = true;
+                //Debug.Log("isCurLeft : " + Singleton<PanelManager>.Instance.isCurLeft);
 
-                leftLetter.text = PanelManager.instance.curLetter;
-                switch (PanelManager.instance.curColor)
+                leftLetter.text = Singleton<PanelManager>.Instance.curLetter;
+                switch (Singleton<PanelManager>.Instance.curColor)
                 {
                     case "Red(Clone)":
                         if (ColorUtility.TryParseHtmlString(r, out color))
@@ -72,7 +70,7 @@ public class QuizPanelA : MonoBehaviour
                         break;
                 }
 
-                rightLetter.text = PanelManager.instance._LetterList[Random.Range(0, 49)];
+                rightLetter.text = Singleton<PanelManager>.Instance._LetterList[Random.Range(0, 49)];
                 int rightColorindex = Random.Range(0, 7);
                 switch (rightColorindex)
                 {
@@ -105,15 +103,16 @@ public class QuizPanelA : MonoBehaviour
                             rightLetter.color = color;
                         break;
                 }
-                if (leftLetter.text == rightLetter.text) rightLetter.text = PanelManager.instance._LetterList[Random.Range(0, 49)];
+                if (leftLetter.text == rightLetter.text)
+                    rightLetter.text = Singleton<PanelManager>.Instance._LetterList[Random.Range(0, 49)];
                 break;
 
 
             case 1: // Currect Letter is Right
-                PanelManager.instance.isCurRight = true;
-                Debug.Log("isCurRight : " + PanelManager.instance.isCurRight);
+                Singleton<PanelManager>.Instance.isCurRight = true;
+                //Debug.Log("isCurRight : " + Singleton<PanelManager>.Instance.isCurRight);
 
-                leftLetter.text = PanelManager.instance._LetterList[Random.Range(0, 49)];
+                leftLetter.text = Singleton<PanelManager>.Instance._LetterList[Random.Range(0, 49)];
                 int leftColorindex = Random.Range(0, 7);
                 switch (leftColorindex)
                 {
@@ -147,8 +146,8 @@ public class QuizPanelA : MonoBehaviour
                         break;
                 }
 
-                rightLetter.text = PanelManager.instance.curLetter;
-                switch (PanelManager.instance.curColor)
+                rightLetter.text = Singleton<PanelManager>.Instance.curLetter;
+                switch (Singleton<PanelManager>.Instance.curColor)
                 {
                     case "Red(Clone)":
                         if (ColorUtility.TryParseHtmlString(r, out color))
@@ -179,7 +178,8 @@ public class QuizPanelA : MonoBehaviour
                             rightLetter.color = color;
                         break;
                 }
-                if (leftLetter.text == rightLetter.text) leftLetter.text = PanelManager.instance._LetterList[Random.Range(0, 49)];
+                if (leftLetter.text == rightLetter.text)
+                    leftLetter.text = Singleton<PanelManager>.Instance._LetterList[Random.Range(0, 49)];
                 break;
         }
     }

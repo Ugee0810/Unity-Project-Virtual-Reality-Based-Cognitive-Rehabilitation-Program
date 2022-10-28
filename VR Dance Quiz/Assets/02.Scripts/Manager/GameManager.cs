@@ -1,11 +1,9 @@
-    /// <summary>
+/// <summary>
 /// GameManager.cs
-/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
 /// This software is released under the GPL-2.0 license
 /// 
-/// 게임에서 발생하는 이벤트(버튼, 플래그)를 처리 합니다.
-/// PanelManager에게 해당된 레벨에 따른 패턴을 지시합니다.
-/// 오리지널 또는 커스텀 노래 조회 버튼을 눌렀을 때 라이브러리 내 음악을 조회 후 각 정보들을 Element들에게 전달합니다.
+/// 
 /// </summary>
 
 using System;
@@ -17,20 +15,19 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     [Header("[Input Action Reference]")]
     public InputActionReference gamePause;
 
     [Header("[UI - 전체]")]
-    public GameObject uiTutorial; // UI Tutorial
     public GameObject uiLobby;    // UI Lobby
+    public GameObject uiLobbyOption;
+    public GameObject uiLobbyResult;
+    public GameObject uiTutorial; // UI Tutorial
     public GameObject uiIngame;   // UI Ingame
     public GameObject uiPause;    // UI Pause
     public GameObject uiResult;   // UI Result
-
-    public GameObject uiLobbyOption;
-    public GameObject uiLobbyResult;
 
     [Header("[UI - 옵션(밝기)]")]
     public Slider sliderBright;
@@ -76,7 +73,8 @@ public class GameManager : MonoBehaviour
     public Button btnUnPause;
 
     [Header("[Environment]")]
-    public GameObject lobbyBaseGround;
+    public GameObject[] worlds;
+    public GameObject[] lobbyBaseGround;
     public GameObject inGameEnv;
 
     [Header("[Prefabs]")]
@@ -88,10 +86,8 @@ public class GameManager : MonoBehaviour
     public GameObject rayInteractorRight;
 
     [Header("[Audio Source]")]
-    public AudioSource musicBackGround; // BGM
-    public AudioSource musicSelected;   // Lobby Music
-    public AudioSource musicPlayed;     // Ingame Music
-    public UnityEvent[] sFX;
+    public AudioSource[] music;
+    public AudioSource[] sFX;
 
     [Header("[InGame Data]")]
     public TMP_Text textIngameScore;
@@ -128,12 +124,8 @@ public class GameManager : MonoBehaviour
     public bool isEmail;
     public bool isPassword;
 
-    public static GameManager instance;
     private void Awake()
     {
-        // Singleton
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
         // PlayerPrefs Key Value Reset
         if (PlayerPrefs.HasKey("Title")) PlayerPrefs.SetString("Title", "-");
         if (PlayerPrefs.HasKey("Level")) PlayerPrefs.SetString("Level", "-");
@@ -146,13 +138,16 @@ public class GameManager : MonoBehaviour
         btnHeightRight.onClick.AddListener(() => OnClick_Options(btnHeightRight, bright, height, sliderBright, sliderHeight, sFX[0]));
         // Btn Mode - Panel Speed, Music Length, Obstacle
         void BtnModes(int i) { btnModes[i].onClick.AddListener(() => OnClick_Mode(btnModes[i], btnModes, infoImages, infoTmp_Text, sFX[0])); }
-        for (int i = 0; i < btnModes.Length; i++) BtnModes(i);
+        for (int i = 0; i < btnModes.Length; i++)
+            BtnModes(i);
         // Btn Music Theme
         void BtnMusicTheme(int i) { btnMusicTheme[i].onClick.AddListener(() => OnClick_MusicTheme(btnMusicTheme[i], btnMusicTheme, sFX[0])); }
-        for (int i = 0; i < btnMusicTheme.Length; i++) BtnMusicTheme(i);
+        for (int i = 0; i < btnMusicTheme.Length; i++)
+            BtnMusicTheme(i);
         // Btn Level
         void BtnLevels(int i) { btnLevels[i].onClick.AddListener(() => OnClick_Level(btnLevels[i], btnLevels, sFX[0])); }
-        for (int i = 0; i < btnLevels.Length; i++) BtnLevels(i);
+        for (int i = 0; i < btnLevels.Length; i++)
+            BtnLevels(i);
         // Btn Play
         btnPlay.onClick.AddListener(OnClick_BtnPlay);
         // Btn Back Lobby
@@ -167,7 +162,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Option
+        // Option Sync
         bright = sliderBright.value;
         height = sliderHeight.value;
     }
@@ -183,14 +178,14 @@ public class GameManager : MonoBehaviour
     /// <param name="sBright">밝기 슬라이더</param>
     /// <param name="sHeight">키 조절 슬라이더</param>
     /// <param name="sfx">AudioSource - SFX Click</param>
-    void OnClick_Options(Button button, float bright, float height, Slider sBright, Slider sHeight, UnityEvent sfx)
+    void OnClick_Options(Button button, float bright, float height, Slider sBright, Slider sHeight, AudioSource sfx)
     {
         // 밝기 - 왼쪽(감소)
         if (button == btnBrightLeft && (0 <= bright) && (bright <= 4.2))
         {
             bright -= 0.2f;
             sBright.value = bright;
-            sfx?.Invoke();
+            sfx.Play();
         }
 
         // 밝기 - 오른쪽(증가)
@@ -198,7 +193,7 @@ public class GameManager : MonoBehaviour
         {
             bright += 0.2f;
             sBright.value = bright;
-            sfx?.Invoke();
+            sfx.Play();
         }
 
         // 키 조절 - 왼쪽(감소)
@@ -206,7 +201,7 @@ public class GameManager : MonoBehaviour
         {
             height -= 0.01f;
             sHeight.value = height;
-            sfx?.Invoke();
+            sfx.Play();
         }
 
         // 키 조절 - 오른쪽(증가)
@@ -214,7 +209,7 @@ public class GameManager : MonoBehaviour
         {
             height += 0.01f;
             sHeight.value = height;
-            sfx?.Invoke();
+            sfx.Play();
         }
     }
 
@@ -230,7 +225,7 @@ public class GameManager : MonoBehaviour
     /// <param name="images">버튼 이미지</param>
     /// <param name="tmps">모드 텍스트</param>
     /// <param name="sfx">AudioSource - SFX Click</param>
-    void OnClick_Mode(Button button, Button[] buttons, Image[] images, TMP_Text[] tmps, UnityEvent sfx)
+    void OnClick_Mode(Button button, Button[] buttons, Image[] images, TMP_Text[] tmps, AudioSource sfx)
     {
         // Panel Speeds
         if (button == btnModes[0])
@@ -242,7 +237,7 @@ public class GameManager : MonoBehaviour
             images[1].enabled = false;
             images[2].enabled = false;
             tmps[0].text = "x0.7";
-            sfx?.Invoke();
+            sfx.Play();
             modePanelSpeed = 0.7f;
         }
         if (button == btnModes[1])
@@ -254,7 +249,7 @@ public class GameManager : MonoBehaviour
             images[1].enabled = true;
             images[2].enabled = false;
             tmps[0].text = "x1.0";
-            sfx?.Invoke();
+            sfx.Play();
             modePanelSpeed = 1.0f;
         }
         if (button == btnModes[2])
@@ -266,7 +261,7 @@ public class GameManager : MonoBehaviour
             images[1].enabled = false;
             images[2].enabled = true;
             tmps[0].text = "x1.3";
-            sfx?.Invoke();
+            sfx.Play();
             modePanelSpeed = 1.3f;
         }
         // Music Lengths
@@ -277,7 +272,7 @@ public class GameManager : MonoBehaviour
             images[3].enabled = true;
             images[4].enabled = false;
             tmps[1].text = "절반";
-            sfx?.Invoke();
+            sfx.Play();
         }
         if (button == btnModes[4])
         {
@@ -286,7 +281,7 @@ public class GameManager : MonoBehaviour
             images[3].enabled = false;
             images[4].enabled = true;
             tmps[1].text = "전부";
-            sfx?.Invoke();
+            sfx.Play();
         }
         // Obstacle Panels
         if (button == btnModes[5])
@@ -296,7 +291,7 @@ public class GameManager : MonoBehaviour
             images[5].enabled = true;
             images[6].enabled = false;
             tmps[2].text = "ON";
-            sfx?.Invoke();
+            sfx.Play();
         }
         if (button == btnModes[6])
         {
@@ -305,7 +300,7 @@ public class GameManager : MonoBehaviour
             images[5].enabled = false;
             images[6].enabled = true;
             tmps[2].text = "OFF";
-            sfx?.Invoke();
+            sfx.Play();
         }
     }
 
@@ -316,17 +311,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="button">할당 버튼</param>
     /// <param name="sfx">AudioSource - SFX Click</param>
-    void OnClick_MusicTheme(Button button, Button[] buttons, UnityEvent sfx)
+    void OnClick_MusicTheme(Button button, Button[] buttons, AudioSource sfx)
     {
         // Original Selected
         if (button == btnMusicTheme[0])
         {
             buttons[0].interactable = false;
             buttons[1].interactable = true;
-            sfx?.Invoke();
+            sfx.Play();
 
             // Resources -> Original Music 폴더의 AudioClip 속성 파일 조회 --> Original Music Element 생성
-            if (!TutorialManager.instance.isTutorial)
+            if (!Singleton<TutorialManager>.Instance.isTutorial)
             {
                 // List Reset
                 foreach (Transform item in contentOriginal.transform) Destroy(item.gameObject);
@@ -370,20 +365,23 @@ public class GameManager : MonoBehaviour
                 // textTitle.text ← customMusicElements.AudioSource.text
                 tutorialMusicElementPrefab.transform.GetChild(0).GetComponent<TMP_Text>().text = "<bounce a=0.3 f=0.2>Cat Life</bounce>";
                 // Next Step
-                TutorialManager.instance.TutorialStep();
+                Singleton<TutorialManager>.Instance.TutorialStep();
             }
 
+            // 스크롤 뷰 전환
             scrollView[0].SetActive(true);
             scrollView[1].SetActive(false);
-            musicBackGround.UnPause();
-            musicSelected.Stop();
+            // BGM 정지 해제
+            music[0].UnPause();
+            // 선택한 노래 정지
+            music[1].Stop();
         }
         // Custom Selected
         if (button == btnMusicTheme[1])
         {
             buttons[0].interactable = true;
             buttons[1].interactable = false;
-            sfx?.Invoke();
+            sfx.Play();
 
             // Resources -> Custom Music 폴더의 AudioClip 속성 파일 조회 --> Custom Music Element 생성
             // List Reset
@@ -407,10 +405,13 @@ public class GameManager : MonoBehaviour
                 customMusicElementPrefab.transform.GetChild(0).GetComponent<TMP_Text>().text = customMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().clip.name;
             }
 
+            // 스크롤 뷰 전환
             scrollView[0].SetActive(false);
             scrollView[1].SetActive(true);
-            musicBackGround.UnPause();
-            musicSelected.Stop();
+            // BGM 정지 해제
+            music[0].UnPause();
+            // 선택한 노래 정지
+            music[1].Stop();
         }
     }
 
@@ -423,7 +424,7 @@ public class GameManager : MonoBehaviour
     /// <param name="button">할당 버튼</param>
     /// <param name="buttons">난이도 버튼 배열</param>
     /// <param name="sfx">AudioSource - SFX Click</param>
-    void OnClick_Level(Button button, Button[] buttons, UnityEvent sfx)
+    void OnClick_Level(Button button, Button[] buttons, AudioSource sfx)
     {
         // Easy Selected
         if (button == btnLevels[0])
@@ -431,12 +432,12 @@ public class GameManager : MonoBehaviour
             buttons[0].interactable = false;
             buttons[1].interactable = true;
             buttons[2].interactable = true;
-            sfx?.Invoke();
+            sfx.Play();
             secPerBeat = 420f / bpm;
-            PanelManager.instance.quizCool = 14;
+            Singleton<PanelManager>.Instance.quizCool = 14;
             btnPlay.interactable = true;
 
-            TutorialManager.instance.TutorialStep();
+            Singleton<TutorialManager>.Instance.TutorialStep();
         }
         // Normal Selected
         if (button == btnLevels[1])
@@ -444,9 +445,9 @@ public class GameManager : MonoBehaviour
             buttons[0].interactable = true;
             buttons[1].interactable = false;
             buttons[2].interactable = true;
-            sfx?.Invoke();
+            sfx.Play();
             secPerBeat = 360f / bpm;
-            PanelManager.instance.quizCool = 11;
+            Singleton<PanelManager>.Instance.quizCool = 11;
             btnPlay.interactable = true;
         }
         // Hard Selected
@@ -455,9 +456,9 @@ public class GameManager : MonoBehaviour
             buttons[0].interactable = true;
             buttons[1].interactable = true;
             buttons[2].interactable = false;
-            sfx?.Invoke();
+            sfx.Play();
             secPerBeat = 300f / bpm;
-            PanelManager.instance.quizCool = 8;
+            Singleton<PanelManager>.Instance.quizCool = 8;
             btnPlay.interactable = true;
         }
     }
@@ -467,7 +468,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void OnClick_BtnPlay()
     {
-        if (!TutorialManager.instance.isTutorial)
+        if (!Singleton<TutorialManager>.Instance.isTutorial)
         {
             isStart = true;
             // Ray Controller OFF
@@ -476,15 +477,19 @@ public class GameManager : MonoBehaviour
             gamePause.action.started += XRI_InGamePause;
         }
         uiLobby.SetActive(false);
-        lobbyBaseGround.SetActive(false);
+        lobbyBaseGround[0].SetActive(false);
         uiIngame.SetActive(true);
         inGameEnv.SetActive(true);
-        musicBackGround.Pause();
-        musicSelected.Stop();
-        musicPlayed.Play();
-        sFX[1]?.Invoke();
+        // BGM Pause
+        music[0].Pause();
+        // Selected Music Stop
+        music[1].Stop();
+        // Played Music Play
+        music[2].Play();
+        // SFX Play
+        sFX[1].Play();
 
-        TutorialManager.instance.TutorialStep();
+        Singleton<TutorialManager>.Instance.TutorialStep();
     }
 
     /// <summary>
@@ -494,7 +499,7 @@ public class GameManager : MonoBehaviour
     /// <param name="context">Any Grip Button</param>
     internal void XRI_InGamePause(InputAction.CallbackContext context)
     {
-        if (isStart && !isPause && !TutorialManager.instance.isTutorial)
+        if (isStart && !isPause && !Singleton<TutorialManager>.Instance.isTutorial)
         {
             isPause = true;
             // Music Paused UI On
@@ -503,7 +508,7 @@ public class GameManager : MonoBehaviour
             RayControllerMode(true);
             // 플레이 중 노래 일시 정지
             Time.timeScale = 0;
-            musicPlayed.Pause();
+            music[2].Pause();
             Debug.Log("XRI_InGamePause CallBack Context : " + context);
         }
     }
@@ -518,14 +523,15 @@ public class GameManager : MonoBehaviour
             // [Event] 인게임 종료 이벤트
             EndResetEvent();
             uiLobby.SetActive(true);
-            lobbyBaseGround.SetActive(true);
+            lobbyBaseGround[0].SetActive(true);
             uiIngame.SetActive(false);
             inGameEnv.SetActive(false);
             uiPause.SetActive(false);
-            musicPlayed.Stop();
-            sFX[0]?.Invoke();
+            music[2].Stop();
+            sFX[0].Play();
             // 남은 패널 삭제
-            foreach (Transform childNum in PanelManager.instance.panelSpawnPoint.transform) Destroy(childNum.gameObject);
+            foreach (Transform childNum in Singleton<PanelManager>.Instance.panelSpawnPoint.transform)
+                Destroy(childNum.gameObject);
             // 시간 정지 해제
             Time.timeScale = 1;
         }
@@ -543,8 +549,8 @@ public class GameManager : MonoBehaviour
         RayControllerMode(false);
         // 플레이 중 노래 일시 정지 해제
         Time.timeScale = 1;
-        musicPlayed.UnPause();
-        sFX[0]?.Invoke();
+        music[2].UnPause();
+        sFX[0].Play();
     }
 
     /// <summary>
@@ -555,7 +561,7 @@ public class GameManager : MonoBehaviour
         // Ray Controller ON
         RayControllerMode(true);
         // Ingame Result Data Copy
-        textKeys[0].text = PlayerPrefs.GetString("Title", $"{musicPlayed.clip.name}");
+        textKeys[0].text = PlayerPrefs.GetString("Title", $"{music[2].clip.name}");
         if (!btnLevels[0].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "Easy");
         if (!btnLevels[1].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "Normal");
         if (!btnLevels[2].interactable) textKeys[1].text = PlayerPrefs.GetString("Level", "어려움");
@@ -574,7 +580,6 @@ public class GameManager : MonoBehaviour
     {
         isStart = false;
         isPause = false;
-        // 로비 관련 초기화
         infoTitle.text = "※ Not Search";
         btnLevels[0].interactable = false;
         btnLevels[1].interactable = false;
@@ -589,26 +594,26 @@ public class GameManager : MonoBehaviour
         bpm = 0;
         secPerBeat = 0;
         panelTimer = 0;
-        PanelManager.instance.panelSpawnCount = -1;
-        PanelManager.instance.quizCool = 0;
-        PanelManager.instance.curColor = "";
-        PanelManager.instance.curLetter = "";
-        PanelManager.instance.isQuiz = false;
-        PanelManager.instance.isCurLeft = false;
-        PanelManager.instance.isCurRight = false;
+        Singleton<PanelManager>.Instance.panelSpawnCount = -1;
+        Singleton<PanelManager>.Instance.quizCool = 0;
+        Singleton<PanelManager>.Instance.curColor = "";
+        Singleton<PanelManager>.Instance.curLetter = "";
+        Singleton<PanelManager>.Instance.isQuiz = false;
+        Singleton<PanelManager>.Instance.isCurLeft = false;
+        Singleton<PanelManager>.Instance.isCurRight = false;
         // 스코어 초기화
         ScoreManaged.SetScore(score = 0);
         // 칼로리 초기화
         ScoreManaged.SetKcal(kcal = 0);
         // 콤보 초기화
-        ComboManager.instance.Clear();
+        Singleton<ComboManager>.Instance.Clear();
         // 인게임 플레이 타임 슬라이더 초기화
         playedMusicSlide.minValue = 0;
         playedMusicSlide.value = 0;
         // 일시정지 인풋액션 비활성화
         gamePause.action.started -= XRI_InGamePause;
         // BGM ON
-        musicBackGround.UnPause();
+        music[0].UnPause();
     }
 
     /// <summary>
@@ -617,7 +622,7 @@ public class GameManager : MonoBehaviour
     public void OnClick_BtnEndBackLobby()
     {
         // Add Reuslt List
-        if (!TutorialManager.instance.isTutorial)
+        if (!Singleton<TutorialManager>.Instance.isTutorial)
         {
             GameObject resultElementPrefab = Instantiate(resultElement, contentResult.transform.position, contentResult.transform.rotation);
             resultElementPrefab.transform.parent = contentResult.transform;
@@ -625,7 +630,7 @@ public class GameManager : MonoBehaviour
             btnReset.interactable = true;
         }
         uiLobby.SetActive(true);
-        lobbyBaseGround.SetActive(true);
+        lobbyBaseGround[0].SetActive(true);
         uiIngame.SetActive(false);
         inGameEnv.SetActive(false);
         uiResult.SetActive(false);
@@ -633,10 +638,10 @@ public class GameManager : MonoBehaviour
         btnLevels[1].interactable = false;
         btnLevels[2].interactable = false;
         btnPlay.interactable = false;
-        musicBackGround.UnPause();
-        musicPlayed.Stop();
-        sFX[0]!.Invoke();
-        TutorialManager.instance.TutorialStep();
+        music[0].UnPause();
+        music[2].Stop();
+        sFX[0].Play();
+        Singleton<TutorialManager>.Instance.TutorialStep();
     }
 
     /// <summary>
@@ -646,7 +651,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (Transform item in contentResult.transform) Destroy(item.gameObject);
         btnReset.interactable = false;
-        sFX[0]!.Invoke();
+        sFX[0].Play();
     }
 
     /// <summary>
@@ -737,16 +742,16 @@ public static class ScoreManaged
     public static IEnumerator Increase()
     {
         // SFX(Currect)
-        GameManager.instance.sFX[1]?.Invoke();
+        Singleton<GameManager>.Instance.sFX[1].Play();
         // Score
-        if      /*x1*/ (0  <= ComboManager.instance.combo && ComboManager.instance.combo < 5)  SetScore(GameManager.instance.score += 1000);
-        else if /*x2*/ (5  <= ComboManager.instance.combo && ComboManager.instance.combo < 10) SetScore(GameManager.instance.score += 2000);
-        else if /*x4*/ (10 <= ComboManager.instance.combo && ComboManager.instance.combo < 15) SetScore(GameManager.instance.score += 4000);
-        else if /*x8*/ (15 <= ComboManager.instance.combo)                                     SetScore(GameManager.instance.score += 8000);
+        if      /*x1*/ (0  <= Singleton<ComboManager>.Instance.combo && Singleton<ComboManager>.Instance.combo < 5)  SetScore(Singleton<GameManager>.Instance.score += 1000);
+        else if /*x2*/ (5  <= Singleton<ComboManager>.Instance.combo && Singleton<ComboManager>.Instance.combo < 10) SetScore(Singleton<GameManager>.Instance.score += 2000);
+        else if /*x4*/ (10 <= Singleton<ComboManager>.Instance.combo && Singleton<ComboManager>.Instance.combo < 15) SetScore(Singleton<GameManager>.Instance.score += 4000);
+        else if /*x8*/ (15 <= Singleton<ComboManager>.Instance.combo)                                     SetScore(Singleton<GameManager>.Instance.score += 8000);
         // Kcal
-        SetKcal(GameManager.instance.kcal += Random.Range(0.05f, 0.15f));
+        SetKcal(Singleton<GameManager>.Instance.kcal += Random.Range(0.05f, 0.15f));
         // Combo
-        ComboManager.instance.IncreaseCombo();
+        Singleton<ComboManager>.Instance.IncreaseCombo();
 
         yield break;
     }
@@ -757,7 +762,7 @@ public static class ScoreManaged
     /// <param name="score"></param>
     public static void SetScore(int score)
     {
-        GameManager.instance.textIngameScore.text = score.ToString();
+        Singleton<GameManager>.Instance.textIngameScore.text = score.ToString();
     }
 
     /// <summary>
@@ -766,6 +771,6 @@ public static class ScoreManaged
     /// <param name="kcal"></param>
     public static void SetKcal(float kcal)
     {
-        GameManager.instance.textIngameKcal.text = kcal.ToString("F2");
+        Singleton<GameManager>.Instance.textIngameKcal.text = kcal.ToString("F2");
     }
 }

@@ -13,9 +13,9 @@ public class ResultElements : MonoBehaviour
 {
     private void Start()
     {
-        /*Title*/ gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = GameManager.instance.textKeys[0].text;
-        /*Level*/ gameObject.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = GameManager.instance.textKeys[1].text;
-        /*Score*/ gameObject.transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = GameManager.instance.textKeys[2].text;
-        /* Kcal*/ gameObject.transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = GameManager.instance.textKeys[3].text;
+        /*Title*/ gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = Singleton<GameManager>.Instance.textKeys[0].text;
+        /*Level*/ gameObject.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = Singleton<GameManager>.Instance.textKeys[1].text;
+        /*Score*/ gameObject.transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = Singleton<GameManager>.Instance.textKeys[2].text;
+        /* Kcal*/ gameObject.transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = Singleton<GameManager>.Instance.textKeys[3].text;
     }
 }

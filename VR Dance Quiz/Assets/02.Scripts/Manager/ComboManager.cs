@@ -1,10 +1,16 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// ComboManager.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
+/// This software is released under the GPL-2.0 license
+/// 
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ComboManager : MonoBehaviour
+public class ComboManager : Singleton<ComboManager>
 {
     [SerializeField] string comboWord;
     [SerializeField] GameObject comboObj;
@@ -29,12 +35,8 @@ public class ComboManager : MonoBehaviour
     Coroutine effectCol;
     public Queue<int> comboOrder = new Queue<int>();
 
-    public static ComboManager instance;
     void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
-
         comboText = comboObj.GetComponent<TMP_Text>();
         comboRectTrans = comboObj.GetComponent<RectTransform>();
     }

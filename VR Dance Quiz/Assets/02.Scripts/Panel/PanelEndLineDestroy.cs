@@ -1,6 +1,6 @@
 /// <summary>
 /// PanelEndLineDestroy.cs
-/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
 /// This software is released under the GPL-2.0 license
 /// 
 /// - 플레이어 뒤로 지나간 노트들을 삭제해줍니다.
@@ -17,13 +17,14 @@ public class PanelEndLineDestroy : MonoBehaviour
         if (c.gameObject.tag == "QUIZ")
         {
             // Combo Reset
-            ComboManager.instance.Clear();
+            Singleton<ComboManager>.Instance.Clear();
             // Delete Collision Obj
             Destroy(c.gameObject);
             // Tuto Destory Count++
-            if (TutorialManager.instance.isTutorial) TutorialManager.instance.tutoPanelDestroyCount++;
+            if (Singleton<TutorialManager>.Instance.isTutorial)
+                Singleton<TutorialManager>.Instance.tutoPanelDestroyCount++;
             // SFX(Fail)
-            GameManager.instance.sFX[2]?.Invoke();
+            Singleton<GameManager>.Instance.sFX[2].Play();
         }
 
         if (c.gameObject.tag == "BLOCK")
@@ -31,19 +32,21 @@ public class PanelEndLineDestroy : MonoBehaviour
             // Delete Collision Obj
             Destroy(c.gameObject);
             // Tuto Destory Count++
-            if (TutorialManager.instance.isTutorial) TutorialManager.instance.tutoPanelDestroyCount++;
+            if (Singleton<TutorialManager>.Instance.isTutorial)
+                Singleton<TutorialManager>.Instance.tutoPanelDestroyCount++;
         }
 
         if (c.gameObject.tag == "MOTION")
         {
             // Combo Reset
-            ComboManager.instance.Clear();
+            Singleton<ComboManager>.Instance.Clear();
             // Delete Collision Obj
             Destroy(c.gameObject);
             // Tuto Destory Count++
-            if (TutorialManager.instance.isTutorial) TutorialManager.instance.tutoPanelDestroyCount++;
+            if (Singleton<TutorialManager>.Instance.isTutorial)
+                Singleton<TutorialManager>.Instance.tutoPanelDestroyCount++;
             // SFX(Fail)
-            GameManager.instance.sFX[2]?.Invoke();
+            Singleton<GameManager>.Instance.sFX[2].Play();
         }
     }
 }

@@ -1,12 +1,10 @@
 /// <summary>
 /// PanelCtrl.cs
-/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
 /// This software is released under the GPL-2.0 license
 /// 
 /// </summary>
 
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class PanelCtrl : MonoBehaviour
@@ -18,13 +16,13 @@ public class PanelCtrl : MonoBehaviour
 
     void Move()
     {
-        if (!TutorialManager.instance.isTutorial)
-        transform.position += transform.forward
-                            * (-GameManager.instance.moveSpeed * GameManager.instance.modePanelSpeed)
-                            * Time.deltaTime;
-        else if (TutorialManager.instance.isTutorial)
+        if (!Singleton<TutorialManager>.Instance.isTutorial)
             transform.position += transform.forward
-                                * -TutorialManager.instance.tutoMoveSpeed
+                                * (-Singleton<GameManager>.Instance.moveSpeed * Singleton<GameManager>.Instance.modePanelSpeed)
+                                * Time.deltaTime;
+        else
+            transform.position += transform.forward
+                                * -Singleton<TutorialManager>.Instance.tutoMoveSpeed
                                 * Time.deltaTime;
     }
 }

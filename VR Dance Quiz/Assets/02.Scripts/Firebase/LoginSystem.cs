@@ -1,11 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+/// <summary>
+/// LoginSystem.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
+/// This software is released under the GPL-2.0 license
+/// 
+/// </summary>
+
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 using Febucci.UI;
 
-public class LoginSystem : MonoBehaviour
+public class LoginSystem : Singleton<LoginSystem>
 {
     public TMP_InputField email;
     public TMP_InputField password;
@@ -14,13 +19,6 @@ public class LoginSystem : MonoBehaviour
     public UnityEvent logoutEvent;
 
     [SerializeField] TextAnimatorPlayer textAnimatorPlayer;
-
-    public static LoginSystem instance;
-    private void Awake()
-    {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
-    }
 
     private void Start()
     {

@@ -1,6 +1,6 @@
 /// <summary>
 /// PanelManager.cs
-/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
 /// This software is released under the GPL-2.0 license
 /// 
 /// </summary>
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class PanelManager : MonoBehaviour
+public class PanelManager : Singleton<PanelManager>
 {
     [Header("[패널 상호작용 요소]")]
     public Transform panelSpawnPoint;
@@ -39,47 +39,43 @@ public class PanelManager : MonoBehaviour
     public bool isCurLeft;
     public bool isCurRight;
 
-    public static PanelManager instance;
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
-
         _LetterList.AddRange(_LetterArray);
         panelSpawnCount = -1;
     }
 
     private void FixedUpdate()
     {
-        if (GameManager.instance.isStart && !GameManager.instance.isPause)
+        if (Singleton<GameManager>.Instance.isStart && !Singleton<GameManager>.Instance.isPause)
         {
             PanelCheck();
-            GameManager.instance.offsetTimer += Time.deltaTime;
-            if (!GameManager.instance.btnModes[3].interactable)
+            Singleton<GameManager>.Instance.offsetTimer += Time.deltaTime;
+            if (!Singleton<GameManager>.Instance.btnModes[3].interactable)
             {
-                GameManager.instance.halfPlayTime -= Time.deltaTime;
-                if (GameManager.instance.halfHalfPlayTimeOffset >= GameManager.instance.offsetTimer) PanelInstance();
-                if (GameManager.instance.halfPlayTime <= 0) GameManager.instance.InGameEnd();
+                Singleton<GameManager>.Instance.halfPlayTime -= Time.deltaTime;
+                if (Singleton<GameManager>.Instance.halfHalfPlayTimeOffset >= Singleton<GameManager>.Instance.offsetTimer) PanelInstance();
+                if (Singleton<GameManager>.Instance.halfPlayTime <= 0) Singleton<GameManager>.Instance.InGameEnd();
             }
-            else if (!GameManager.instance.btnModes[4].interactable)
+            else if (!Singleton<GameManager>.Instance.btnModes[4].interactable)
             {
-                GameManager.instance.playTime -= Time.deltaTime;
-                if (GameManager.instance.playTimeOffset >= GameManager.instance.offsetTimer) PanelInstance();
-                if (GameManager.instance.playTime <= 0) GameManager.instance.InGameEnd();
+                Singleton<GameManager>.Instance.playTime -= Time.deltaTime;
+                if (Singleton<GameManager>.Instance.playTimeOffset >= Singleton<GameManager>.Instance.offsetTimer) PanelInstance();
+                if (Singleton<GameManager>.Instance.playTime <= 0) Singleton<GameManager>.Instance.InGameEnd();
             }
         }
     }
 
     public void PanelInstance()
     {
-        GameManager.instance.panelTimer += Time.deltaTime;
-        if (GameManager.instance.panelTimer > GameManager.instance.secPerBeat)
+        Singleton<GameManager>.Instance.panelTimer += Time.deltaTime;
+        if (Singleton<GameManager>.Instance.panelTimer > Singleton<GameManager>.Instance.secPerBeat)
         {
-            GameManager.instance.panelTimer -= GameManager.instance.secPerBeat;
+            Singleton<GameManager>.Instance.panelTimer -= Singleton<GameManager>.Instance.secPerBeat;
 
             int panelIndex = Random.Range(0, 10); // <--- 전체 패널 확률
             int quizCool = Random.Range(5, 25); // <--- 퀴즈 쿨타임
-            if (!GameManager.instance.btnModes[5].interactable)
+            if (!Singleton<GameManager>.Instance.btnModes[5].interactable)
             {
                 /* QUIZ 10% */
                 if (panelIndex == 0)
@@ -134,7 +130,7 @@ public class PanelManager : MonoBehaviour
                     }
                 }
             }
-            else if (!GameManager.instance.btnModes[6].interactable)
+            else if (!Singleton<GameManager>.Instance.btnModes[6].interactable)
             {
                 /* QUIZ 10% */
                 if (panelIndex == 0)
@@ -184,11 +180,12 @@ public class PanelManager : MonoBehaviour
 
     public void PanelCheck()
     {
-        if (GameManager.instance.isSensorLeft && GameManager.instance.isSensorRight)
+        if (Singleton<GameManager>.Instance.isSensorLeft && Singleton<GameManager>.Instance.isSensorRight)
         {
             StartCoroutine(ScoreManaged.Increase());
             Destroy(panelSpawnPoint.transform.GetChild(0).gameObject);
-            if (TutorialManager.instance.isTutorial) TutorialManager.instance.tutoPanelDestroyCount++;
+            if (Singleton<TutorialManager>.Instance.isTutorial)
+                Singleton<TutorialManager>.Instance.tutoPanelDestroyCount++;
         }
     }
 }

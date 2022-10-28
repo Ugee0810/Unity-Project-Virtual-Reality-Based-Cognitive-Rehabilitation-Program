@@ -17,27 +17,27 @@ public class Keyboard : MonoBehaviour
 
     public void InsertChar(string c)
     {
-        if (GameManager.instance.isEmail)
+        if (Singleton<GameManager>.Instance.isEmail)
             inputFieldEmail.text += c;
-        if (GameManager.instance.isPassword)
+        if (Singleton<GameManager>.Instance.isPassword)
             inputFieldPassword.text += c;
     }
 
     public void DeleteChar()
     {
-        if (GameManager.instance.isEmail)
+        if (Singleton<GameManager>.Instance.isEmail)
             if (inputFieldEmail.text.Length > 0)
                 inputFieldEmail.text = inputFieldEmail.text.Substring(0, inputFieldEmail.text.Length - 1);
-        if (GameManager.instance.isPassword)
+        if (Singleton<GameManager>.Instance.isPassword)
             if (inputFieldPassword.text.Length > 0)
                 inputFieldPassword.text = inputFieldPassword.text.Substring(0, inputFieldPassword.text.Length - 1);
     }
 
     public void InsertSpace()
     {
-        if (GameManager.instance.isEmail)
+        if (Singleton<GameManager>.Instance.isEmail)
             inputFieldEmail.text += " ";
-        if (GameManager.instance.isPassword)
+        if (Singleton<GameManager>.Instance.isPassword)
             inputFieldPassword.text += " ";
     }
 
@@ -59,17 +59,17 @@ public class Keyboard : MonoBehaviour
 
     public void At()
     {
-        if (GameManager.instance.isEmail)
+        if (Singleton<GameManager>.Instance.isEmail)
             inputFieldEmail.text += "@";
-        if (GameManager.instance.isPassword)
+        if (Singleton<GameManager>.Instance.isPassword)
             inputFieldPassword.text += "@";
     }
 
     public void Dot()
     {
-        if (GameManager.instance.isEmail)
+        if (Singleton<GameManager>.Instance.isEmail)
             inputFieldEmail.text += ".";
-        if (GameManager.instance.isPassword)
+        if (Singleton<GameManager>.Instance.isPassword)
             inputFieldPassword.text += ".";
     }
 }

@@ -1,6 +1,6 @@
 /// <summary>
 /// PanelQuizObstacleTrigger.cs
-/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
 /// This software is released under the GPL-2.0 license
 /// 
 /// - 핸드 컨트롤러 오브젝트에 적용된 스크립트
@@ -12,68 +12,64 @@ using UnityEngine;
 
 public class PanelQuizObstacleTrigger : MonoBehaviour
 {
+    void Currect(Collider c)
+    {
+        // SFX(Currect)
+        Singleton<GameManager>.Instance.sFX[1].Play();
+        ScoreManaged.SetScore(Singleton<GameManager>.Instance.score += 10000);
+        Singleton<ComboManager>.Instance.IncreaseCombo();
+        Singleton<PanelManager>.Instance.isCurLeft = false;
+        Destroy(c.gameObject.transform.parent.gameObject);
+        if (Singleton<TutorialManager>.Instance.isTutorial)
+        {
+            Singleton<TutorialManager>.Instance.tutoPanelDestroyCount++;
+        }
+    }
+
+    void Fail()
+    {
+        // SFX(Fail)
+        Singleton<GameManager>.Instance.sFX[2].Play();
+        if (Singleton<GameManager>.Instance.score > 0)
+        {
+            ScoreManaged.SetScore(Singleton<GameManager>.Instance.score -= 10000);
+            if (Singleton<GameManager>.Instance.score < 0)
+            {
+                ScoreManaged.SetScore(Singleton<GameManager>.Instance.score = 0);
+            }
+        }
+        Singleton<PanelManager>.Instance.isCurLeft = false;
+        Singleton<ComboManager>.Instance.Clear();
+    }
+
     private void OnTriggerEnter(Collider c)
     {
-        if (GameManager.instance.isStart)
+        if (Singleton<GameManager>.Instance.isStart)
         {
-            if (PanelManager.instance.isCurLeft)
+            if (Singleton<PanelManager>.Instance.isCurLeft)
             {
-                if (c.gameObject.tag == "QUIZ LEFT")
-                {
-                    // SFX(Currect)
-                    GameManager.instance.sFX[1]?.Invoke();
-                    ScoreManaged.SetScore(GameManager.instance.score += 10000);
-                    ComboManager.instance.IncreaseCombo();
-                    PanelManager.instance.isCurLeft = false;
-                    Destroy(c.gameObject.transform.parent.gameObject);
-                    if (TutorialManager.instance.isTutorial)
-                        TutorialManager.instance.tutoPanelDestroyCount++;
-                }
-                else if (c.gameObject.tag == "QUIZ RIGHT")
-                {
-                    // SFX(Fail)
-                    GameManager.instance.sFX[2]?.Invoke();
-                    if (GameManager.instance.score > 0)
-                        ScoreManaged.SetScore(GameManager.instance.score -= 10000);
-                    PanelManager.instance.isCurLeft = false;
-                    ComboManager.instance.Clear();
-                }
+                if (c.gameObject.tag == "QUIZ LEFT")  Currect(c);
+                if (c.gameObject.tag == "QUIZ RIGHT") Fail();
             }
-            if (PanelManager.instance.isCurRight)
+            if (Singleton<PanelManager>.Instance.isCurRight)
             {
-                if (c.gameObject.tag == "QUIZ LEFT")
-                {
-                    // SFX(Fail)
-                    GameManager.instance.sFX[2]?.Invoke();
-                    if (GameManager.instance.score > 0)
-                        ScoreManaged.SetScore(GameManager.instance.score -= 10000);
-                    PanelManager.instance.isCurRight = false;
-                    ComboManager.instance.Clear();
-                }
-                else if (c.gameObject.tag == "QUIZ RIGHT")
-                {
-                    // SFX(Currect)
-                    GameManager.instance.sFX[1]?.Invoke();
-                    ScoreManaged.SetScore(GameManager.instance.score += 10000);
-                    ComboManager.instance.IncreaseCombo();
-                    PanelManager.instance.isCurRight = false;
-                    Destroy(c.gameObject.transform.parent.gameObject);
-                    if (TutorialManager.instance.isTutorial)
-                        TutorialManager.instance.tutoPanelDestroyCount++;
-                }
+                if (c.gameObject.tag == "QUIZ LEFT")  Fail();
+                if (c.gameObject.tag == "QUIZ RIGHT") Currect(c);
             }
         }
     }
 
     private void OnTriggerStay(Collider c)
     {
-        if (GameManager.instance.isStart)
+        if (Singleton<GameManager>.Instance.isStart)
         {
             if (c.gameObject.tag == "BLOCK")
             {
-                if (GameManager.instance.score > 0)
-                    ScoreManaged.SetScore(GameManager.instance.score -= 100);
-                ComboManager.instance.Clear();
+                if (Singleton<GameManager>.Instance.score > 0)
+                {
+                    ScoreManaged.SetScore(Singleton<GameManager>.Instance.score -= 100);
+                }
+                Singleton<ComboManager>.Instance.Clear();
             }
         }
     }

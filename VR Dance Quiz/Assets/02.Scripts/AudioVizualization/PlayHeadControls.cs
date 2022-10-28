@@ -4,22 +4,22 @@ public class PlayHeadControls : MonoBehaviour
 {
     private void Start()
     {
-        GameManager.instance.playedMusicSlide.minValue = 0;
-        GameManager.instance.playedMusicSlide.value = 0;
+        Singleton<GameManager>.Instance.playedMusicSlide.minValue = 0;
+        Singleton<GameManager>.Instance.playedMusicSlide.value = 0;
     }
 
     void FixedUpdate()
     {
-        if (GameManager.instance.isStart)
+        if (Singleton<GameManager>.Instance.isStart)
         {
-            if      (!GameManager.instance.btnModes[3].interactable)
+            if (!Singleton<GameManager>.Instance.btnModes[3].interactable)
             {
-                GameManager.instance.playedMusicSlide.maxValue = (GameManager.instance.musicPlayed.clip.length * GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels / 2) - 1;
+                Singleton<GameManager>.Instance.playedMusicSlide.maxValue = (Singleton<GameManager>.Instance.music[2].clip.length * Singleton<GameManager>.Instance.music[2].clip.frequency * Singleton<GameManager>.Instance.music[2].clip.channels / 2) - 1;
                 Event();
             }
-            else if (!GameManager.instance.btnModes[4].interactable)
+            else if (!Singleton<GameManager>.Instance.btnModes[4].interactable)
             {
-                GameManager.instance.playedMusicSlide.maxValue = (GameManager.instance.musicPlayed.clip.length * GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels) - 1;
+                Singleton<GameManager>.Instance.playedMusicSlide.maxValue = (Singleton<GameManager>.Instance.music[2].clip.length * Singleton<GameManager>.Instance.music[2].clip.frequency * Singleton<GameManager>.Instance.music[2].clip.channels) - 1;
                 Event();
             }
         }
@@ -27,11 +27,11 @@ public class PlayHeadControls : MonoBehaviour
 
     void Event()
     {
-        GameManager.instance.playedMusicSlide.value = GameManager.instance.musicPlayed.time * GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels;
+        Singleton<GameManager>.Instance.playedMusicSlide.value = Singleton<GameManager>.Instance.music[2].time * Singleton<GameManager>.Instance.music[2].clip.frequency * Singleton<GameManager>.Instance.music[2].clip.channels;
     }
 
     public void Scrub()
     {
-        GameManager.instance.musicPlayed.time = GameManager.instance.playedMusicSlide.value / (GameManager.instance.musicPlayed.clip.frequency * GameManager.instance.musicPlayed.clip.channels);
+        Singleton<GameManager>.Instance.music[2].time = Singleton<GameManager>.Instance.playedMusicSlide.value / (Singleton<GameManager>.Instance.music[2].clip.frequency * Singleton<GameManager>.Instance.music[2].clip.channels);
     }
 }

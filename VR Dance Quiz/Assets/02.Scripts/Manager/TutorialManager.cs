@@ -1,6 +1,6 @@
 /// <summary>
 /// TutorialManager.cs
-/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
 /// This software is released under the GPL-2.0 license
 /// 
 /// - 튜토리얼 과정을 담당하는 스크립트입니다.
@@ -15,7 +15,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TutorialManager : MonoBehaviour
+public class TutorialManager : Singleton<TutorialManager>
 {
     [Header("[UI]")]
     [SerializeField] RectTransform xrTutoCanvas;
@@ -71,12 +71,8 @@ public class TutorialManager : MonoBehaviour
     public bool isMotionQuizClear;
     public bool isQuizClear;
 
-    public static TutorialManager instance;
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
-
         // Reset
         tutorialStep = 0;
         isMotionClear = false;
@@ -184,11 +180,13 @@ public class TutorialManager : MonoBehaviour
     // 튜토리얼 시작 안내
     void Step1()
     {
-        GameManager.instance.uiTutorial.SetActive(true);
-        GameManager.instance.uiLobby.SetActive(false);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(true);
+        Singleton<GameManager>.Instance.uiLobby.SetActive(false);
 
-        foreach (Transform item in GameManager.instance.contentOriginal.transform) Destroy(item.gameObject);
-        foreach (Transform item in GameManager.instance.contentCustom.transform)   Destroy(item.gameObject);
+        foreach (Transform item in Singleton<GameManager>.Instance.contentOriginal.transform)
+            Destroy(item.gameObject);
+        foreach (Transform item in Singleton<GameManager>.Instance.contentCustom.transform)  
+            Destroy(item.gameObject);
 
         (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
         textAnimatorPlayer.ShowText(textBox[0]);
@@ -200,23 +198,24 @@ public class TutorialManager : MonoBehaviour
         // Tutorial Button OFF
         btnTutoNext.interactable = false;
         // UI Lobby ON
-        GameManager.instance.uiLobby.SetActive(true);
+        Singleton<GameManager>.Instance.uiLobby.SetActive(true);
         // UI Option(Lobby Left UI) OFF
-        GameManager.instance.uiLobbyOption.SetActive(false);
+        Singleton<GameManager>.Instance.uiLobbyOption.SetActive(false);
         // UI Result(Lobby Right UI) OFF
-        GameManager.instance.uiLobbyResult.SetActive(false);
+        Singleton<GameManager>.Instance.uiLobbyResult.SetActive(false);
         // Original Theme Select ON
-        GameManager.instance.btnMusicTheme[0].interactable = true;
+        Singleton<GameManager>.Instance.btnMusicTheme[0].interactable = true;
         // Custom Theme Select OFF
-        GameManager.instance.btnMusicTheme[1].interactable = false;
+        Singleton<GameManager>.Instance.btnMusicTheme[1].interactable = false;
         // Levels OFF
-        for (int i = 0; i < GameManager.instance.btnLevels.Length; i++) GameManager.instance.btnLevels[i].interactable = false;
+        for (int i = 0; i < Singleton<GameManager>.Instance.btnLevels.Length; i++)
+            Singleton<GameManager>.Instance.btnLevels[i].interactable = false;
         // Play OFF
-        GameManager.instance.btnPlay.interactable = false;
+        Singleton<GameManager>.Instance.btnPlay.interactable = false;
         // Tutorial(Btn) OFF
-        GameManager.instance.bgTutorial.SetActive(false);
+        Singleton<GameManager>.Instance.bgTutorial.SetActive(false);
         // InfoTitle Reset
-        GameManager.instance.infoTitle.text = "※ Not Search";
+        Singleton<GameManager>.Instance.infoTitle.text = "※ Not Search";
         // 안내 문구 강조
         textTutoOriginal.text = "<bounce a=0.5 f=0.5>Original</bounce>";
 
@@ -229,7 +228,7 @@ public class TutorialManager : MonoBehaviour
     void Step3()
     {
         // Custom Theme Select OFF
-        GameManager.instance.btnMusicTheme[1].interactable = false;
+        Singleton<GameManager>.Instance.btnMusicTheme[1].interactable = false;
         // 안내 문구 강조 OFF
         textTutoOriginal.text = "Original";
 
@@ -240,15 +239,15 @@ public class TutorialManager : MonoBehaviour
     void Step4()
     {
         // Easy ON
-        GameManager.instance.btnLevels[0].interactable = true;
+        Singleton<GameManager>.Instance.btnLevels[0].interactable = true;
         // Normal OFF
-        GameManager.instance.btnLevels[1].interactable = false;
+        Singleton<GameManager>.Instance.btnLevels[1].interactable = false;
         // Hard OFF
-        GameManager.instance.btnLevels[2].interactable = false;
+        Singleton<GameManager>.Instance.btnLevels[2].interactable = false;
         // Music Element OFF
-        GameManager.instance.contentOriginal.transform.GetChild(0).GetComponent<Button>().interactable = false;
+        Singleton<GameManager>.Instance.contentOriginal.transform.GetChild(0).GetComponent<Button>().interactable = false;
         // 안내 문구 강조 OFF
-        GameManager.instance.contentOriginal.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = "Cat Life";
+        Singleton<GameManager>.Instance.contentOriginal.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = "Cat Life";
         // 안내 문구 강조 ON
         textTutoEasy.text = "<bounce a=0.5 f=0.5>Easy</bounce>";
 
@@ -259,7 +258,7 @@ public class TutorialManager : MonoBehaviour
     void Step5()
     {
         // Levels OFF
-        for (int i = 0; i < GameManager.instance.btnLevels.Length; i++) GameManager.instance.btnLevels[i].interactable = false;
+        for (int i = 0; i < Singleton<GameManager>.Instance.btnLevels.Length; i++) Singleton<GameManager>.Instance.btnLevels[i].interactable = false;
         // 안내 문구 강조 OFF
         textTutoEasy.text = "Easy";
         // 안내 문구 강조 ON
@@ -294,7 +293,7 @@ public class TutorialManager : MonoBehaviour
     void Step8()
     {
         // UI Tutorial OFF
-        GameManager.instance.uiTutorial.SetActive(false);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(false);
         // TimeStart, HandChange
         StartCoroutine(TimeStart());
     }
@@ -305,7 +304,7 @@ public class TutorialManager : MonoBehaviour
         // 모션 패널 클리어
         isMotionClear = true;
         // UI Tutorial ON
-        GameManager.instance.uiTutorial.SetActive(true);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(true);
         // TimeStop, HandChange
         StartCoroutine(TimeStop());
 
@@ -316,7 +315,7 @@ public class TutorialManager : MonoBehaviour
     void Step10()
     {
         // UI Tutorial OFF
-        GameManager.instance.uiTutorial.SetActive(false);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(false);
         // TimeStart, HandChange
         StartCoroutine(TimeStart());
     }
@@ -327,7 +326,7 @@ public class TutorialManager : MonoBehaviour
         // 장애물 패널 클리어
         isObstacleClear = true;
         // UI Tutorial ON
-        GameManager.instance.uiTutorial.SetActive(true);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(true);
         // TimeStop, HandChange
         StartCoroutine(TimeStop());
         textAnimatorPlayer.ShowText(textBox[8]);
@@ -337,7 +336,7 @@ public class TutorialManager : MonoBehaviour
     void Step12() 
     {
         // UI Tutorial OFF
-        GameManager.instance.uiTutorial.SetActive(false);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(false);
         // TimeStart, HandChange
         StartCoroutine(TimeStart());
     }
@@ -348,7 +347,7 @@ public class TutorialManager : MonoBehaviour
         // 모션 퀴즈 패널 클리어
         isMotionQuizClear = true;
         // UI Tutorial ON
-        GameManager.instance.uiTutorial.SetActive(true);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(true);
         // TimeStop, HandChange
         StartCoroutine(TimeStop());
         textAnimatorPlayer.ShowText(textBox[9]);
@@ -358,7 +357,7 @@ public class TutorialManager : MonoBehaviour
     void Step14() 
     {
         // UI Tutorial OFF
-        GameManager.instance.uiTutorial.SetActive(false);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(false);
         // TimeStart, HandChange
         StartCoroutine(TimeStart());
     }
@@ -372,13 +371,14 @@ public class TutorialManager : MonoBehaviour
         // Tutorial Button OFF
         btnTutoNext.interactable = false;
         // UI Tutorial ON
-        GameManager.instance.uiTutorial.SetActive(true);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(true);
         // TimeStop, HandChange
         StartCoroutine(TimeStop());
         textAnimatorPlayer.ShowText(textBox[10]);
 
-        GameManager.instance.InGameEnd();
-        foreach (Transform item in GameManager.instance.contentOriginal.transform) Destroy(item.gameObject);
+        Singleton<GameManager>.Instance.InGameEnd();
+        foreach (Transform item in Singleton<GameManager>.Instance.contentOriginal.transform)
+            Destroy(item.gameObject);
     }
 
     // 옵션 안내 후 종료
@@ -396,17 +396,17 @@ public class TutorialManager : MonoBehaviour
     {
         Time.timeScale = 1;
         // UI Tutorial OFF
-        GameManager.instance.uiTutorial.SetActive(false);
+        Singleton<GameManager>.Instance.uiTutorial.SetActive(false);
         // UI Option(Lobby Left UI) ON
-        GameManager.instance.uiLobbyOption.SetActive(true);
+        Singleton<GameManager>.Instance.uiLobbyOption.SetActive(true);
         // UI Result(Lobby Right UI) ON
-        GameManager.instance.uiLobbyResult.SetActive(true);
+        Singleton<GameManager>.Instance.uiLobbyResult.SetActive(true);
         // Original Theme Select ON
-        GameManager.instance.btnMusicTheme[0].interactable = true;
+        Singleton<GameManager>.Instance.btnMusicTheme[0].interactable = true;
         // Custom Theme Select ON
-        GameManager.instance.btnMusicTheme[1].interactable = true;
+        Singleton<GameManager>.Instance.btnMusicTheme[1].interactable = true;
         // Tutorial(Btn) ON
-        GameManager.instance.bgTutorial.SetActive(true);
+        Singleton<GameManager>.Instance.bgTutorial.SetActive(true);
 
         tutorialStep = 0;
         tutoPanelSpawnCount = 0;
@@ -431,30 +431,30 @@ public class TutorialManager : MonoBehaviour
     public void BtnTuto()
     {
         isTutorial = true;
-        GameManager.instance.musicBackGround.UnPause();
-        GameManager.instance.musicSelected.Stop();
+        Singleton<GameManager>.Instance.music[0].UnPause();
+        Singleton<GameManager>.Instance.music[1].Stop();
         StartCoroutine(TutorialStart());
     }
 
     public IEnumerator TimeStart()
     {
         Time.timeScale = 1;
-        GameManager.instance.musicPlayed.UnPause();
-        GameManager.instance.RayControllerMode(false);
+        Singleton<GameManager>.Instance.music[2].UnPause();
+        Singleton<GameManager>.Instance.RayControllerMode(false);
         yield return null;
     }
 
     public IEnumerator TimeStop()
     {
         Time.timeScale = 0;
-        GameManager.instance.musicPlayed.Pause();
-        GameManager.instance.RayControllerMode(true);
+        Singleton<GameManager>.Instance.music[2].Pause();
+        Singleton<GameManager>.Instance.RayControllerMode(true);
         yield return null;
     }
 
     public void PanelSpawn()
     {
-        PanelManager.instance.PanelCheck();
+        Singleton<PanelManager>.Instance.PanelCheck();
         tutoPanelTimer += Time.deltaTime;
         if (tutoPanelTimer > tutoSecPerBeat)
         {
@@ -462,38 +462,38 @@ public class TutorialManager : MonoBehaviour
 
             if (tutoPanelSpawnCount == 0)
             {
-                GameObject _motion = Instantiate(tutoPanels[0], PanelManager.instance.panelSpawnPoint);
+                GameObject _motion = Instantiate(tutoPanels[0], Singleton<PanelManager>.Instance.panelSpawnPoint);
                 _motion.name = "MOTION";
                 tutoPanelSpawnCount++;
             }
             else if (tutoPanelSpawnCount == 1)
             {
-                GameObject _motion = Instantiate(tutoPanels[1], PanelManager.instance.panelSpawnPoint);
+                GameObject _motion = Instantiate(tutoPanels[1], Singleton<PanelManager>.Instance.panelSpawnPoint);
                 _motion.name = "MOTION";
                 tutoPanelSpawnCount++;
             }
             else if (tutoPanelSpawnCount == 2)
             {
-                GameObject _motion = Instantiate(tutoPanels[2], PanelManager.instance.panelSpawnPoint);
+                GameObject _motion = Instantiate(tutoPanels[2], Singleton<PanelManager>.Instance.panelSpawnPoint);
                 _motion.name = "MOTION";
                 tutoPanelSpawnCount++;
             }
             else if (tutoPanelSpawnCount == 3)
             {
-                GameObject _block = Instantiate(tutoPanels[3], PanelManager.instance.panelSpawnPoint);
+                GameObject _block = Instantiate(tutoPanels[3], Singleton<PanelManager>.Instance.panelSpawnPoint);
                 _block.name = "BLOCK";
                 tutoPanelSpawnCount++;
             }
             else if (tutoPanelSpawnCount == 4)
             {
-                GameObject _motion = Instantiate(tutoPanels[4], PanelManager.instance.panelSpawnPoint);
+                GameObject _motion = Instantiate(tutoPanels[4], Singleton<PanelManager>.Instance.panelSpawnPoint);
                 _motion.name = "MOTION";
                 _motion.transform.GetChild(4).gameObject.SetActive(true);
                 tutoPanelSpawnCount++;
             }
             else if (tutoPanelSpawnCount == 5)
             {
-                GameObject _quiz = Instantiate(tutoPanels[5], PanelManager.instance.panelSpawnPoint);
+                GameObject _quiz = Instantiate(tutoPanels[5], Singleton<PanelManager>.Instance.panelSpawnPoint);
                 _quiz.name = "QUIZ";
                 tutoPanelSpawnCount++;
             }
