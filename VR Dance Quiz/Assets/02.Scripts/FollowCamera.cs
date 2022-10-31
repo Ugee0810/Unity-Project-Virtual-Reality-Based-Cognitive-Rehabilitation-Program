@@ -1,9 +1,13 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FollowCamera : MonoBehaviour
 {
     public Transform startPosition;
     public Transform endPosition;
+
+    Button btn;
 
     // 진행될 총 시간
     float lerpTime = 0.5f;
@@ -13,17 +17,18 @@ public class FollowCamera : MonoBehaviour
     private void Start()
     {
         this.transform.position = startPosition.position;
+        
+        // OnClick() Lambda
+        btn.onClick.AddListener(() => { StartCoroutine(LerpTest()); });
     }
 
-    private void Update()
+    IEnumerator LerpTest()
     {
         currentTime += Time.deltaTime;
-
-        if (currentTime >= lerpTime)
-        {
-            currentTime = lerpTime;
-        }
-        // currentTime / lerpTime <--- 프레임마다 0부터 1까지 서서히 증가하는 형태
-        this.transform.position = Vector3.Lerp(startPosition.position, endPosition.position, currentTime / lerpTime);
+        if (currentTime >= lerpTime) currentTime = lerpTime;
+        float t = currentTime / lerpTime;
+        t = t * t * t * (t * (6f * t - 15f) + 10f);
+        this.transform.position = Vector3.Lerp(startPosition.position, endPosition.position, t);
+        yield return null;
     }
 }
