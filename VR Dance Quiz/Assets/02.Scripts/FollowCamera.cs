@@ -1,32 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    public new Camera camera;
+    public Transform startPosition;
+    public Transform endPosition;
 
-    [Range(0, 0.2f)]
-    public float smoothFactor = 0.1f;
+    // 진행될 총 시간
+    float lerpTime = 0.5f;
+    // 경과 카운트
+    float currentTime = 0f;
 
-    private void LateUpdate()
+    private void Start()
     {
-        // make the UI always face towards the camera
-        transform.rotation = camera.transform.rotation;
+        this.transform.position = startPosition.position;
+    }
 
-        var currentPos = transform.position;
+    private void Update()
+    {
+        currentTime += Time.deltaTime;
 
-        var cameraCenter = camera.transform.position + camera.transform.forward;
-
-        // in which direction from the center?
-        var direction = currentPos - cameraCenter;
-
-        // target is in the same direction but offsetRadius
-        // from the center
-        var targetPosition = cameraCenter + direction.normalized;
-
-        // finally interpolate towards this position
-        transform.position = Vector3.Lerp(currentPos, targetPosition, smoothFactor);
+        if (currentTime >= lerpTime)
+        {
+            currentTime = lerpTime;
+        }
+        // currentTime / lerpTime <--- 프레임마다 0부터 1까지 서서히 증가하는 형태
+        this.transform.position = Vector3.Lerp(startPosition.position, endPosition.position, currentTime / lerpTime);
     }
 }
