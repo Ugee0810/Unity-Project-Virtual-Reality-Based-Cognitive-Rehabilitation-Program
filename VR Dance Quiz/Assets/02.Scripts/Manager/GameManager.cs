@@ -433,7 +433,7 @@ public class GameManager : Singleton<GameManager>
             buttons[1].interactable = true;
             buttons[2].interactable = true;
             sfx.Play();
-            secPerBeat = 420f / bpm;
+            secPerBeat = 300f / bpm;
             Singleton<PanelManager>.Instance.quizCool = 14;
             btnPlay.interactable = true;
 
@@ -446,7 +446,7 @@ public class GameManager : Singleton<GameManager>
             buttons[1].interactable = false;
             buttons[2].interactable = true;
             sfx.Play();
-            secPerBeat = 360f / bpm;
+            secPerBeat = 240f / bpm;
             Singleton<PanelManager>.Instance.quizCool = 11;
             btnPlay.interactable = true;
         }
@@ -457,7 +457,7 @@ public class GameManager : Singleton<GameManager>
             buttons[1].interactable = true;
             buttons[2].interactable = false;
             sfx.Play();
-            secPerBeat = 300f / bpm;
+            secPerBeat = 180f / bpm;
             Singleton<PanelManager>.Instance.quizCool = 8;
             btnPlay.interactable = true;
         }
@@ -509,7 +509,9 @@ public class GameManager : Singleton<GameManager>
             // 플레이 중 노래 일시 정지
             Time.timeScale = 0;
             music[2].Pause();
-            Debug.Log("XRI_InGamePause CallBack Context : " + context);
+            // 일시정지 인풋액션 비활성화
+            gamePause.action.started -= XRI_InGamePause;
+            //Debug.Log("XRI_InGamePause CallBack Context : " + context);
         }
     }
 
@@ -551,6 +553,8 @@ public class GameManager : Singleton<GameManager>
         Time.timeScale = 1;
         music[2].UnPause();
         sFX[0].Play();
+        // 일시정지 인풋액션 활성화
+        gamePause.action.started += XRI_InGamePause;
     }
 
     /// <summary>
