@@ -1,6 +1,6 @@
 /// <summary>
 /// MusicElements.cs
-/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (Eternal Light)
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
 /// This software is released under the GPL-2.0 license
 /// 
 /// - 동적 프리팹 접근을 위해 자신(버튼)에게 Select()를 OnClick()으로 매핑합니다.

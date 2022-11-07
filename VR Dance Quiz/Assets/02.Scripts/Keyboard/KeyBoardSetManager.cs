@@ -1,3 +1,10 @@
+/// <summary>
+/// KeyBoardSetManager.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
+/// This software is released under the GPL-2.0 license
+/// 
+/// </summary>
+
 using UnityEngine;
 using TMPro;
 

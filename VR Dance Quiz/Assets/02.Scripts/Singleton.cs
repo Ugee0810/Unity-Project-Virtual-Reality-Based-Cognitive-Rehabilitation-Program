@@ -1,3 +1,10 @@
+/// <summary>
+/// Singleton.cs
+/// Copyright (c) 2022 VR-Based Cognitive Rehabilitation Program (V-Light Stutio)
+/// This software is released under the GPL-2.0 license
+/// 
+/// </summary>
+
 using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
