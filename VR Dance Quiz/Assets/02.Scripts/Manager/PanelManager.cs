@@ -74,7 +74,7 @@ public class PanelManager : Singleton<PanelManager>
             Singleton<GameManager>.Instance.panelTimer -= Singleton<GameManager>.Instance.secPerBeat;
 
             int panelIndex = Random.Range(0, 10); // <--- 전체 패널 확률
-            int quizCool = Random.Range(5, 25); // <--- 퀴즈 쿨타임
+            int quizCool = Random.Range(10, 25); // <--- 퀴즈 쿨타임
             if (!Singleton<GameManager>.Instance.btnModes[5].interactable)
             {
                 /* QUIZ 10% */
