@@ -78,7 +78,6 @@ namespace WaterSystem
             private ProfilingSampler m_WaterCaustics_Profile = new ProfilingSampler(k_RenderWaterCausticsTag);
             public Material WaterCausticMaterial;
             private static Mesh m_mesh;
-            public float waterLevel = 0;
 
             public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
             {
@@ -128,7 +127,6 @@ namespace WaterSystem
         private static readonly int DstBlend = Shader.PropertyToID("_DstBlend");
         private static readonly int Size = Shader.PropertyToID("_Size");
         private static readonly int CausticTexture = Shader.PropertyToID("_CausticMap");
-        private static readonly int WaterLevel = Shader.PropertyToID("_WaterLevel");
 
         public override void Create()
         {
@@ -155,9 +153,7 @@ namespace WaterSystem
 #endif
             }
             _causticMaterial.SetTexture(CausticTexture, causticTexture);
-
-            m_CausticsPass.waterLevel = settings.waterLevel;
-            _causticMaterial.SetFloat(WaterLevel, settings.waterLevel);
+            
             switch (settings.debug)
             {
                 case WaterSystemSettings.DebugMode.Caustics:
@@ -222,7 +218,6 @@ namespace WaterSystem
         {
             [Header("Caustics Settings")] [Range(0.1f, 1f)]
             public float causticScale = 0.25f;
-            public float waterLevel = 0;
 
             public float causticBlendDistance = 3f;
 
