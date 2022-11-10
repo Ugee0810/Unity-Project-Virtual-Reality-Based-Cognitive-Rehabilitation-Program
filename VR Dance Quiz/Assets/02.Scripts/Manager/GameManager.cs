@@ -124,6 +124,75 @@ public class GameManager : Singleton<GameManager>
     public bool isEmail;
     public bool isPassword;
 
+    [Header("[계정 기록 관련]")]
+    public GameObject uiPlayerInfo;
+    public Button btn_GameReset;
+    public Button btn_GameStart;
+    public Toggle m_ToMan;
+    public Toggle m_ToGirl;
+    public TMP_InputField age;
+    public int m_CustomerNum;
+    public int m_Mans;
+    public int m_Girls;
+    public int m_10Ages;
+    public int m_20Ages;
+    public int m_30Ages;
+    public int m_40Ages;
+    public int m_50Ages;
+    public int m_60Ages;
+    public int m_70Ages;
+
+    void BTN_GameReset()
+    {
+        uiPlayerInfo.SetActive(true);
+        uiLobby.SetActive(false);
+        m_CustomerNum++;
+        m_ToMan.isOn = false;
+        m_ToGirl.isOn = false;
+        age.text = "";
+    }
+
+    void BTN_GameStart()
+    {
+        uiPlayerInfo.SetActive(false);
+        uiLobby.SetActive(true);
+
+        // Gender Set
+        if (m_ToMan.isOn)
+        {
+            JsonUtility.ToJson(m_Mans++);
+            print(m_Mans);
+        }
+        else
+        {
+            JsonUtility.ToJson(m_Girls++);
+            print(m_Girls);
+        }
+
+    }
+
+    void ToggleMan()
+    {
+        m_ToMan.isOn = true;
+        m_ToGirl.isOn = false;
+    }
+    
+    void ToggleGirl()
+    {
+        m_ToMan.isOn = false;
+        m_ToGirl.isOn = true;
+    }
+
+    //public void DataTo()
+    //{
+    //    string jsonData = JsonUtility.ToJson(player);
+    //}
+
+    //public void DataFrom()
+    //{
+    //    Data player2 = JsonUtility.FromJson<Data>(jsonData);
+    //}
+
     private void Awake()
     {
         // PlayerPrefs Key Value Reset
@@ -131,6 +200,21 @@ public class GameManager : Singleton<GameManager>
         if (PlayerPrefs.HasKey("Level")) PlayerPrefs.SetString("Level", "-");
         if (PlayerPrefs.HasKey("Score")) PlayerPrefs.SetInt("Score", 0);
         if (PlayerPrefs.HasKey("Kcal"))  PlayerPrefs.SetInt("Kcal", 0);
+        // Customer Info Toggle Listener
+        m_ToMan.onValueChanged.AddListener(delegate 
+        { 
+            m_ToMan.isOn = true;
+            m_ToGirl.isOn = false;
+        });
+        m_ToGirl.onValueChanged.AddListener(delegate 
+        {
+            m_ToMan.isOn = false;
+            m_ToGirl.isOn = true;
+        });
+        // Btn Game Reset
+        btn_GameReset.onClick.AddListener(() => { BTN_GameReset(); });
+        // Btn Game Start
+        btn_GameStart.onClick.AddListener(() => { BTN_GameStart(); });
         // Btn Option - Bright Dec / Inc | Height Dec / Inc
         btnBrightLeft.onClick.AddListener(()  => OnClick_Options(btnBrightLeft,  bright, height, sliderBright, sliderHeight, sFX[0]));
         btnBrightRight.onClick.AddListener(() => OnClick_Options(btnBrightRight, bright, height, sliderBright, sliderHeight, sFX[0]));
