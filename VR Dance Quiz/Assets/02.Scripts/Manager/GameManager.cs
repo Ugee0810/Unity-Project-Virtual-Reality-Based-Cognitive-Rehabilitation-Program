@@ -28,6 +28,7 @@ public class GameManager : Singleton<GameManager>
     public GameObject uiIngame;   // UI Ingame
     public GameObject uiPause;    // UI Pause
     public GameObject uiResult;   // UI Result
+    public GameObject uiCustomerInfo;
 
     [Header("[UI - 옵션(밝기)]")]
     public Slider sliderBright;
@@ -123,17 +124,31 @@ public class GameManager : Singleton<GameManager>
     public bool isSensorRight; // 패널 접촉 유/무 오른쪽
     public bool isEmail;
     public bool isPassword;
+    public bool isPlayerInfo;
 
     [Header("[계정 기록 관련]")]
     public GameObject uiPlayerInfo;
     public Button btn_GameReset;
     public Button btn_GameStart;
+    public TMP_Text text_CustomerNum;
+    public TMP_Text text_MansNum;
+    public TMP_Text text_GirlsNum;
+    public TMP_Text text_Nots;
+    public TMP_Text text_10s;
+    public TMP_Text text_20s;
+    public TMP_Text text_30s;
+    public TMP_Text text_40s;
+    public TMP_Text text_50s;
+    public TMP_Text text_60s;
+    public TMP_Text text_70s;
     public Toggle m_ToMan;
     public Toggle m_ToGirl;
-    public TMP_InputField age;
+    public TMP_InputField if_Age;
     public int m_CustomerNum;
     public int m_Mans;
     public int m_Girls;
+    public int m_NotAges;
+    public int m_10AgesUnder;
     public int m_10Ages;
     public int m_20Ages;
     public int m_30Ages;
@@ -146,71 +161,114 @@ public class GameManager : Singleton<GameManager>
     {
         uiPlayerInfo.SetActive(true);
         uiLobby.SetActive(false);
-        m_CustomerNum++;
         m_ToMan.isOn = false;
         m_ToGirl.isOn = false;
-        age.text = "";
+        if_Age.text = "";
     }
 
     void BTN_GameStart()
     {
+        void PlayerPrefsIntDataSet_TMP_Text(string m_HasKey, int m_SetInt, TMP_Text text)
+        {
+            PlayerPrefs.SetInt(m_HasKey, m_SetInt++);
+            text.text = m_SetInt.ToString();
+            print($"{m_HasKey} : {m_SetInt}");
+        }
+        void PlayerPrefsIntDataSet_TMP_InfutField(string m_HasKey, int m_SetInt, TMP_InputField text)
+        {
+            PlayerPrefs.SetInt(m_HasKey, m_SetInt++);
+            text.text = m_SetInt.ToString();
+            print($"{m_HasKey} : {m_SetInt}");
+        }
         uiPlayerInfo.SetActive(false);
         uiLobby.SetActive(true);
-
+        // Customer Reset
+        PlayerPrefsIntDataSet_TMP_Text("CustomerNum", m_CustomerNum, text_CustomerNum);
         // Gender Set
-        if (m_ToMan.isOn)
-        {
-            JsonUtility.ToJson(m_Mans++);
-            print(m_Mans);
-        }
-        else
-        {
-            JsonUtility.ToJson(m_Girls++);
-            print(m_Girls);
-        }
+        if (m_ToMan.isOn) PlayerPrefsIntDataSet_TMP_Text("MansNum", m_Mans, text_MansNum);
+        else              PlayerPrefsIntDataSet_TMP_Text("GirlsNum", m_Girls, text_GirlsNum);
+        //// Ages Set
+        //try
+        //{
 
+        //}
+        //catch (Exception e)
+        //{
+
+        //}
+
+        //int ages;
+        //if (if_Age.text.Length != 0)
+        //    ages = int.Parse(if_Age.text);
+
+        //if (if_Age.text.Length != 0)      PlayerPrefsIntDataSet_TMP_InfutField("NotAges", m_NotAges, if_Age);
+        //else if (0 <= ages && ages > 10)  PlayerPrefsIntDataSet_TMP_InfutField("10AgesUnder", m_10AgesUnder, if_Age);
+        //else if (10 <= ages && ages > 20) PlayerPrefsIntDataSet_TMP_InfutField("10Ages", m_10Ages, if_Age);
+        //else if (20 <= ages && ages > 30) PlayerPrefsIntDataSet_TMP_InfutField("20Ages", m_20Ages, if_Age);
+        //else if (30 <= ages && ages > 40) PlayerPrefsIntDataSet_TMP_InfutField("30Ages", m_30Ages, if_Age);
+        //else if (40 <= ages && ages > 50) PlayerPrefsIntDataSet_TMP_InfutField("40Ages", m_40Ages, if_Age);
+        //else if (50 <= ages && ages > 60) PlayerPrefsIntDataSet_TMP_InfutField("50Ages", m_50Ages, if_Age);
+        //else if (60 <= ages && ages > 70) PlayerPrefsIntDataSet_TMP_InfutField("60Ages", m_60Ages, if_Age);
+        //else if (70 <= ages)              PlayerPrefsIntDataSet_TMP_InfutField("70Ages", m_70Ages, if_Age);
+
+        PlayerPrefs.Save();
     }
 
-    void ToggleMan()
+    public void BTN_DeleteALL()
     {
-        m_ToMan.isOn = true;
-        m_ToGirl.isOn = false;
-    }
-    
-    void ToggleGirl()
-    {
-        m_ToMan.isOn = false;
-        m_ToGirl.isOn = true;
-    }
+        m_CustomerNum = 0;
+        m_Mans = 0;
+        m_Girls = 0;
+        m_NotAges = 0;
+        m_10AgesUnder = 0;
+        m_10Ages = 0;
+        m_20Ages = 0;
+        m_30Ages = 0;
+        m_40Ages = 0;
+        m_50Ages = 0;
+        m_60Ages = 0;
+        m_70Ages = 0;
 
-    //public void DataTo()
-    //{
-    //    string jsonData = JsonUtility.ToJson(player);
-    //}
+        PlayerPrefs.DeleteAll();
 
-    //public void DataFrom()
-    //{
-    //    Data player2 = JsonUtility.FromJson<Data>(jsonData);
-    //}
+        print("삭제 완료");
+        print("전체 회원 수 : " + m_CustomerNum);
+        print("남자 회원 수 : " + m_Mans);
+        print("여자 회원 수 : " + m_Girls);
+        print("나이 미선택 : " + m_NotAges);
+        print("10대 미만 : " + m_10AgesUnder);
+        print("10대 : " + m_10Ages);
+        print("20대 : " + m_20Ages);
+        print("30대 : " + m_30Ages);
+        print("40대 : " + m_40Ages);
+        print("50대 : " + m_50Ages);
+        print("60대 : " + m_60Ages);
+        print("70대 : " + m_70Ages);
+    }
 
     private void Awake()
     {
-        // PlayerPrefs Key Value Reset
-        if (PlayerPrefs.HasKey("Title")) PlayerPrefs.SetString("Title", "-");
-        if (PlayerPrefs.HasKey("Level")) PlayerPrefs.SetString("Level", "-");
-        if (PlayerPrefs.HasKey("Score")) PlayerPrefs.SetInt("Score", 0);
-        if (PlayerPrefs.HasKey("Kcal"))  PlayerPrefs.SetInt("Kcal", 0);
-        // Customer Info Toggle Listener
-        m_ToMan.onValueChanged.AddListener(delegate 
-        { 
-            m_ToMan.isOn = true;
-            m_ToGirl.isOn = false;
-        });
-        m_ToGirl.onValueChanged.AddListener(delegate 
+        void PlayerPrefsIntDataLoad(string m_HasKey, int m_GetInt)
         {
-            m_ToMan.isOn = false;
-            m_ToGirl.isOn = true;
-        });
+            if (PlayerPrefs.HasKey(m_HasKey))
+            {
+                m_GetInt = PlayerPrefs.GetInt(m_HasKey, m_GetInt);
+                print($"{m_HasKey} : {m_GetInt}");
+            }
+        }
+        // PlayerPrefs Key Value Reset
+        PlayerPrefsIntDataLoad("CustomerNum", m_CustomerNum);
+        PlayerPrefsIntDataLoad("MansNum", m_Mans);
+        PlayerPrefsIntDataLoad("GirlsNum", m_Girls);
+        PlayerPrefsIntDataLoad("NotAges", m_NotAges);
+        PlayerPrefsIntDataLoad("10AgesUnder", m_10AgesUnder);
+        PlayerPrefsIntDataLoad("10Ages", m_10Ages);
+        PlayerPrefsIntDataLoad("20Ages", m_20Ages);
+        PlayerPrefsIntDataLoad("30Ages", m_30Ages);
+        PlayerPrefsIntDataLoad("40Ages", m_40Ages);
+        PlayerPrefsIntDataLoad("50Ages", m_50Ages);
+        PlayerPrefsIntDataLoad("60Ages", m_60Ages);
+        PlayerPrefsIntDataLoad("70Ages", m_70Ages);
         // Btn Game Reset
         btn_GameReset.onClick.AddListener(() => { BTN_GameReset(); });
         // Btn Game Start
@@ -799,6 +857,22 @@ public class GameManager : Singleton<GameManager>
          Application.Quit();
 #endif
         }
+    }
+
+    /// <summary>
+    /// [Event] 유저 정보 인풋필드 선택
+    /// </summary>
+    public void ChangePlayerInfoEnable()
+    {
+        isPlayerInfo = true;
+    }
+
+    /// <summary>
+    /// [Event] 유저 정보 인풋필드 미선택
+    /// </summary>
+    public void ChangePlayerInfoUnEnable()
+    {
+        isPlayerInfo = false;
     }
 
     /// <summary>
