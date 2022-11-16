@@ -222,7 +222,7 @@ public class GameManager : Singleton<GameManager>
         string json = JsonUtility.ToJson(user);
         // path에 customerNum으로 json 생성
         File.WriteAllText($"{path}{user.customerNum}.json", json);
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
     }
 
     private void Awake()
@@ -230,7 +230,7 @@ public class GameManager : Singleton<GameManager>
         // Json 주소 확인
         path = DirectoryCreate();
         print($"path is : {path}");
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
         // Button Game Reset
         btnGameReset.onClick.AddListener(() => { OnClick_GameReset(); });
         // Button Game Start
