@@ -48,10 +48,10 @@ public class TutorialManager : Singleton<TutorialManager>
             "\n좌/우로 색상과 글귀를 제시 받습니다.\n동작을 해결하면서 외워주세요.",
         "<speed=0.5>정답을 맞추는 패널입니다." +
             "\n외웠던 색상과 글귀가 일치하는 방향을 선택하세요.",
-        "<speed=0.5>노래를 완수하게 되면 결과창이 표시됩니다." +
+        "<speed=0.5>노래를 완곡하면 결과창이 표시됩니다." +
             "\n노래 제목/난이도/점수/소모된 칼로리를 알 수 있습니다." +
             "\n메인으로 돌아갑시다.",
-        "<speed=0.5>밝기와 키 조절은 로비의 왼쪽에 있습니다." +
+        "<speed=0.5>밝기와 키 조절은 옵션 패널에 있습니다." +
             "\n튜토리얼을 마치겠습니다." };
 
     [Header("[Panel]")]
@@ -180,14 +180,17 @@ public class TutorialManager : Singleton<TutorialManager>
     // 튜토리얼 시작 안내
     void Step1()
     {
-        Singleton<GameManager>.Instance.uiTutorial.SetActive(true);
-        Singleton<GameManager>.Instance.uiLobby.SetActive(false);
-
+        // 로비 OFF, 튜토리얼 ON
+        Singleton<GameManager>.Instance.UIChangeAToB(Singleton<GameManager>.Instance.uiLobby, Singleton<GameManager>.Instance.uiTutorial);
+        // 탭 리스트 버튼 상호작용 불가
+        for (int i = 0; i < Singleton<GameManager>.Instance.btnTapList.Length; i++)
+            Singleton<GameManager>.Instance.btnTapList[i].interactable = false;
+        // 오리지널 프리팹 제거
         foreach (Transform item in Singleton<GameManager>.Instance.contentOriginal.transform)
             Destroy(item.gameObject);
+        // 커스텀 프리팹 제거
         foreach (Transform item in Singleton<GameManager>.Instance.contentCustom.transform)  
             Destroy(item.gameObject);
-
         (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
         textAnimatorPlayer.ShowText(textBox[0]);
     }
@@ -199,6 +202,11 @@ public class TutorialManager : Singleton<TutorialManager>
         btnTutoNext.interactable = false;
         // UI Lobby ON
         Singleton<GameManager>.Instance.uiLobby.SetActive(true);
+        // 탭 패널 전환
+        Singleton<GameManager>.Instance.goTabPanel[0].SetActive(false);
+        Singleton<GameManager>.Instance.goTabPanel[1].SetActive(true);
+        Singleton<GameManager>.Instance.goTabPanel[2].SetActive(false);
+        Singleton<GameManager>.Instance.goTabPanel[3].SetActive(false);
         // Original Theme Select ON
         Singleton<GameManager>.Instance.btnMusicTheme[0].interactable = true;
         // Custom Theme Select OFF
@@ -208,7 +216,7 @@ public class TutorialManager : Singleton<TutorialManager>
             Singleton<GameManager>.Instance.btnLevels[i].interactable = false;
         // Play OFF
         Singleton<GameManager>.Instance.btnPlay.interactable = false;
-        // Tutorial(Btn) OFF
+        // Tutorial Button OFF
         Singleton<GameManager>.Instance.bgTutorial.SetActive(false);
         // InfoTitle Reset
         Singleton<GameManager>.Instance.infoTitle.text = "※ Not Search";
@@ -216,7 +224,6 @@ public class TutorialManager : Singleton<TutorialManager>
         textTutoOriginal.text = "<bounce a=0.5 f=0.5>Original</bounce>";
 
         (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
-
         textAnimatorPlayer.ShowText(textBox[1]);
     }
 
@@ -227,7 +234,6 @@ public class TutorialManager : Singleton<TutorialManager>
         Singleton<GameManager>.Instance.btnMusicTheme[1].interactable = false;
         // 안내 문구 강조 OFF
         textTutoOriginal.text = "Original";
-
         textAnimatorPlayer.ShowText(textBox[2]);
     }
 
@@ -246,7 +252,6 @@ public class TutorialManager : Singleton<TutorialManager>
         Singleton<GameManager>.Instance.contentOriginal.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = "Cat Life";
         // 안내 문구 강조 ON
         textTutoEasy.text = "<bounce a=0.5 f=0.5>Easy</bounce>";
-
         textAnimatorPlayer.ShowText(textBox[3]);
     }
 
@@ -259,7 +264,6 @@ public class TutorialManager : Singleton<TutorialManager>
         textTutoEasy.text = "Easy";
         // 안내 문구 강조 ON
         textTutoPlay.text = "<bounce a=0.5 f=0.5>Play</bounce>";
-
         textAnimatorPlayer.ShowText(textBox[4]);
     }
 
@@ -268,13 +272,10 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         // 안내 문구 강조 OFF
         textTutoPlay.text = "Play";
-
         // Tutorial Button ON
         btnTutoNext.interactable = true;
-
         // TimeStop, HandChange
         StartCoroutine(TimeStop());
-
         (xrTutoCanvas.transform.position, xrTutoCanvas.sizeDelta, xrTutoCanvas.transform.rotation) = XR_TutoCanvasSize(tutorialStep);
         textAnimatorPlayer.ShowText(textBox[5]);
     }
@@ -393,6 +394,9 @@ public class TutorialManager : Singleton<TutorialManager>
         Time.timeScale = 1;
         // UI Tutorial OFF
         Singleton<GameManager>.Instance.uiTutorial.SetActive(false);
+        // 탭 리스트 버튼 상호작용 가능
+        for (int i = 0; i < Singleton<GameManager>.Instance.btnTapList.Length; i++)
+            Singleton<GameManager>.Instance.btnTapList[i].interactable = true;
         // Original Theme Select ON
         Singleton<GameManager>.Instance.btnMusicTheme[0].interactable = true;
         // Custom Theme Select ON

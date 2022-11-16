@@ -8,24 +8,44 @@
 
 using System;
 using System.Collections;
+using System.Drawing.Drawing2D;
+using System.IO;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+[System.Serializable]
+class User
+{
+    // 고객 번호 : 초기화마다 추가
+    public int customerNum;
+    // 성 별 : 0 == 미할당, 1 == 남자, 2 == 여자
+    public int gender;
+    // 나 이 : 3 ~ 80 (20 == 미할당)
+    public int age;
+}
+
 public class GameManager : Singleton<GameManager>
 {
     [Header("[Input Action Reference]")]
     public InputActionReference gamePause;
+
     [Header("[UI - ALL]")]
     public GameObject uiLobby;
     public GameObject uiTutorial;
     public GameObject uiIngame;
     public GameObject uiPause;
     public GameObject uiResult;
-    public GameObject uiCustomerInfo;
-    [Header("UI - Mode And Option")]
+
+    [Header("[UI - Tap List]")]
+    public Button[] btnTapList;
+    public GameObject[] goTabPanel;
+
+    [Header("[UI - Mode And Option]")]
     public Slider sliderBright;
     public Button btnBrightLeft;
     public Button btnBrightRight;
@@ -35,9 +55,10 @@ public class GameManager : Singleton<GameManager>
     public Button[] btnModes;
     public Button btnGameReset;
     public GameObject bgTutorial;
-    [Header("UI - Music List")]
+
+    [Header("[UI - Music List]")]
     public Button[] btnMusicTheme;
-    public GameObject[] scrollView;
+    public GameObject[] themeObject;
     public GameObject contentOriginal; // 오리지널 리소스 프리팹 생성 위치(부모)
     public GameObject contentCustom;   // 커스텀 리소스 프리팹 생성 위치(부모)
     public TMP_Text infoTitle;
@@ -45,32 +66,41 @@ public class GameManager : Singleton<GameManager>
     public Image[] infoImages;
     public Button[] btnLevels;
     public Button btnPlay;
-    [Header("Played Result")]
+
+    [Header("[Played Result]")]
     public GameObject contentResult;   // 결과 리소스 프리팹 생성 위치(부모)
     public Button btnReset;
     public Button btnEndBackLobby;
+
     [Header("[UI - 인게임]")]
     public Slider playedMusicSlide;
     public Button btnBackLobby;
     public Button btnUnPause;
+
     [Header("[Environment]")]
     public GameObject[] worlds;
     public GameObject[] lobbyBaseGround;
     public GameObject inGameEnv;
+
     [Header("[Prefabs]")]
     public GameObject musicElement;
     public GameObject resultElement;
+
     [Header("[Origin Controller]")]
     public GameObject rayInteractorLeft;
     public GameObject rayInteractorRight;
+
     [Header("[Audio Source]")]
     public AudioSource[] music;
     public AudioSource[] sFX;
+
     [Header("[InGame Data]")]
     public TMP_Text textIngameScore;
     public TMP_Text textIngameKcal;
+
     [Header("[Key]")]
     public TMP_Text[] textKeys;
+
     [Header("[Music Info]")]
     public float playTime;
     public float playTimeOffset;
@@ -82,173 +112,136 @@ public class GameManager : Singleton<GameManager>
     public int   bpm;
     public float secPerBeat;
     public float panelTimer; // BPM 계산 타이머
+
     [Header("[Score & Kcal]")]
     public int   score = 0;
     public float kcal  = 0;
+
     [Header("[Option]")]
     public float bright;
     public float height;
+
     [Header("[플래그 변수]")]
     public bool isStart;       // Game Start
     public bool isPause;       // Game Pause
     public bool isSensorLeft;  // 패널 접촉 유/무 왼쪽
     public bool isSensorRight; // 패널 접촉 유/무 오른쪽
     public bool isPlayerInfo;
+
     [Header("[계정 기록 관련]")]
     public GameObject uiPlayerInfo;
+    public Toggle toggleMan;
+    public Toggle toggleGirl;
+    public Slider sliderAge;
+    public Button btnAgeLeft;
+    public Button btnAgeRight;
+    public int currectAge;
+    public TMP_Text textCurrectAge;
     public Button btnGameStart;
 
-    public Toggle m_ToMan;
-    public Toggle m_ToGirl;
-
-    public TMP_InputField if_Age;
-
-    public TMP_Text text_CustomerNum;
-    public TMP_Text text_MansNum;
-    public TMP_Text text_GirlsNum;
-    public TMP_Text text_Nots;
-    public TMP_Text text_10s;
-    public TMP_Text text_20s;
-    public TMP_Text text_30s;
-    public TMP_Text text_40s;
-    public TMP_Text text_50s;
-    public TMP_Text text_60s;
-    public TMP_Text text_70s;
-
-    public int m_CustomerNum;
-    public int m_Mans;
-    public int m_Girls;
-    public int m_NotAges;
-    public int m_10AgesUnder;
-    public int m_10Ages;
-    public int m_20Ages;
-    public int m_30Ages;
-    public int m_40Ages;
-    public int m_50Ages;
-    public int m_60Ages;
-    public int m_70Ages;
-
-    void BTN_GameReset()
+    /// <summary>
+    /// GameObject SetActive Change Method (A = false, B = true)
+    /// </summary>
+    /// <param name="A">false</param>
+    /// <param name="B">true</param>
+    public void UIChangeAToB(GameObject A, GameObject B)
     {
-        uiPlayerInfo.SetActive(true);
-        uiLobby.SetActive(false);
-        m_ToMan.isOn = false;
-        m_ToGirl.isOn = false;
-        if_Age.text = "";
+        A.SetActive(false);
+        B.SetActive(true);
     }
 
-    void BTN_GameStart()
+    void OnClick_GameReset()
     {
-        void PlayerPrefsIntDataSet_TMP_Text(string m_HasKey, int m_SetInt, TMP_Text text)
-        {
-            PlayerPrefs.SetInt(m_HasKey, m_SetInt++);
-            text.text = m_SetInt.ToString();
-            print($"{m_HasKey} : {m_SetInt}");
-        }
-        void PlayerPrefsIntDataSet_TMP_InfutField(string m_HasKey, int m_SetInt, TMP_InputField text)
-        {
-            PlayerPrefs.SetInt(m_HasKey, m_SetInt++);
-            text.text = m_SetInt.ToString();
-            print($"{m_HasKey} : {m_SetInt}");
-        }
-        uiPlayerInfo.SetActive(false);
-        uiLobby.SetActive(true);
-        // Customer Reset
-        PlayerPrefsIntDataSet_TMP_Text("CustomerNum", m_CustomerNum, text_CustomerNum);
-        // Gender Set
-        if (m_ToMan.isOn) PlayerPrefsIntDataSet_TMP_Text("MansNum", m_Mans, text_MansNum);
-        else              PlayerPrefsIntDataSet_TMP_Text("GirlsNum", m_Girls, text_GirlsNum);
-        // Ages Set
-        try
-        {
-
-        }
-        catch (Exception e)
-        {
-
-        }
-
-        int ages;
-        if (if_Age.text.Length != 0)
-            ages = int.Parse(if_Age.text);
-
-        //if (if_Age.text.Length != 0) PlayerPrefsIntDataSet_TMP_InfutField("NotAges", m_NotAges, if_Age);
-        //else if (0 <= ages && ages > 10) PlayerPrefsIntDataSet_TMP_InfutField("10AgesUnder", m_10AgesUnder, if_Age);
-        //else if (10 <= ages && ages > 20) PlayerPrefsIntDataSet_TMP_InfutField("10Ages", m_10Ages, if_Age);
-        //else if (20 <= ages && ages > 30) PlayerPrefsIntDataSet_TMP_InfutField("20Ages", m_20Ages, if_Age);
-        //else if (30 <= ages && ages > 40) PlayerPrefsIntDataSet_TMP_InfutField("30Ages", m_30Ages, if_Age);
-        //else if (40 <= ages && ages > 50) PlayerPrefsIntDataSet_TMP_InfutField("40Ages", m_40Ages, if_Age);
-        //else if (50 <= ages && ages > 60) PlayerPrefsIntDataSet_TMP_InfutField("50Ages", m_50Ages, if_Age);
-        //else if (60 <= ages && ages > 70) PlayerPrefsIntDataSet_TMP_InfutField("60Ages", m_60Ages, if_Age);
-        //else if (70 <= ages) PlayerPrefsIntDataSet_TMP_InfutField("70Ages", m_70Ages, if_Age);
-
-        PlayerPrefs.Save();
+        // 최초 화면으로 돌아가기
+        UIChangeAToB(uiLobby, uiPlayerInfo);
+        // 토글 OFF
+        toggleMan.isOn = false;
+        toggleGirl.isOn = false;
+        // 슬라이더 초기화
+        sliderAge.value = 20;
     }
 
-    public void BTN_DeleteALL()
+    int count;
+    void OnClick_GameStart()
     {
-        m_CustomerNum = 0;
-        m_Mans = 0;
-        m_Girls = 0;
-        m_NotAges = 0;
-        m_10AgesUnder = 0;
-        m_10Ages = 0;
-        m_20Ages = 0;
-        m_30Ages = 0;
-        m_40Ages = 0;
-        m_50Ages = 0;
-        m_60Ages = 0;
-        m_70Ages = 0;
+        // Json New User 프로필 생성 후 저장
+        User user = AccountCreate();
+        // New User 고객 번호 저장
+        DirectoryInfo directoryInfo = new DirectoryInfo(path);
+        // foreach 구문을 이용하여 폴더 내부에 있는 폴더정보 (GetDirectories() 사용)를 가져옵니다.
+        foreach (DirectoryInfo item in directoryInfo.GetDirectories())
+            count = item.GetFiles().Length;
+        user.customerNum = count++;
+        // New User 성별 정보 저장
+        if (!toggleMan.isOn && !toggleGirl.isOn)
+            user.gender = 0;
+        else if (toggleMan.isOn && !toggleGirl.isOn)
+            user.gender = 1;
+        else if (!toggleMan.isOn && toggleGirl.isOn)
+            user.gender = 2;
+        // New User 나이 정보 저장
+        user.age = int.Parse(textCurrectAge.text);
+        print($"New User Create Success\nNumber is : {user.customerNum}\nGender is : {user.gender}\nAge is : {user.age}");
+        // Json 생성
+        JsonCreate(user);
+        // UI 전환
+        UIChangeAToB(uiPlayerInfo, uiLobby);
+    }
 
-        PlayerPrefs.DeleteAll();
+    string path;
 
-        print("삭제 완료");
-        print("전체 회원 수 : " + m_CustomerNum);
-        print("남자 회원 수 : " + m_Mans);
-        print("여자 회원 수 : " + m_Girls);
-        print("나이 미선택 : " + m_NotAges);
-        print("10대 미만 : " + m_10AgesUnder);
-        print("10대 : " + m_10Ages);
-        print("20대 : " + m_20Ages);
-        print("30대 : " + m_30Ages);
-        print("40대 : " + m_40Ages);
-        print("50대 : " + m_50Ages);
-        print("60대 : " + m_60Ages);
-        print("70대 : " + m_70Ages);
+    /// <summary>
+    /// 에셋 폴더, 빌드 폴더 내부에 User 폴더가 있는지 확인(생성, 주소 리턴)
+    /// </summary>
+    string DirectoryCreate()
+    {
+        if (!Directory.Exists($"{Application.dataPath}/User/"))
+            Directory.CreateDirectory($"{Application.dataPath}/User/");
+        return $"{Application.dataPath}/User/";
+    }
+
+    /// <summary>
+    /// 새로운 유저 생성
+    /// </summary>
+    /// <returns>New User</returns>
+    User AccountCreate()
+    {
+        // 생성
+        User user = new()
+        {
+            customerNum = 1,
+            gender = 0,
+            age = 20
+        };
+        return user;
+    }
+
+    void JsonCreate(User user)
+    {
+        // json에 user 정보 저장
+        string json = JsonUtility.ToJson(user);
+        // path에 customerNum으로 json 생성
+        File.WriteAllText($"{path}{user.customerNum}.json", json);
+        AssetDatabase.Refresh();
     }
 
     private void Awake()
     {
-        void PlayerPrefsIntDataLoad(string m_HasKey, int m_GetInt)
-        {
-            if (PlayerPrefs.HasKey(m_HasKey))
-            {
-                m_GetInt = PlayerPrefs.GetInt(m_HasKey, m_GetInt);
-                print($"{m_HasKey} : {m_GetInt}");
-            }
-        }
-        // PlayerPrefs Key Value Reset
-        PlayerPrefsIntDataLoad("CustomerNum", m_CustomerNum);
-        PlayerPrefsIntDataLoad("MansNum", m_Mans);
-        PlayerPrefsIntDataLoad("GirlsNum", m_Girls);
-        PlayerPrefsIntDataLoad("NotAges", m_NotAges);
-        PlayerPrefsIntDataLoad("10AgesUnder", m_10AgesUnder);
-        PlayerPrefsIntDataLoad("10Ages", m_10Ages);
-        PlayerPrefsIntDataLoad("20Ages", m_20Ages);
-        PlayerPrefsIntDataLoad("30Ages", m_30Ages);
-        PlayerPrefsIntDataLoad("40Ages", m_40Ages);
-        PlayerPrefsIntDataLoad("50Ages", m_50Ages);
-        PlayerPrefsIntDataLoad("60Ages", m_60Ages);
-        PlayerPrefsIntDataLoad("70Ages", m_70Ages);
+        // Json 주소 확인
+        path = DirectoryCreate();
+        print($"path is : {path}");
+        AssetDatabase.Refresh();
         // Button Game Reset
-        btnGameReset.onClick.AddListener(() => { BTN_GameReset(); });
+        btnGameReset.onClick.AddListener(() => { OnClick_GameReset(); });
         // Button Game Start
-        btnGameStart.onClick.AddListener(() => { BTN_GameStart(); });
-        // Button Option - Bright Dec / Inc | Height Dec / Inc
-        btnBrightLeft.onClick.AddListener(()  => OnClick_Options(btnBrightLeft,  bright, height, sliderBright, sliderHeight, sFX[0]));
-        btnBrightRight.onClick.AddListener(() => OnClick_Options(btnBrightRight, bright, height, sliderBright, sliderHeight, sFX[0]));
-        btnHeightLeft.onClick.AddListener(()  => OnClick_Options(btnHeightLeft,  bright, height, sliderBright, sliderHeight, sFX[0]));
-        btnHeightRight.onClick.AddListener(() => OnClick_Options(btnHeightRight, bright, height, sliderBright, sliderHeight, sFX[0]));
+        btnGameStart.onClick.AddListener(() => { OnClick_GameStart(); });
+        // Button Option - Age Dec / Inc | Bright Dec / Inc | Height Dec / Inc
+        btnAgeLeft.onClick.AddListener(()  => OnClick_Options(btnAgeLeft, currectAge, bright, height, sliderAge, sliderBright, sliderHeight, sFX[0]));
+        btnAgeRight.onClick.AddListener(()  => OnClick_Options(btnAgeRight, currectAge, bright, height, sliderAge, sliderBright, sliderHeight, sFX[0]));
+        btnBrightLeft.onClick.AddListener(()  => OnClick_Options(btnBrightLeft, currectAge, bright, height, sliderAge, sliderBright, sliderHeight, sFX[0]));
+        btnBrightRight.onClick.AddListener(() => OnClick_Options(btnBrightRight, currectAge, bright, height, sliderAge, sliderBright, sliderHeight, sFX[0]));
+        btnHeightLeft.onClick.AddListener(()  => OnClick_Options(btnHeightLeft, currectAge, bright, height, sliderAge, sliderBright, sliderHeight, sFX[0]));
+        btnHeightRight.onClick.AddListener(() => OnClick_Options(btnHeightRight, currectAge, bright, height, sliderAge, sliderBright, sliderHeight, sFX[0]));
         // Button Mode - Panel Speed, Music Length, Obstacle
         void BtnModes(int i) { btnModes[i].onClick.AddListener(() => OnClick_Mode(btnModes[i], btnModes, infoImages, infoStateText, sFX[0])); }
         for (int i = 0; i < btnModes.Length; i++)
@@ -276,6 +269,8 @@ public class GameManager : Singleton<GameManager>
     private void FixedUpdate()
     {
         // Option Sync
+        currectAge = (int)sliderAge.value;
+        textCurrectAge.text = currectAge.ToString();
         bright = sliderBright.value;
         height = sliderHeight.value;
     }
@@ -291,8 +286,24 @@ public class GameManager : Singleton<GameManager>
     /// <param name="sBright">밝기 슬라이더</param>
     /// <param name="sHeight">키 조절 슬라이더</param>
     /// <param name="sfx">AudioSource - SFX Click</param>
-    void OnClick_Options(Button button, float bright, float height, Slider sBright, Slider sHeight, AudioSource sfx)
+    void OnClick_Options(Button button, int age, float bright, float height, Slider sAge, Slider sBright, Slider sHeight, AudioSource sfx)
     {
+        // 나이 - 왼쪽(감소)
+        if (button == btnAgeLeft && (3 <= age) && (age <= 80))
+        {
+            age -= 1;
+            sAge.value = age;
+            sfx.Play();
+        }
+
+        // 나이 - 오른쪽(증가)
+        if (button == btnAgeRight && (3 <= age) && (age <= 80))
+        {
+            age += 1;
+            sAge.value = age;
+            sfx.Play();
+        }
+
         // 밝기 - 왼쪽(감소)
         if (button == btnBrightLeft && (0 <= bright) && (bright <= 4.2))
         {
@@ -480,10 +491,8 @@ public class GameManager : Singleton<GameManager>
                 // Next Step
                 Singleton<TutorialManager>.Instance.TutorialStep();
             }
-
-            // 스크롤 뷰 전환
-            scrollView[0].SetActive(true);
-            scrollView[1].SetActive(false);
+            // 테마 오브젝트 전환
+            UIChangeAToB(themeObject[1], themeObject[0]);
             // BGM 정지 해제
             music[0].UnPause();
             // 선택한 노래 정지
@@ -517,10 +526,8 @@ public class GameManager : Singleton<GameManager>
                 // textTitle.text ← customMusicElements.AudioSource.text
                 customMusicElementPrefab.transform.GetChild(0).GetComponent<TMP_Text>().text = customMusicElementPrefab.transform.GetChild(3).GetComponent<AudioSource>().clip.name;
             }
-
-            // 스크롤 뷰 전환
-            scrollView[0].SetActive(false);
-            scrollView[1].SetActive(true);
+            // 테마 오브젝트 전환
+            UIChangeAToB(themeObject[0], themeObject[1]);
             // BGM 정지 해제
             music[0].UnPause();
             // 선택한 노래 정지

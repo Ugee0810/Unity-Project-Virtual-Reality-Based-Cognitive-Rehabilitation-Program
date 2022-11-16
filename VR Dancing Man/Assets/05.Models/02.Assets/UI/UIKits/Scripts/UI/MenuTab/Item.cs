@@ -18,7 +18,7 @@ namespace VRUiKits.Utils
             }
             else
             {
-                Debug.LogError("Item requires button to be assigned");
+                //Debug.LogError("Item requires button to be assigned");
             }
 
             normalColor = button.colors.normalColor;
