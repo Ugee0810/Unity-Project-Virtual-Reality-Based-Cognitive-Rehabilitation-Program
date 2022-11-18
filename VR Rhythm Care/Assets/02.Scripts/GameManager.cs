@@ -554,7 +554,7 @@ public class GameManager : Singleton<GameManager>
             buttons[1].interactable = true;
             buttons[2].interactable = true;
             sfx.Play();
-            secPerBeat = 360f / bpm;
+            secPerBeat = 300f / bpm;
             Singleton<PanelManager>.Instance.quizCool = 14;
             btnPlay.interactable = true;
 
@@ -567,7 +567,7 @@ public class GameManager : Singleton<GameManager>
             buttons[1].interactable = false;
             buttons[2].interactable = true;
             sfx.Play();
-            secPerBeat = 300f / bpm;
+            secPerBeat = 240f / bpm;
             Singleton<PanelManager>.Instance.quizCool = 11;
             btnPlay.interactable = true;
         }
@@ -578,7 +578,7 @@ public class GameManager : Singleton<GameManager>
             buttons[1].interactable = true;
             buttons[2].interactable = false;
             sfx.Play();
-            secPerBeat = 240f / bpm;
+            secPerBeat = 180f / bpm;
             Singleton<PanelManager>.Instance.quizCool = 8;
             btnPlay.interactable = true;
         }
